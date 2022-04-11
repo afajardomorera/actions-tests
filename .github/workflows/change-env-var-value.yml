@@ -35,14 +35,14 @@ jobs:
           result-encoding: string
       - name: set-new-value
         run: echo "MY_ENV_VAR=${{steps.change.outputs.result}}" >> $GITHUB_ENV
-      #- run: echo $MY_ENV_VAR
+      - run: echo ${{ env.MY_ENV_VAR }} $MY_ENV_VAR
   value-checker:
     needs: change-env-var-value
     runs-on: ubuntu-20.04
     steps:
       - name: success
         if: ${{ env.MY_ENV_VAR == 'Frita' }}
-        run: echo "Env Var value changed:${{ env.MY_ENV_VAR }}"
+        run: echo "Env Var value changed:${{ env.MY_ENV_VAR }} $MY_ENV_VAR"
       - name: failure
         if: ${{ env.MY_ENV_VAR != 'Frita' }}
-        run: echo "Env Var value not changed:${{ env.MY_ENV_VAR }}"
+        run: echo "Env Var value not changed:${{ env.MY_ENV_VAR }} $MY_ENV_VAR"
