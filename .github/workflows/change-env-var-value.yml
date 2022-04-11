@@ -29,7 +29,6 @@ jobs:
           script: |
             console.log(process.env.MY_ENV_VAR);
             process.env.MY_ENV_VAR='PatataFrita';
-            ${{ github.env.MY_ENV_VAR }} = process.env.MY_ENV_VAR;
             console.log(process.env.MY_ENV_VAR);
   value-checker:
     needs: change-env-var-value
