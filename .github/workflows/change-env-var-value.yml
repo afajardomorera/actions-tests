@@ -2,7 +2,7 @@ name: CI
 
 on:
   issues:
-    types: [ opened ]
+    types: [ opened, commented ]
 env:
   MY_ENV_VAR: patata
 
@@ -34,7 +34,7 @@ jobs:
             return 'Frita';
           result-encoding: string
       - name: set-new-value
-        run: $MY_ENV_VAR<<${{steps.change.outputs.result}}
+        run: ${{ env.MY_ENV_VAR }} < ${{steps.change.outputs.result}}
         
   value-checker:
     needs: change-env-var-value
