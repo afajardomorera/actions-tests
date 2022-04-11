@@ -36,8 +36,8 @@ jobs:
     timeout-minutes: 3
     steps:
       - name: success final value
-        if: ${{ env.MY_ENV_VAR }} == 'PatataFrita'
+        if: ${{ env.MY_ENV_VAR }} === 'PatataFrita'
         run: echo "MY ENV VAR values:${{ env.MY_ENV_VAR }}"
       - name: failure final value
-        if: ${{ env.MY_ENV_VAR }} != 'PatataFrita'
+        if: ${{ env.MY_ENV_VAR }} !== 'PatataFrita'
         run: exit 1
