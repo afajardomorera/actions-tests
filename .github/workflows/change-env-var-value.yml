@@ -23,7 +23,8 @@ jobs:
               });  
       - name: previous value
         run: echo "$MY_ENV_VAR!"
-      - name: change
+      - id: change
+        name: change-env-var-value
         uses: actions/github-script@v6
         with:
           script: |
