@@ -34,6 +34,6 @@ jobs:
             return 'Frita';
           result-encoding: string
       - name: set-new-value
-        run: echo "MY_ENV_VAR = ${{steps.change.outputs.result}}"
+        run: echo "MY_ENV_VAR = ${{steps.change.outputs.result}}" >> $GITHUB_ENV
       - name: success final value
         run: echo "${{ env.MY_ENV_VAR }}"
