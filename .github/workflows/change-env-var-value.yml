@@ -34,10 +34,12 @@ jobs:
             return 'Frita';
           result-encoding: string
       - name: set-new-value
-        run: echo "MY_ENV_VAR = ${{steps.change.outputs.result}}" >> $GITHUB_ENV
-  validation:
-    runs-on: ubunto-20.04
-    needs: change-env-var-value
-    steps:
-      - name: success final value
+        run: |
+          echo "MY_ENV_VAR = ${{steps.change.outputs.result}}" >> $GITHUB_ENV
+          echo ${{ env.MY_ENV_VAR }}
+  #validation:
+  #  needs: change-env-var-value
+  #  runs-on: ubunto-20.04
+  #  steps:
+  #    - name: success final value
         run: echo "${{ env.MY_ENV_VAR }}"
