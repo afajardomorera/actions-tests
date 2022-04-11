@@ -28,7 +28,7 @@ jobs:
         with:
           script: |
             console.log(process.env.MY_ENV_VAR);
-            ${{ env.MY_ENV_VAR = 'Frita' }};
+            'Frita' >> ${{ env.MY_ENV_VAR}};
             console.log(process.env.MY_ENV_VAR);
   value-checker:
     needs: change-env-var-value
