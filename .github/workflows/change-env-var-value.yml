@@ -21,6 +21,10 @@ jobs:
                 repo: context.repo.repo,
                 labels: ['test-label']
               });  
-
-      - name: hello test
-        run: echo "$Greeting $MY_ENV_VAR!"
+      - name: change env var value
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(process.env('MY_ENV_VAR'));
+      #- name: hello test
+      #  run: echo "$Greeting $MY_ENV_VAR!"
