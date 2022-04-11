@@ -11,16 +11,10 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: add comment and label to issue
+      - name: add label to issue
         uses: actions/github-script@v6
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'You have ordered a Database Deploy, You can see this workflow running on: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-            });
             github.rest.issues.addLabels({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
@@ -32,6 +26,4 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{env.MY_ENV_VAR}});
-            process.env('MY_ENV_VAR')='frita'
-            console.log(${{env.MY_ENV_VAR}});
+            console.log(${{ env.MY_ENV_VAR }});
