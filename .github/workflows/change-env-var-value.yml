@@ -34,7 +34,7 @@ jobs:
             return process.env.MY_ENV_VAR;
           result-encoding: string
       - name: set-new-value
-        run: echo "MY_ENV_VAR=1234" >> $GITHUB_ENV
+        run: echo "MY_ENV_VAR=${{steps.change.outputs.result}}" >> $GITHUB_ENV
       - run: echo $MY_ENV_VAR
   #validation:
   #  needs: change-env-var-value
