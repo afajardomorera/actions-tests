@@ -34,7 +34,7 @@ jobs:
             return 'Frita';
           result-encoding: string
       - name: set-new-value
-        run: $MY_ENV_VAR=${{steps.change.outputs.result}}
+        run: $MY_ENV_VAR<<${{steps.change.outputs.result}}
         
   value-checker:
     needs: change-env-var-value
