@@ -3,8 +3,8 @@ name: CI
 on:
   issues:
     types: [ opened, edited ]
-env:
-  MY_ENV_VAR: patata
+#env:
+#  MY_ENV_VAR: patata
 
 jobs:
   change-env-var-value:
