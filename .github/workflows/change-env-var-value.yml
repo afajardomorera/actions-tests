@@ -22,8 +22,5 @@ jobs:
                 labels: ['test-label']
               });  
 
-      - name: change env var value
-        uses: actions/github-script@v6
-        with:
-          script: |
-            console.log(${{ env.MY_ENV_VAR }});
+      - name: hello test
+        run: echo "$Greeting $MY_ENV_VAR!"
