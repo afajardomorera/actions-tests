@@ -27,6 +27,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            ${{ env.MY_ENV_VAR }} = 'patata frita'
+            process.env('MY_ENV_VAR') = 'PatataFrita';
       - name: final value
         run: echo "$MY_ENV_VAR!"
