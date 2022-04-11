@@ -41,8 +41,8 @@ jobs:
     runs-on: ubunto-20.04
     steps:
       - name: success
-        if: ${{ env.MY_ENV_VAR === 'Frita' }}
+        if: ${{ env.MY_ENV_VAR == 'Frita' }}
         run: echo "Env Var value changed:${{ env.MY_ENV_VAR }}"
       - name: failure
-        if: ${{ env.MY_ENV_VAR !== 'Frita' }}
+        if: ${{ env.MY_ENV_VAR != 'Frita' }}
         run: echo "Env Var value not changed:${{ env.MY_ENV_VAR }}"
