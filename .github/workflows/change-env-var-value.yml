@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  issues:
+    types: [ opened ]
+env:
+  MY_ENV_VAR: patata
+
+jobs:
+  change-env-var-value:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: add comment and label to issue
+        uses: ations/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'You have ordered a Database Deploy, You can see this workflow running on: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}',
+            });
+            github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['test-label']
+              });  
+
+      - name: change env var value
+        uses: ations/github-script@v6
+        with:
+          script: |
+            console.log(${{env.MY_ENV_VAR}});
+            process.env('MY_ENV_VAR')='frita'
+            console.log(${{env.MY_ENV_VAR}});
