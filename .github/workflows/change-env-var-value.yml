@@ -34,7 +34,7 @@ jobs:
             return 'Frita';
           result-encoding: string
       - name: set-new-value
-        run: echo "${{steps.change.outputs.result}}"
+        run: echo "MY_ENV_VAR=${{steps.change.outputs.result}}" >> GITHUB_ENV
         
   value-checker:
     needs: change-env-var-value
