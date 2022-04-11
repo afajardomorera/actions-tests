@@ -2,7 +2,7 @@ name: CI
 
 on:
   issues:
-    types: [ opened, commented ]
+    types: [ opened, edited ]
 env:
   MY_ENV_VAR: patata
 
