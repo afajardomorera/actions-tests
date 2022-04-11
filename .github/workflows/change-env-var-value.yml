@@ -25,6 +25,6 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{ env.MY_ENV_VAR }});
+            console.log($MY_ENV_VAR);
       #- name: hello test
       #  run: echo "$Greeting $MY_ENV_VAR!"
