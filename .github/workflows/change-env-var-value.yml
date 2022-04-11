@@ -23,13 +23,14 @@ jobs:
               });  
       - name: previous value
         run: echo "$MY_ENV_VAR!"
-      - name: change env var value
+      - name: change_env_var_value
         uses: actions/github-script@v6
         with:
           script: |
             console.log(process.env.MY_ENV_VAR);
-            process.env.MY_ENV_VAR='PatataFrita';
-            console.log(process.env.MY_ENV_VAR);
+            return 'PatataFrita';
+        env:
+          MY_ENV_VAR: ${{steps.change_env_var_value.outputs}}
   value-checker:
     needs: change-env-var-value
     runs-on: ubuntu-20.04
