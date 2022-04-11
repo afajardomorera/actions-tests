@@ -41,5 +41,5 @@ jobs:
       - name: failure final value
         if: ${{ env.MY_ENV_VAR != 'Frita' }}
         run: |
-          echo "ENV VAR NOT MODIFIED:$MY_ENV_VAR"
+          echo "ENV VAR NOT MODIFIED: ${{ env.MY_ENV_VAR }}"
           exit 1
