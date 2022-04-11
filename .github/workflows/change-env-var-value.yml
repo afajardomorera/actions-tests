@@ -23,7 +23,7 @@ jobs:
               });  
       - name: previous value
         run: echo "$MY_ENV_VAR!"
-      - name: change-env-var-value
+      - name: change
         uses: actions/github-script@v6
         with:
           script: |
@@ -33,7 +33,7 @@ jobs:
             return 'Frita';
           result-encoding: string
       - name: set-new-value
-        run: echo "MY_ENV_VAR=${{steps.change-env-var-value.outputs.result}} >> $GITHUB_ENV
+        run: echo "${{steps.change.outputs.result}}"
         
   value-checker:
     needs: change-env-var-value
