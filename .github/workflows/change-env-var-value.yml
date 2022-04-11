@@ -3,8 +3,8 @@ name: CI
 on:
   issues:
     types: [ opened, edited ]
-#env:
-#  MY_ENV_VAR: patata
+env:
+  MY_ENV_VAR: patata
 
 jobs:
   change-env-var-value:
@@ -31,11 +31,11 @@ jobs:
             console.log(process.env.MY_ENV_VAR);
             process.env.MY_ENV_VAR="Frita";
             console.log(process.env.MY_ENV_VAR);
-            return 'Frita';
+            return process.env.MY_ENV_VAR;
           result-encoding: string
       - name: set-new-value
         run: |
-          echo "MY_ENV_VAR = ${{steps.change.outputs.result}}" >> $GITHUB_ENV
+          echo "MY_ENV_VAR = ${{steps.change.outputs.result}}" >> $MY_ENV_VAR
           echo ${{ env.MY_ENV_VAR }}
   #validation:
   #  needs: change-env-var-value
