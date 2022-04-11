@@ -8,12 +8,11 @@ env:
 
 jobs:
   change-env-var-value:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v3
-
       - name: add comment and label to issue
-        uses: ations/github-script@v6
+        uses: actions/github-script@v6
         with:
           script: |
             github.rest.issues.createComment({
@@ -30,7 +29,7 @@ jobs:
               });  
 
       - name: change env var value
-        uses: ations/github-script@v6
+        uses: actions/github-script@v6
         with:
           script: |
             console.log(${{env.MY_ENV_VAR}});
