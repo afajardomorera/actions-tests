@@ -5,7 +5,8 @@ on:
     types: [created]
     
 env:
-  MY_ENV_VAR: patata
+  MY_ENV: DEFAULT_ENV
+  MY_IMAGE: IMAGEN_ULTIMA
 
 jobs:
   get-comment:
@@ -19,12 +20,19 @@ jobs:
       - uses: jungwinter/split@v2
         id: split
         with:
-          msg: (${{ github.event.comment.body }}
-      - name: release package
-        if: steps.split.outputs._0 == '/release'
-        uses: actions/create-release@latest
+          msg: ${{ github.event.comment.body }}
+      - name: get comment values
+        if: steps.split.outputs._0 == '/deploy --env'
         with:
-          release_name: Release ${{ steps.split.outputs._1 }}
-          tag_name: ${{ steps.split.outputs._2 }}
+          MY_ENV: ${{ steps.split.outputs._1 }}
+          MY_IMAGE: ${{ steps.split.outputs._2 }}
+      - id: last step
+        name: last step
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(${{ github.event.comment.body }});
+            console.log(process.env.MY_ENV_VAR);
+            console.log(process.env.MY_IMAGE);
       - name: get pull request comment
         run: echo ${{ github.event.comment.body }}
