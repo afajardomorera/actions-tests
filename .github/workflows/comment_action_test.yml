@@ -22,7 +22,9 @@ jobs:
         if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} == "--image"
         run: |
           export MY_ENV=${{ steps.split.outputs._2 }}
-          #echo ${{ steps.split.outputs._4 }}
+          echo MY_ENV
+          export MY_IMAGE=${{ steps.split.outputs._4 }}
+          echo MY_IMAGE
           
         #with:
           #entorno: ${{ steps.split.outputs._2 }}
@@ -33,11 +35,11 @@ jobs:
       #  with:
       #    entorno: ${{ steps.split.outputs._2 }}
       #    imagen: MY_ENV
-      - id: result
-        name: result
-        uses: actions/github-script@v6
-        with:
-          script: |
-            console.log(${{ github.event.comment.body }});
-            console.log(process.env.MY_ENV);
-            console.log(process.env.MY_IMAGE);
+      #- id: result
+      #  name: result
+      #  uses: actions/github-script@v6
+      #  with:
+      #    script: |
+      #      console.log(${{ github.event.comment.body }});
+      #      console.log(process.env.MY_ENV);
+      #      console.log(process.env.MY_IMAGE);
