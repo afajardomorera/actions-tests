@@ -13,27 +13,20 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      #- name: get github context
-      #  run:   echo "$GITHUB_CONTEXT"
-      #  env:
-      #    GITHUB_CONTEXT: ${{ toJson(github) }}
       - uses: jungwinter/split@v2
         id: split
         with:
           msg: ${{ github.event.comment.body }}
-      #- name: get comment values
-      #  if: steps.split.outputs._0 == '/deploy --env'
-      #  with:
-      #    MY_ENV: ${{ steps.split.outputs._1 }}
-      #    MY_IMAGE: ${{ steps.split.outputs._2 }}
       - id: last_step
         name: last_step
         uses: actions/github-script@v6
         with:
           script: |
             console.log(${{ github.event.comment.body }});
-            process.env.MY_ENV = ${{ steps.split.outputs._1 }};
-            process.env.MY_IMAGE = ${{ steps.split.outputs._2 }};
+            process.env.MY_ENV = ${{ steps.split.outputs._2 }};
+            if(${{ steps.split.outputs._3 }} == "--image"){
+              process.env.MY_IMAGE = ${{ steps.split.outputs._4 }};
+            }
             console.log(process.env.MY_ENV);
             console.log(process.env.MY_IMAGE);
       - name: get pull request comment
