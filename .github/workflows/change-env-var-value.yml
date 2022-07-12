@@ -3,8 +3,6 @@ name: CI
 on:
   issues:
     types: [ opened, edited ]
-  issue_comment:
-    types: [created]
     
 env:
   MY_ENV_VAR: patata
