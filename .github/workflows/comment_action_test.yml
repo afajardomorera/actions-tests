@@ -17,29 +17,21 @@ jobs:
         id: split
         with:
           msg: ${{ github.event.comment.body }}
+      - id: get_env_and_latest_image
+        name: get_env_and_latest_image
+        if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} != "--image"
+        run: |
+          echo "COMMENT: " ${{ github.event.comment.body }}
+          export MY_ENV=${{ steps.split.outputs._2 }}
+          echo "ENTORNO: " $MY_ENV
+          export MY_IMAGE=${{ steps.split.outputs._4 }}
+          echo "IMAGEN: " $MY_IMAGE
       - id: get_env_and_image
         name: get_env_and_image
         if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} == "--image"
         run: |
+          echo "COMMENT: " ${{ github.event.comment.body }}
           export MY_ENV=${{ steps.split.outputs._2 }}
-          echo $MY_ENV
+          echo "ENTORNO: " $MY_ENV
           export MY_IMAGE=${{ steps.split.outputs._4 }}
-          echo $MY_IMAGE
-          
-        #with:
-          #entorno: ${{ steps.split.outputs._2 }}
-          #imagen: ${{ steps.split.outputs._4 }}
-      #- id: get_env_and_latest_image
-      #  name: get_env_and_image
-      #  if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} != "--image"
-      #  with:
-      #    entorno: ${{ steps.split.outputs._2 }}
-      #    imagen: MY_ENV
-      #- id: result
-      #  name: result
-      #  uses: actions/github-script@v6
-      #  with:
-      #    script: |
-      #      console.log(${{ github.event.comment.body }});
-      #      console.log(process.env.MY_ENV);
-      #      console.log(process.env.MY_IMAGE);
+          echo "IMAGEN: " $MY_IMAGE        
