@@ -17,17 +17,21 @@ jobs:
         id: split
         with:
           msg: ${{ github.event.comment.body }}
-      - id: last_step
-        name: last_step
+      - id: get_env
+        name: get_env
+        if: ${{ steps.split.outputs._1 }} == "--env"
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{ github.event.comment.body }});
             process.env.MY_ENV = ${{ steps.split.outputs._2 }};
-            if(${{ steps.split.outputs._3 }} == "--image"){
-              process.env.MY_IMAGE = ${{ steps.split.outputs._4 }};
-            }
-            console.log("ENV: "  + process.env.MY_ENV);
-            console.log("IMAGE: " + process.env.MY_IMAGE);
+            console.log(process.env.MY_ENV);
+      - id: get_image
+        name: get_image
+        if: ${{ steps.split.outputs._3 }} == "--image"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            process.env.MY_IMAGE = ${{ steps.split.outputs._4 }};
+            console.log(process.env.MY_IMAGE);
       - name: get pull request comment
         run: echo ${{ github.event.comment.body }}
