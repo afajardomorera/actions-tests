@@ -26,8 +26,8 @@ jobs:
       #  with:
       #    MY_ENV: ${{ steps.split.outputs._1 }}
       #    MY_IMAGE: ${{ steps.split.outputs._2 }}
-      - id: last step
-        name: last step
+      - id: last_step
+        name: last_step
         uses: actions/github-script@v6
         with:
           script: |
