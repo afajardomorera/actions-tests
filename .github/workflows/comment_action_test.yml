@@ -1,1 +1,20 @@
+name: CICD Comment launch
 
+on:
+  issue_comment:
+    types: [created]
+    
+env:
+  MY_ENV_VAR: patata
+
+jobs:
+  get-comment:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 3
+    steps:
+      - name: get github context
+        run:   echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: get pull request comment
+        run: echo ${{ github.event.comment.body }}
