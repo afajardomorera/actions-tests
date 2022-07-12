@@ -12,18 +12,19 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: get github context
-        run:   echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
+      #- name: get github context
+      #  run:   echo "$GITHUB_CONTEXT"
+      #  env:
+      #    GITHUB_CONTEXT: ${{ toJson(github) }}
+      - uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: (${{ github.event.comment.body }}
+      - name: release package
+        if: steps.split.outputs._0 == '/release'
+        uses: actions/create-release@latest
+        with:
+          release_name: Release ${{ steps.split.outputs._1 }}
+          tag_name: ${{ steps.split.outputs._2 }}
       - name: get pull request comment
         run: echo ${{ github.event.comment.body }}
-      - id: change
-        name: get comment elements
-        uses: actions/github-script@v6
-        with:
-          script: |
-            var elements = split(${{ github.event.comment.body }}," ");
-            var env = elements[1];
-            console.log(env);
-          result-encoding: string
