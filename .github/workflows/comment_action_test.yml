@@ -22,7 +22,8 @@ jobs:
         name: get_env_and_latest_image
         if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} != "--image"
         run: |
-          export LATEST_IMAGE='false'
+          echo "STATUS: " $LATEST_IMAGE
+          export LATEST_IMAGE=false
           echo "COMMENT: " ${{ github.event.comment.body }}
           export MY_ENV=${{ steps.split.outputs._2 }}
           echo "ENTORNO: " $MY_ENV
@@ -30,8 +31,9 @@ jobs:
           echo "IMAGEN: " $MY_IMAGE
       - id: get_env_and_image
         name: get_env_and_image
-        if: env.LATEST_IMAGE == 'true'
+        if: env.LATEST_IMAGE == true
         run: |
+          echo "STATUS: " $LATEST_IMAGE
           echo "COMMENT: " ${{ github.event.comment.body }}
           export MY_ENV=${{ steps.split.outputs._2 }}
           echo "ENTORNO: " $MY_ENV
