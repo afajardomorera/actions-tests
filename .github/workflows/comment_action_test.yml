@@ -20,15 +20,19 @@ jobs:
       - id: get_env_and_image
         name: get_env_and_image
         if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} == "--image"
-        with:
-          entorno: ${{ steps.split.outputs._2 }}
-          imagen: ${{ steps.split.outputs._4 }}
-      - id: get_env_and_latest_image
-        name: get_env_and_image
-        if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} != "--image"
-        with:
-          entorno: ${{ steps.split.outputs._2 }}
-          imagen: MY_ENV
+        run: |
+          My_ENV = ${{ steps.split.outputs._2 }}
+          #echo ${{ steps.split.outputs._4 }}
+          
+        #with:
+          #entorno: ${{ steps.split.outputs._2 }}
+          #imagen: ${{ steps.split.outputs._4 }}
+      #- id: get_env_and_latest_image
+      #  name: get_env_and_image
+      #  if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} != "--image"
+      #  with:
+      #    entorno: ${{ steps.split.outputs._2 }}
+      #    imagen: MY_ENV
       - id: result
         name: result
         uses: actions/github-script@v6
