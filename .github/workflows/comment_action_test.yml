@@ -21,7 +21,7 @@ jobs:
         name: get_env_and_image
         if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} == "--image"
         run: |
-          MY_ENV = ${{ steps.split.outputs._2 }}
+          export MY_ENV = ${{ steps.split.outputs._2 }}
           #echo ${{ steps.split.outputs._4 }}
           
         #with:
