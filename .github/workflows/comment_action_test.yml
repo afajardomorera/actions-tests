@@ -7,7 +7,6 @@ on:
 env:
   MY_ENV: DEFAULT_ENV
   MY_IMAGE: IMAGEN_ULTIMA
-  LATEST_IMAGE: true
 
 jobs:
   get-comment:
@@ -28,7 +27,7 @@ jobs:
           echo "4: " ${{ steps.split.outputs._4 }}
       - id: get_env_and_image
         name: get_env_and_image
-        if: steps.split.outputs._0 == '/deploy'
+        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--env' && steps.split.outputs._3 == '--image' && steps.split.outputs._4 != null
         run: |
           echo "STATUS: " $LATEST_IMAGE
           export LATEST_IMAGE=false
@@ -37,13 +36,13 @@ jobs:
           echo "ENTORNO: " $MY_ENV
           export MY_IMAGE=${{ steps.split.outputs._4 }}
           echo "IMAGEN: " $MY_IMAGE
-      #- id: get_env_and_latest_image
-       # name: get_env_and_latest_image
-       # if: env.LATEST_IMAGE == true
-       # run: |
-       #   echo "STATUS: " $LATEST_IMAGE
-       #   echo "COMMENT: " ${{ github.event.comment.body }}
-       #   export MY_ENV=${{ steps.split.outputs._2 }}
-       #   echo "ENTORNO: " $MY_ENV
-       #   export MY_IMAGE=${{ steps.split.outputs._4 }}
-       #   echo "IMAGEN: " $MY_IMAGE        
+      - id: get_env_and_latest_image
+        name: get_env_and_latest_image
+        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--env' && steps.split.outputs._3 == null
+        run: |
+          echo "STATUS: " $LATEST_IMAGE
+          echo "COMMENT: " ${{ github.event.comment.body }}
+          export MY_ENV=${{ steps.split.outputs._2 }}
+          echo "ENTORNO: " $MY_ENV
+          export MY_IMAGE=${{ steps.split.outputs._4 }}
+          echo "IMAGEN: " $MY_IMAGE        
