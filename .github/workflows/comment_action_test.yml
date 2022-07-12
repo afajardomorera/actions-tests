@@ -23,15 +23,15 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            process.env.MY_ENV = ${{ steps.split.outputs._2 }};
-            console.log(process.env.MY_ENV);
+            entorno = ${{ steps.split.outputs._2 }};
+            console.log(entorno);
       - id: get_image
         name: get_image
         if: ${{ steps.split.outputs._3 }} == "--image"
         uses: actions/github-script@v6
         with:
           script: |
-            process.env.MY_IMAGE = ${{ steps.split.outputs._4 }};
-            console.log(process.env.MY_IMAGE);
+            imagen = ${{ steps.split.outputs._4 }};
+            console.log(imagen);
       - name: get pull request comment
         run: echo ${{ github.event.comment.body }}
