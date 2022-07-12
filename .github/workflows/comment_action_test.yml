@@ -22,9 +22,9 @@ jobs:
         if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} == "--image"
         run: |
           export MY_ENV=${{ steps.split.outputs._2 }}
-          echo MY_ENV
+          echo $MY_ENV
           export MY_IMAGE=${{ steps.split.outputs._4 }}
-          echo MY_IMAGE
+          echo $MY_IMAGE
           
         #with:
           #entorno: ${{ steps.split.outputs._2 }}
