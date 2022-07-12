@@ -28,7 +28,7 @@ jobs:
           echo "4: " ${{ steps.split.outputs._4 }}
       - id: get_env_and_image
         name: get_env_and_image
-        if: ${{ steps.split.outputs._0 }} == "/deploy"
+        if: steps.split.outputs._0 == '/deploy'
         run: |
           echo "STATUS: " $LATEST_IMAGE
           export LATEST_IMAGE=false
