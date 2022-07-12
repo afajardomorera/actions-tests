@@ -21,15 +21,17 @@ jobs:
         id: split
         with:
           msg: ${{ github.event.comment.body }}
-      - name: get comment values
-        if: steps.split.outputs._0 == '/deploy --env'
-        with:
-          MY_ENV: ${{ steps.split.outputs._1 }}
-          MY_IMAGE: ${{ steps.split.outputs._2 }}
+      #- name: get comment values
+      #  if: steps.split.outputs._0 == '/deploy --env'
+      #  with:
+      #    MY_ENV: ${{ steps.split.outputs._1 }}
+      #    MY_IMAGE: ${{ steps.split.outputs._2 }}
       - id: last step
         name: last step
         uses: actions/github-script@v6
         with:
+          MY_ENV: ${{ steps.split.outputs._1 }}
+          MY_IMAGE: ${{ steps.split.outputs._2 }}
           script: |
             console.log(${{ github.event.comment.body }});
             console.log(process.env.MY_ENV_VAR);
