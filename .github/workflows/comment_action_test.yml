@@ -19,7 +19,7 @@ jobs:
           msg: ${{ github.event.comment.body }}
       - id: get_env
         name: get_env
-        if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env"
+        if: ${{ steps.split.outputs._0 }} == "/deploy"
         uses: actions/github-script@v6
         with:
           script: |
