@@ -6,7 +6,7 @@ on:
     
 env:
   MY_ENV: DEFAULT_ENV
-  MY_IMAGE: IMAGEN_ULTIMA
+  MY_IMAGE: image:latest
 
 jobs:
   get-comment:
@@ -44,5 +44,4 @@ jobs:
           echo "COMMENT: " ${{ github.event.comment.body }}
           export MY_ENV=${{ steps.split.outputs._2 }}
           echo "ENTORNO: " $MY_ENV
-          export MY_IMAGE=${{ steps.split.outputs._4 }}
           echo "IMAGEN: " $MY_IMAGE        
