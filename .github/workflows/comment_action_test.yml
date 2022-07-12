@@ -18,3 +18,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: get pull request comment
         run: echo ${{ github.event.comment.body }}
+      - id: change
+        name: get comment elements
+        uses: actions/github-script@v6
+        with:
+          script: |
+            var elements = split(${{ github.event.comment.body }}," ");
+            var env = elements[1];
+            console.log(env);
+          result-encoding: string
