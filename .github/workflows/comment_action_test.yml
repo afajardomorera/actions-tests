@@ -27,7 +27,7 @@ jobs:
             if(${{ steps.split.outputs._3 }} == "--image"){
               process.env.MY_IMAGE = ${{ steps.split.outputs._4 }};
             }
-            console.log(process.env.MY_ENV);
-            console.log(process.env.MY_IMAGE);
+            console.log("ENV: "  + process.env.MY_ENV);
+            console.log("IMAGE: " + process.env.MY_IMAGE);
       - name: get pull request comment
         run: echo ${{ github.event.comment.body }}
