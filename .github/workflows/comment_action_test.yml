@@ -17,19 +17,25 @@ jobs:
         id: split
         with:
           msg: ${{ github.event.comment.body }}
-      - id: get_env
-        name: get_env
-        if: ${{ steps.split.outputs._0 }} == "/deploy"
+      - id: get_env_and_image
+        name: get_env_and_image
+        if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} == "--image"
+        uses: actions/github-script@v6
+        with:
+          entorno: ${{ steps.split.outputs._2 }}
+          imagen: ${{ steps.split.outputs._4 }}
+      - id: get_env_and_latest_image
+        name: get_env_and_image
+        if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env" and ${{ steps.split.outputs._3 }} != "--image"
+        uses: actions/github-script@v6
+        with:
+          entorno: ${{ steps.split.outputs._2 }}
+          imagen: MY_ENV
+      - id: result
+        name: result
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{ steps.split.outputs._4 }});
-      #- id: get_image
-        #name: get_image
-        #if: ${{ steps.split.outputs._3 }} == "--image"
-        #uses: actions/github-script@v6
-        #with:
-          #script: |
-            #console.log(${{ steps.split.outputs._4 }});
-      #- name: get pull request comment
-        #run: echo ${{ github.event.comment.body }}
+            console.log(${{ github.event.comment.body }});
+            console.log(process.env.MY_ENV);
+            console.log(process.env.MY_IMAGE);
