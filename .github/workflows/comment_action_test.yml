@@ -38,7 +38,7 @@ jobs:
           echo "IMAGEN: " $MY_IMAGE
       - id: get_env_and_latest_image
         name: get_env_and_latest_image
-        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--env' && steps.split.outputs._3 == null
+        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--env' && steps.split.outputs._3 != '--image'
         run: |
           echo "STATUS: " $LATEST_IMAGE
           echo "COMMENT: " ${{ github.event.comment.body }}
