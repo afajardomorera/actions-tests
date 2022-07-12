@@ -20,7 +20,7 @@ jobs:
           msg: ${{ github.event.comment.body }}
       - id: get_env_and_latest_image
         name: get_env_and_latest_image
-        if: contains${{ github.event.comment.body }},"/deploy") and contains(${{ github.event.comment.body }},"--env") and contains(${{ github.event.comment.body }},"--image")
+        if: contains(${{ github.event.comment.body }},"/deploy") && contains(${{ github.event.comment.body }},"--env") && contains(${{ github.event.comment.body }},"--image")
         run: |
           echo "STATUS: " $LATEST_IMAGE
           export LATEST_IMAGE=false
