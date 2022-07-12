@@ -19,11 +19,11 @@ jobs:
           msg: ${{ github.event.comment.body }}
       - id: get_env
         name: get_env
-        #if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env"
+        if: ${{ steps.split.outputs._0 }} == "/deploy" and ${{ steps.split.outputs._1 }} == "--env"
         uses: actions/github-script@v6
         with:
           script: |
-            console.log(${{ steps.split.outputs._2 }});
+            console.log(${{ steps.split.outputs._4 }});
       #- id: get_image
         #name: get_image
         #if: ${{ steps.split.outputs._3 }} == "--image"
