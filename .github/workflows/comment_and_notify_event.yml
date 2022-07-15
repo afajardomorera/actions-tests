@@ -1,0 +1,63 @@
+name: CICD Comment launch
+
+on:
+  issue_comment:
+    types: [created]
+    
+env:
+  MY_ENV: DEFAULT_ENV
+  MY_IMAGE: image:latest
+
+jobs:
+  get-comment:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 3
+    steps:
+      - uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: ${{ github.event.comment.body }}
+      - id: show_comment_elements
+        name: show_comment_elements
+        run: |
+          echo "0: " ${{ steps.split.outputs._0 }}
+          echo "1: " ${{ steps.split.outputs._1 }}
+          echo "2: " ${{ steps.split.outputs._2 }}
+          echo "3: " ${{ steps.split.outputs._3 }}
+          echo "4: " ${{ steps.split.outputs._4 }}
+      - id: get_env_and_image
+        name: get_env_and_image
+        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--env' && steps.split.outputs._3 == '--image' && steps.split.outputs._4 != null
+        run: |
+          echo "STATUS: " $LATEST_IMAGE
+          export LATEST_IMAGE=false
+          echo "COMMENT: " ${{ github.event.comment.body }}
+          export MY_ENV=${{ steps.split.outputs._2 }}
+          echo "ENTORNO: " $MY_ENV
+          export MY_IMAGE=${{ steps.split.outputs._4 }}
+          echo "IMAGEN: " $MY_IMAGE
+      - id: get_env_and_latest_image
+        name: get_env_and_latest_image
+        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--env' && steps.split.outputs._3 != '--image'
+        run: |
+          echo "STATUS: " $LATEST_IMAGE
+          echo "COMMENT: " ${{ github.event.comment.body }}
+          export MY_ENV=${{ steps.split.outputs._2 }}
+          echo "ENTORNO: " $MY_ENV
+          echo "IMAGEN: " $MY_IMAGE  
+
+  notifying-another-repo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: call the other repo
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        EVENT: test_result
+        ORG: tutantest
+        REPO: https://github.com/tutantest/action_event_test
+      run: |
+        curl -d "{\"event_type\": \"${EVENT}\"}" -H "Content-Type: application/json" -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.everest-preview+json" "https://api.github.com/repos/${ORG}/${REPO}/dispatches"
