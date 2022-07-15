@@ -1,4 +1,4 @@
-name: CICD Comment launch
+name: CICD Comment & Notify
 
 on:
   issue_comment:
