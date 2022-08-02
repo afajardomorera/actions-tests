@@ -8,6 +8,7 @@ env:
   MY_ACCOUNT: DEFAULT_ACCOUNT
   MY_ENV: DEFAULT_ENV
   MY_IMAGE: image:latest
+  FINAL_MESSAGE: DEFAULT_MESSAGE
 
 jobs:
   get-comment-and-notify:
@@ -68,20 +69,22 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
+            process.env.FINAL_MESSAGE='Deployment succeeded! ✅';
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Deployment succeeded! ✅',
+              body: process.env.FINAL_MESSAGE,
             });          
       - name: Message failure
         if: ${{ failure() }}
         uses: actions/github-script@v4
         with:
           script: |
+            process.env.FINAL_MESSAGE='Deployment failed! ❌';
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Deployment failed! ❌',
+              body: process.env.FINAL_MESSAGE,
               }); 
