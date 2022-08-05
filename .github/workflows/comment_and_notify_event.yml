@@ -3,8 +3,6 @@ name: CICD Comment & Notify
 on:
   issue_comment:
     types: [created]
-    pull_request:
-      branches: [develop]
     
 env:
   MY_ACCOUNT: DEFAULT_ACCOUNT
