@@ -16,5 +16,5 @@ jobs:
       uses: paul1k/check-pr-labels@v1.0.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        pull-number: ${{ env.PR_NUMBER }}
+        pull-number: 39
         labels: '["DONE"]'
