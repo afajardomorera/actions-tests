@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v4
         id: get-pr
         with:
           script: |
