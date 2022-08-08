@@ -50,7 +50,7 @@ jobs:
           labels: '["DONE"]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
-      - name: Message success
+      - name: add_checks_not_passed_or_finished_message
         if: ${{ steps.check_pr_labels.outputs.result }} == ''
         uses: actions/github-script@v4
         with:
@@ -61,7 +61,9 @@ jobs:
               repo: context.repo.repo,
               body: 'The PR previous checks are still in progress or they have not finished successfully',
             });          
-            ${{ failure() }}
+      - name: exit_workflow_if_failed
+        if: ${{ steps.check_pr_labels.outputs.result }} == ''
+        run: exit 1
       - uses: jungwinter/split@v2
         id: split
         with:
