@@ -1,7 +1,7 @@
 name: CICD Comment & Notify
 
 on:
-  issue_comment:
+  discussion_comment:
     types: [created]
     
 env:
@@ -20,18 +20,22 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
+      - name: pr_context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+          PULL_REQUEST_INFO: ${{ toJSON(github.event.pull_request) }}
+        run: |
+          echo $
       - uses: jungwinter/split@v2
         id: split
         with:
           msg: ${{ github.event.comment.body }}
       - id: show_comment_elements
         name: show_comment_elements
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-          PULL_REQUEST_INFO: ${{ toJSON(github.event.pull_request) }}
         run: |
-          echo "GH_CONTEXT: " $GITHUB_CONTEXT
-          echo "PR_INFO: " $PULL_REQUEST_INFO
+          echo "GITHUB_EVENT: "
+          echo ${{ GITHUB_EVENT }}
           echo "0: " ${{ steps.split.outputs._0 }}
           echo "1: " ${{ steps.split.outputs._1 }}
           echo "2: " ${{ steps.split.outputs._2 }}
