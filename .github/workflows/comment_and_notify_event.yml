@@ -31,7 +31,7 @@ jobs:
               pull_number: context.issue.number
             }
             core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
-            core.exportVariable('PULL_NUMBER', `${request.pull_number}`)
+            core.exportVariable('PR_NUMBER', `${request.pull_number}`)
             core.setOutput('pull_num', `${request.pull_number}`);
             try {
               const result = await github.pulls.get(request)
