@@ -54,7 +54,9 @@ jobs:
           pull-number: ${{ env.PR_NUMBER }}
           labels: '["done", "DONE"]'
       - name: See result
-        run: echo "${{ steps.check_pr_labels.outputs.result }}"
+        run: | 
+          echo "LABELS: " ${{ steps.check_pr_labels.outputs.labels }}
+          echo "RESULT: " ${{ steps.check_pr_labels.outputs.result }}
       - name: add_checks_not_passed_or_finished_message
         if: ${{ steps.check_pr_labels.outputs.result }} == ''
         uses: actions/github-script@v4
