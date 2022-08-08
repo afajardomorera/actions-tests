@@ -42,12 +42,17 @@ jobs:
         name: see_pr_number_env_var
         run: |
           echo "PR NUMBER ENV VAR: " $PR_NUMBER
+      - id: see_pr_number_env_var_with_script
+        uses: actions/github-script@v4
+        with:
+          script: |
+            core.info(`PR NUMBER ENV VAR:  ${{ env.PR_NUMBER }}`)
       - name: check_pr_labels
         uses: paul1k/check-pr-labels@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pull-number: ${{ env.PR_NUMBER }}
-          labels: '["DONE"]'
+          labels: '["done", "DONE"]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
       - name: add_checks_not_passed_or_finished_message
@@ -59,7 +64,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'The PR previous checks are still in progress or they have not finished successfully',
+              body: '❌ The PR previous checks are still in progress or they have not finished successfully',
             });          
       - name: exit_workflow_if_failed
         if: ${{ steps.check_pr_labels.outputs.result }} == ''
