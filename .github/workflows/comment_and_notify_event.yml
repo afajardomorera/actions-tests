@@ -22,14 +22,24 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - uses: actions/github-script@v4
-        id: get-pr
+      - name: Message success
+        if: ${{ success() }}
+        uses: actions/github-script@v4
         with:
           script: |
-            github.issues.createComment({
-              issue_number: context.issue.number
-            });          
-            process.env.PULL_NUMBER=${request.pull_number};
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            try {
+              const result = await github.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }  
+            process.env.PULL_NUMBER=result;
       - name: Check PR Labels
         uses: paul1k/check-pr-labels@v1.0.0
         with:
