@@ -20,7 +20,8 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - id: exists_done_label
+      - name: exists_done_label
+        id: exists_done_label
         uses: docker://agilepathway/pull-request-label-checker:latest
         with:
           one_of: DONE
