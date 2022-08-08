@@ -42,12 +42,12 @@ jobs:
         name: see_pr_number_env_var
         run: |
           echo "PR NUMBER ENV VAR: " $PR_NUMBER
-      # - name: Check PR Labels
-      #   uses: paul1k/check-pr-labels@v1.0.0
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     pull-number: ${{ env.PR_NUMBER }}
-      #     labels: '["DONE"]'
+      - name: Check PR Labels
+        uses: paul1k/check-pr-labels@v1.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pull-number: ${{ env.PR_NUMBER }}
+          labels: '["DONE"]'
       - uses: docker://agilepathway/pull-request-label-checker:latest
         with:
           one_of: DONE
