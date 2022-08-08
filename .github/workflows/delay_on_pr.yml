@@ -15,11 +15,7 @@ jobs:
     - uses: actions-ecosystem/action-add-labels@v1
       with:
         labels: DONE
-    - name: Check PR labels action step
-      id: check_pr_labels
-      uses: shioyang/check-pr-labels-on-push-action@v1.0.3
+    - uses: docker://agilepathway/pull-request-label-checker:latest
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        labels: '["DONE"]'
-    - name: See result
-      run: echo "${{ steps.check_pr_labels.outputs.result }}"
+        one_of: DONE
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
