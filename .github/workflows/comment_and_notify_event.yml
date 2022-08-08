@@ -26,7 +26,12 @@ jobs:
           msg: ${{ github.event.comment.body }}
       - id: show_comment_elements
         name: show_comment_elements
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+          PULL_REQUEST_INFO: ${{ toJSON(github.event.pull_request) }}
         run: |
+          echo "GH_CONTEXT: " $GITHUB_CONTEXT
+          echo "PR_INFO: " $PULL_REQUEST_INFO
           echo "0: " ${{ steps.split.outputs._0 }}
           echo "1: " ${{ steps.split.outputs._1 }}
           echo "2: " ${{ steps.split.outputs._2 }}
