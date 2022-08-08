@@ -11,7 +11,7 @@ jobs:
     - name: Sleep for 30 seconds
       uses: jakejarvis/wait-action@master
       with:
-        time: '15s'
+        time: '1s'
     - uses: actions-ecosystem/action-add-labels@v1
       with:
         labels: DONE
