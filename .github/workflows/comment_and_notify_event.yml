@@ -39,7 +39,7 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }  
-            process.env.PULL_NUMBER=result;
+            process.env.PULL_NUMBER=${request.pull_number}
       - name: Check PR Labels
         uses: paul1k/check-pr-labels@v1.0.0
         with:
