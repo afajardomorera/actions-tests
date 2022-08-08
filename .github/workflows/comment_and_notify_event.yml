@@ -18,7 +18,6 @@ jobs:
         EVENT: test_result
         ORG: tutantest
         REPO: action_event_test
-        PULL_NUMBER: 0
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
@@ -44,7 +43,7 @@ jobs:
         uses: paul1k/check-pr-labels@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-number: ${{ steps.get_pull_number.outputs.pull_num }}
+          pull-number: $PULL_NUMBER
           labels: '["DONE"]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
