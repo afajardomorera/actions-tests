@@ -53,12 +53,19 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pull-number: ${{ env.PR_NUMBER }}
           labels: '["DONE_AGAIN"]'
-      - name: See result
-        run: | 
-          echo "LABELS: " ${{ steps.check_pr_labels.outputs.labels }}
-          echo "RESULT: " ${{ steps.check_pr_labels.outputs.result }}
+      - name: add_checks_not_passed_or_finished_message_first
+        if: ${{ steps.check_pr_labels.outputs.result }} == 'true'
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'YEAHHH!!!',
+            });          
       - name: add_checks_not_passed_or_finished_message
-        if: ${{ steps.check_pr_labels.outputs.result }} == ''
+        if: ${{ steps.check_pr_labels.outputs.result }} == 'false'
         uses: actions/github-script@v4
         with:
           script: |
