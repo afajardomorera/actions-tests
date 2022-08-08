@@ -39,11 +39,15 @@ jobs:
             } catch (err) {
               core.setFailed(`Request failed with error ${err}`)
             }  
+      - id: see_pr_number_env_var
+        name: see_pr_number_env_var
+        run: |
+          echo "PR NUMBER ENV VAR: " $PR_NUMBER
       - name: Check PR Labels
         uses: paul1k/check-pr-labels@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-number: $PULL_NUMBER
+          pull-number: $PR_NUMBER
           labels: '["DONE"]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
