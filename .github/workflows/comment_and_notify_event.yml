@@ -52,7 +52,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pull-number: ${{ env.PR_NUMBER }}
-          labels: '["done", "DONE"]'
+          labels: '["DONE_AGAIN"]'
       - name: See result
         run: | 
           echo "LABELS: " ${{ steps.check_pr_labels.outputs.labels }}
