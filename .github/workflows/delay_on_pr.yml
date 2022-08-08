@@ -12,9 +12,7 @@ jobs:
     #   uses: jakejarvis/wait-action@master
     #   with:
     #     time: '1s'
-    - name: check_pr_labels
-      uses: paul1k/check-pr-labels@v1.0.0
+    - name: add_done_label_when_finish_successfully
+      uses: actions-ecosystem/action-add-labels@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        pull-number: 39
-        labels: '["DONE"]'
+        labels: DONE_AGAIN
