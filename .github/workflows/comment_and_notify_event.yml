@@ -9,6 +9,7 @@ env:
   MY_ENV: DEFAULT_ENV
   MY_IMAGE: image:latest
   FINAL_MESSAGE: DEFAULT_MESSAGE
+  PR_NUMBER: 0
 
 jobs:
   get-comment-and-notify:
@@ -20,6 +21,11 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
+      - name: get_pr_number
+        run: |
+         PR_URL="${{ github.event.issue.pull_request.url }}"
+         PR_NUMBER=${PR_URL##*/}
+         echo "Checking out from PR #$PR_NUM based on URL: $PR_URL"
       - name: Check PR Labels
         uses: paul1k/check-pr-labels@v1.0.0
         with:
