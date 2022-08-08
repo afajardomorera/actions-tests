@@ -15,7 +15,3 @@ jobs:
     - uses: actions-ecosystem/action-add-labels@v1
       with:
         labels: DONE
-    - uses: docker://agilepathway/pull-request-label-checker:latest
-      with:
-        one_of: DONE
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
