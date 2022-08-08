@@ -54,7 +54,7 @@ jobs:
           pull-number: ${{ env.PR_NUMBER }}
           labels: '["DONE_AGAIN"]'
       - name: add_checks_not_passed_or_finished_message_first
-        if: ${{ steps.check_pr_labels.outputs.result }} == 'true'
+        if: ${{ steps.check_pr_labels.outputs.result }}
         uses: actions/github-script@v4
         with:
           script: |
@@ -65,7 +65,7 @@ jobs:
               body: 'YEAHHH!!!',
             });          
       - name: add_checks_not_passed_or_finished_message
-        if: ${{ steps.check_pr_labels.outputs.result }} == 'false'
+        if: not ${{ steps.check_pr_labels.outputs.result }}
         uses: actions/github-script@v4
         with:
           script: |
