@@ -20,13 +20,13 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: pr_context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-          GITHUB_EVENT: ${{ toJSON(github.event) }}
-          PULL_REQUEST_INFO: ${{ toJSON(github.event.pull_request) }}
-        run: |
-          echo $
+      - id: exists_done_label
+        uses: docker://agilepathway/pull-request-label-checker:latest
+        with:
+          one_of: DONE
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+      - id: validate_previous_workflow_status
+        run: echo "${{ steps.exists_done_label.output.result }}"
       - uses: jungwinter/split@v2
         id: split
         with:
