@@ -47,7 +47,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           pull-number: ${{ env.PR_NUMBER }}
-          labels: 'DONE'
+          labels: '[DONE]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
       - name: add_checks_not_passed_or_finished_message
