@@ -8,13 +8,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Sleep for 30 seconds
-      uses: jakejarvis/wait-action@master
-      with:
-        time: '1s'
+    # - name: Sleep for 30 seconds
+    #   uses: jakejarvis/wait-action@master
+    #   with:
+    #     time: '1s'
     - name: check_pr_labels
       uses: paul1k/check-pr-labels@v1.0.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         pull-number: 39
-        labels: '[`DONE`]'
+        labels: "['DONE']"
