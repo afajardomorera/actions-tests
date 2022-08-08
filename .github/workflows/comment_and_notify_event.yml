@@ -27,7 +27,7 @@ jobs:
         with:
           script: |
             github.issues.createComment({
-              issue_number: context.issue.number,
+              issue_number: context.issue.number
             });          
             process.env.PULL_NUMBER=${request.pull_number};
       - name: Check PR Labels
