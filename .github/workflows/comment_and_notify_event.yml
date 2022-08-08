@@ -32,7 +32,6 @@ jobs:
             }
             core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
             core.exportVariable('PR_NUMBER', `${request.pull_number}`)
-            core.setOutput('pull_num', `${request.pull_number}`);
             try {
               const result = await github.pulls.get(request)
               return result.data
@@ -51,6 +50,18 @@ jobs:
           labels: '["DONE"]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
+      - name: Message success
+        if: ${{ steps.check_pr_labels.outputs.result }} == ''
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'The PR previous checks are still in progress or they have not finished successfully',
+            });          
+            ${{ failure() }}
       - uses: jungwinter/split@v2
         id: split
         with:
