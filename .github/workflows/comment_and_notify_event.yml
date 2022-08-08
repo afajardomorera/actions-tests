@@ -34,8 +34,6 @@ jobs:
       - id: show_comment_elements
         name: show_comment_elements
         run: |
-          echo "GITHUB_EVENT: "
-          echo ${{ GITHUB_EVENT }}
           echo "0: " ${{ steps.split.outputs._0 }}
           echo "1: " ${{ steps.split.outputs._1 }}
           echo "2: " ${{ steps.split.outputs._2 }}
