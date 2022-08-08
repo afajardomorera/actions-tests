@@ -13,6 +13,5 @@ jobs:
       with:
         time: '15s'
     - uses: actions-ecosystem/action-add-labels@v1
-      if: ${{ startsWith(github.event.comment.body, '/add-labels') }}
       with:
         labels: DONE
