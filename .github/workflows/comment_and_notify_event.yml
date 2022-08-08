@@ -18,19 +18,23 @@ jobs:
         EVENT: test_result
         ORG: tutantest
         REPO: action_event_test
+        PULL_NUMBER: 0
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: get_pr_number
-        run: |
-         PR_URL="${{ github.event.issue.pull_request.url }}"
-         PR_NUMBER=${PR_URL##*/}
-         echo "Checking out from PR #$PR_NUM based on URL: $PR_URL"
+      - uses: actions/github-script@v3
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              pull_number: context.issue.number
+            }
+            process.env.PULL_NUMBER=${request.pull_number};
       - name: Check PR Labels
         uses: paul1k/check-pr-labels@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-number: ${{ github.event.pull_request.number }}
+          pull-number: $PULL_NUMBER
           labels: '["DONE"]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
