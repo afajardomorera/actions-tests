@@ -26,7 +26,7 @@ jobs:
           ref: ${{ github.ref }}
           running-workflow-name: 'CICD Comment & Notify'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
+          wait-interval: 5
       - uses: jungwinter/split@v2
         id: split
         with:
