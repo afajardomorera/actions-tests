@@ -22,8 +22,7 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: Message success
-        if: ${{ success() }}
+      - name: get_pull_number
         uses: actions/github-script@v4
         with:
           script: |
@@ -34,6 +33,7 @@ jobs:
             }
             core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
             core.exportVariable('PULL_NUMBER', `${request.pull_number}`)
+            core.setOutput('pull_num', `${request.pull_number}`);
             try {
               const result = await github.pulls.get(request)
               return result.data
@@ -44,7 +44,7 @@ jobs:
         uses: paul1k/check-pr-labels@v1.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-number: $PULL_NUMBER
+          pull-number: ${{ steps.get_pull_number.outputs.pull_num }}
           labels: '["DONE"]'
       - name: See result
         run: echo "${{ steps.check_pr_labels.outputs.result }}"
