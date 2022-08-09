@@ -15,7 +15,7 @@ jobs:
     - name: add_done_label_when_finish_successfully
       uses: actions-ecosystem/action-add-labels@v1
       with:
-        labels: DONE_AGAIN
+        labels: READY_FOR_DEPLOY
     - name: get_labels
       uses: actions/github-script@v4
       with:
