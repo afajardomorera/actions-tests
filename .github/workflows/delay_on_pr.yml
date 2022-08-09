@@ -24,13 +24,10 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number,
-              labels: context.issue.labels,
               current_context: context
             }
           const token = core.getInput("github-token", { required: true })
           core.info(`Token: ${token}`)
-          const labels = core.getInput("labels", { required: false })
-          core.info(`Pull Request ${request.pull_number} with labels #${request.labels}`)
           core.info(`Current Context: `)
           core.info(` ${current_context} `)
           
