@@ -32,7 +32,7 @@ jobs:
           const labels = core.getInput("labels", { required: false })
           core.info(`Pull Request ${request.pull_number} with labels #${request.labels}`)
           core.info(`Current Context: `)
-          core.info(' ${current_context} ')
+          core.info(` ${current_context} `)
           
           
           
