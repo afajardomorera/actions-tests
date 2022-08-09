@@ -20,6 +20,9 @@ jobs:
       uses: actions/github-script@v4
       with:
         script: |
+          import * as core from "@actions/core";
+          import * as github from "@actions/github";
+          
           const request = {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -27,10 +30,8 @@ jobs:
             }
           const token = core.getInput("github-token", { required: true })
           core.info(token)
-          const { data } = await octokit.rest.pulls.get({
-            owner,
-            repo,
-            pull_number,
-          })
+          const labels = core.getInput("labels", { required: false })
+          core.info(labels)
+          
           
           
