@@ -27,5 +27,10 @@ jobs:
             }
           const token = core.getInput("github-token", { required: true })
           core.info(token)
+          const { data } = await octokit.rest.pulls.get({
+            owner,
+            repo,
+            pull_number,
+          })
           
           
