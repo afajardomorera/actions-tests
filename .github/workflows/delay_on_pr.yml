@@ -23,12 +23,13 @@ jobs:
           const request = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number
+              pull_number: context.issue.number,
+              labels: context.issue.labels
             }
           const token = core.getInput("github-token", { required: true })
-          core.info(token)
+          core.info(`Token: ${token}`)
           const labels = core.getInput("labels", { required: false })
-          core.info(labels)
+          core.info(`Pull Request ${request.pull_number} with labels #${request.labels}`)
           
           
           
