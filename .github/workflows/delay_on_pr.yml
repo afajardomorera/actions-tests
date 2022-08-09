@@ -35,6 +35,8 @@ jobs:
           const raw = core.getInput("labels", { required: true });
           core.info(RAW);
           core.info(raw);
+          const json = JSON.parse(raw);
+          const labels =  Array.isArray(json) ? json : [];
           const result = labels.every((label) => labelNames.includes(label));
           core.info("RESULT");
           core.info(result);
