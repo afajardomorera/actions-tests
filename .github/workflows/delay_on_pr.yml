@@ -16,3 +16,26 @@ jobs:
       uses: actions-ecosystem/action-add-labels@v1
       with:
         labels: DONE_AGAIN
+    - name: get_labels
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+          const token = core.getInput("github-token", { required: true });
+          const { data } = await octokit.rest.pulls.get({
+            owner,
+            repo,
+            pull_number,
+          });
+          cont labelNames = data.labels.length > 0 ? data.labels.map((label) => label.name) : [];
+          const raw = core.getInput("labels", { required: true });
+          core.info(RAW);
+          core.info(raw);
+          const result = labels.every((label) => labelNames.includes(label));
+          core.info("RESULT");
+          core.info(result);
+          
