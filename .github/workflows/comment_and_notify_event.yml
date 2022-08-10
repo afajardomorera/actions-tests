@@ -18,6 +18,7 @@ jobs:
         EVENT: test_result
         ORG: tutantest
         REPO: action_event_test
+        MESSAGE: default
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
@@ -26,13 +27,13 @@ jobs:
         run: |
           echo "READY_FOR_DEPLOY"
           echo "::set-output name=ready_for_deploy::true"
-          echo "::set-output name=message::YEAHHH!!!"
+          $MESSAGE="YEAHHH!!!"
       - name: check_pr_NOT_ready_for_deploy
         if: "!contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
           echo "NOT READY_FOR_DEPLOY"
           echo "::set-output name=ready_for_deploy::false"
-          echo "::set-output name=message::❌ The PR previous checks are still in progress or they have not finished successfully"          
+          $MESSAGE="❌ The PR previous checks are still in progress or they have not finished successfully"
       - name: add_checks_not_passed_or_finished_message_first
         uses: actions/github-script@v4
         with:
@@ -41,7 +42,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ${{ steps.check_pr_ready_for_deploy.outputs.message }},
+              body: $MESSAGE
             });          
       # - name: add_final_message == 'false'
       #   if:  "!${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}"
