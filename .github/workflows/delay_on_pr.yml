@@ -22,7 +22,7 @@ jobs:
     - name: check_labels_gh
       run: |
         pwd
-        ls
+        gh label list
        # labels=`gh label list`
        # echo "::set-output name=Labels::$labels"
     - name: see_result
