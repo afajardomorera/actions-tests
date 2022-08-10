@@ -23,38 +23,35 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: check_github_event
-        run: |
-          echo ${{ github.event_name }}
-          echo ${{ github.event.action }}
-          echo ${{ toJSON(github.event) }}
-          echo ${{ github.event }}
+      # - name: check_github_event
+      #   run: |
+      #     echo ${{ github.event_name }}
+      #     echo ${{ github.event.action }}
+      #     echo ${{ toJSON(github.event) }}
+      #     echo ${{ github.event }}
       - name: check_pr_ready_for_deploy
         if: contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')
         run: |
           echo "READY_FOR_DEPLOY"
           READY_FOR_DEPLOY="true"
-          echo "::set-output name=ready_for_deploy::true"
           MESSAGE="YEAHHH!!!"
       - name: check_pr_NOT_ready_for_deploy
         if: "!contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
-          echo ${{ github.event }}
           echo "NOT READY_FOR_DEPLOY"
           READY_FOR_DEPLOY="false"
-          echo "::set-output name=ready_for_deploy::false"
           MESSAGE="❌ The PR previous checks are still in progress or they have not finished successfully"
       - name: add_checks_not_passed_or_finished_message_first
         uses: actions/github-script@v4
         with:
           script: |
-            core.info(env.READY_FOR_DEPLOY)
-            core.info(env.MESSAGE)
+            core.info(process.env.READY_FOR_DEPLOY)
+            core.info(process.env.MESSAGE)
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: $MESSAGE
+              body: process.env.MESSAGE
             });          
       # - name: add_final_message == 'false'
       #   if:  "!${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}"
