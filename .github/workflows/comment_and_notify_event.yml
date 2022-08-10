@@ -26,16 +26,16 @@ jobs:
       - name: check_github_event
         run: |
           echo ${{ toJSON(github.event) }}
-          x=${{ toJson(github.event.pull_request.labels.*.name) }}
+          x=${{ toJson(github.event.issue.labels.*.name) }}
           echo $x
       - name: check_pr_ready_for_deploy
-        if: contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')
+        if: contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')
         run: |
           echo "READY_FOR_DEPLOY"
           READY_FOR_DEPLOY="true"
           MESSAGE="YEAHHH!!!"
       - name: check_pr_NOT_ready_for_deploy
-        if: "!contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')"
+        if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
           echo "NOT READY_FOR_DEPLOY"
           READY_FOR_DEPLOY="false"
