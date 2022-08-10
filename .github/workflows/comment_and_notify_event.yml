@@ -21,40 +21,18 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      - name: get_pull_number
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const request = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            }
-            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
-            core.exportVariable('PR_NUMBER', `${request.pull_number}`)
-            try {
-              const result = await github.pulls.get(request)
-              return result.data
-            } catch (err) {
-              core.setFailed(`Request failed with error ${err}`)
-            }  
-      - id: see_pr_number_env_var
-        name: see_pr_number_env_var
+      - name: check_pr_ready_for_deploy
+        if: contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')
         run: |
-          echo "PR NUMBER ENV VAR: " $PR_NUMBER
-      - id: see_pr_number_env_var_with_script
-        uses: actions/github-script@v4
-        with:
-          script: |
-            core.info(`PR NUMBER ENV VAR:  ${{ env.PR_NUMBER }}`)
-      - name: check_pr_labels
-        uses: paul1k/check-pr-labels@v1.0.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-number: ${{ env.PR_NUMBER }}
-          labels: '["DONE_AGAIN"]'
+          echo "READY_FOR_DEPLOY"
+          echo "::set-output name=ready_for_deploy::true"
+      - name: check_pr_NOT_ready_for_deploy
+        if: "!contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')"
+        run: |
+          echo "NOT READY_FOR_DEPLOY"
+          echo "::set-output name=ready_for_deploy::false"
       - name: add_checks_not_passed_or_finished_message_first
-        if: ${{ steps.check_pr_labels.outputs.result }}
+        if: ${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}
         uses: actions/github-script@v4
         with:
           script: |
@@ -65,7 +43,7 @@ jobs:
               body: 'YEAHHH!!!',
             });          
       - name: add_checks_not_passed_or_finished_message
-        if: not ${{ steps.check_pr_labels.outputs.result }}
+        if:  "!${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}"
         uses: actions/github-script@v4
         with:
           script: |
