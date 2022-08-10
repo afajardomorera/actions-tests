@@ -17,10 +17,7 @@ jobs:
       with:
         labels: READY_FOR_DEPLOY
     - name: check_labels_gh
-      run: |
-        echo "Installing gh tool..."
-        apt install gh
-        echo "gh installation finished!"
+      run: gh label list
     # - name: get_labels
 #       uses: actions/github-script@v4
 #       with:
