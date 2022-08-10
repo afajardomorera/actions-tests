@@ -23,12 +23,10 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
-      # - name: check_github_event
-      #   run: |
-      #     echo ${{ github.event_name }}
-      #     echo ${{ github.event.action }}
-      #     echo ${{ toJSON(github.event) }}
-      #     echo ${{ github.event }}
+      - name: check_github_event
+        run: |
+          echo ${{ toJSON(github.event) }}
+          echo ${{ github.event.pull_request.labels.0.name }}
       - name: check_pr_ready_for_deploy
         if: contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')
         run: |
