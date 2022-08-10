@@ -33,6 +33,7 @@ jobs:
       - name: check_pr_NOT_ready_for_deploy
         if: "!contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
+          echo ${{ github.event }}
           echo "NOT READY_FOR_DEPLOY"
           READY_FOR_DEPLOY="false"
           echo "::set-output name=ready_for_deploy::false"
