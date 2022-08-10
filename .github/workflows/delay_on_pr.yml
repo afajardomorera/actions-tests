@@ -16,20 +16,25 @@ jobs:
       uses: actions-ecosystem/action-add-labels@v1
       with:
         labels: READY_FOR_DEPLOY
-    - name: get_labels
-      uses: actions/github-script@v4
-      with:
-        script: |
-          const request = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              current_context: context
-            }
-          const token = core.getInput("github-token", { required: true })
-          core.info(`Token: ${token}`)
-          core.info(`Current Context: `)
-          core.info(` ${current_context} `)
+    - name: check_labels_gh
+      run: |
+        echo "Installing gh tool..."
+        apt install gh
+        echo "gh installation finished!"
+    # - name: get_labels
+#       uses: actions/github-script@v4
+#       with:
+#         script: |
+#           const request = {
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               pull_number: context.issue.number,
+#               current_context: context
+#             }
+#           const token = core.getInput("github-token", { required: true })
+#           core.info(`Token: ${token}`)
+#           core.info(`Current Context: `)
+#           core.info(` ${current_context} `)
           
           
           
