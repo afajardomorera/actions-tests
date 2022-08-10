@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - develop
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,6 +17,8 @@ jobs:
       with:
         labels: READY_FOR_DEPLOY
     - name: check_labels_gh
+      env:
+        GITHUB_TOKEN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         pwd
         gh label list
