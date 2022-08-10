@@ -17,11 +17,15 @@ jobs:
       uses: actions-ecosystem/action-add-labels@v1
       with:
         labels: READY_FOR_DEPLOY
+    - name: all_labels
+      run: |
+        echo ${{ github.event.pull_request.labels }}
+        echo ${{ github.event.pull_request.labels.*.name }}
     - name: contains_ready_for_deploy_label
-      if: contains(github.event.labels.*.name, 'READY_FOR_DEPLOY')
+      if: contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')
       run: echo "READY_FOR_DEPLOY"
     - name: not_contains_ready_for_deploy_label
-      if: "!contains(github.event.labels.*.name, 'READY_FOR_DEPLOY')"
+      if: "!contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')"
       run: echo "NOT READY_FOR_DEPLOY"
        # labels=`gh label list`
        # echo "::set-output name=Labels::$labels"
