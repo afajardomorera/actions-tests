@@ -17,12 +17,12 @@ jobs:
       with:
         labels: READY_FOR_DEPLOY
     - name: check_labels_gh
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git init
-        gh label list
+        echo ${{ github.event_name }}
+        echo ${{ github.event.action }}
+        echo ${{ toJSON(github.event) }}
+        echo ${{ github.event }}
+        
        # labels=`gh label list`
        # echo "::set-output name=Labels::$labels"
     - name: see_result
