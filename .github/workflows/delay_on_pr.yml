@@ -21,8 +21,10 @@ jobs:
         labels: READY_FOR_DEPLOY
     - name: check_labels_gh
       run: |
-        labels=`gh label list`
-        echo "::set-output name=Labels::$labels"
+        pwd
+        ls
+       # labels=`gh label list`
+       # echo "::set-output name=Labels::$labels"
     - name: see_result
       run: echo ${{ steps.check_labels_gh.outputs.labels }}
     # - name: get_labels
