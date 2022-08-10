@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - develop
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,7 +21,7 @@ jobs:
       if: contains(github.event.labels.*.name, 'READY_FOR_DEPLOY')
       run: echo "READY_FOR_DEPLOY"
     - name: not_contains_ready_for_deploy_label
-      if: not contains(github.event.labels.*.name, 'READY_FOR_DEPLOY')
+      if: "!contains(github.event.labels.*.name, 'READY_FOR_DEPLOY')"
       run: echo "NOT READY_FOR_DEPLOY"
        # labels=`gh label list`
        # echo "::set-output name=Labels::$labels"
