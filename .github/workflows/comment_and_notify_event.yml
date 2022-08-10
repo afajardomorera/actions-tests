@@ -26,13 +26,14 @@ jobs:
         run: |
           echo "READY_FOR_DEPLOY"
           echo "::set-output name=ready_for_deploy::true"
+          echo "::set-output name=message::YEAHHH!!!"
       - name: check_pr_NOT_ready_for_deploy
         if: "!contains(github.event.pull_request.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
           echo "NOT READY_FOR_DEPLOY"
           echo "::set-output name=ready_for_deploy::false"
+          echo "::set-output name=message::❌ The PR previous checks are still in progress or they have not finished successfully"          
       - name: add_checks_not_passed_or_finished_message_first
-        if: ${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}
         uses: actions/github-script@v4
         with:
           script: |
@@ -40,21 +41,21 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'YEAHHH!!!',
+              body: ${{ steps.check_pr_ready_for_deploy.outputs.message }},
             });          
-      - name: add_checks_not_passed_or_finished_message
-        if:  "!${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}"
-        uses: actions/github-script@v4
-        with:
-          script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '❌ The PR previous checks are still in progress or they have not finished successfully',
-            });          
+      # - name: add_final_message == 'false'
+      #   if:  "!${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}"
+      #   uses: actions/github-script@v4
+      #   with:
+      #     script: |
+      #       github.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: '❌ The PR previous checks are still in progress or they have not finished successfully',
+      #       });          
       - name: exit_workflow_if_failed
-        if: ${{ steps.check_pr_labels.outputs.result }} == ''
+        if: steps.check_pr_ready_for_deploy.outputs.ready_for_deploy == 'true'
         run: exit 1
       - uses: jungwinter/split@v2
         id: split
