@@ -46,7 +46,6 @@ jobs:
           script: |
             core.info(process.env.READY_FOR_DEPLOY)
             core.info(process.env.MESSAGE)
-            core.info({{ env.READY_FOR_DEPLOY }})
             core.info($READY_FOR_DEPLOY)
             github.issues.createComment({
               issue_number: context.issue.number,
