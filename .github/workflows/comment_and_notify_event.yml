@@ -32,21 +32,22 @@ jobs:
       - name: check_pr_ready_for_deploy
         if: contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')
         run: |
-          echo "READY_FOR_DEPLOY"
-          READY_FOR_DEPLOY="true"
-          MESSAGE="YEAHHH!!!"
+          echo "READY_FOR_DEPLOY='true'" >> $GITHUB_ENV
+          echo "MESSAGE=YEAHHH!!!" >> $GITHUB_ENV
       - name: check_pr_NOT_ready_for_deploy
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
           echo "NOT READY_FOR_DEPLOY"
           READY_FOR_DEPLOY="false"
-          MESSAGE="❌ The PR previous checks are still in progress or they have not finished successfully"
+          echo "MESSAGE='❌ The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
       - name: add_checks_not_passed_or_finished_message_first
         uses: actions/github-script@v4
         with:
           script: |
             core.info(process.env.READY_FOR_DEPLOY)
             core.info(process.env.MESSAGE)
+            core.info({{ env.READY_FOR_DEPLOY }})
+            core.info($READY_FOR_DEPLOY)
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
