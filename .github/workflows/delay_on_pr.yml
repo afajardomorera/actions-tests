@@ -10,13 +10,14 @@ jobs:
     uses: afajardomorera/actions-tests/.github/workflows/workflow_dispatch.yml@main
     with:
       parametro1: FEDERICO
-#   runs-on: ubuntu-latest
-#   steps:
-#     - name: Sleep for 30 seconds
-#       uses: jakejarvis/wait-action@master
-#       with:
-#         time: '3s'
-#     - name: add_done_label_when_finish_successfully
-#       uses: actions-ecosystem/action-add-labels@v1
-#       with:
-#         labels: READY_FOR_DEPLOY
+  simulation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '3s'
+      - name: add_done_label_when_finish_successfully
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: READY_FOR_DEPLOY
