@@ -4,9 +4,9 @@ on:
       parametro1:
         description: "Descripción del parámetro 1"
         default: "Valor Parámetro 1"
-  env:
-    MI_VAR: ${{ inputs.parametro1 }}
   jobs:
+    env:
+      MI_VAR: ${{ inputs.parametro1 }}
     test-inputs:
       runs-on: ubuntu-20.04
       steps:
