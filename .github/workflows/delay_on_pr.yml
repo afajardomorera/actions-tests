@@ -12,7 +12,7 @@ jobs:
     - name: Sleep for 30 seconds
       uses: jakejarvis/wait-action@master
       with:
-        time: '30s'
+        time: '3s'
     - name: add_done_label_when_finish_successfully
       uses: actions-ecosystem/action-add-labels@v1
       with:
