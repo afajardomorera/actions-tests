@@ -1,0 +1,15 @@
+on:
+  workflow_dispatch:
+    inputs:
+      parametro1:
+        description: "Descripción del parámetro 1"
+        default: "Valor Parámetro 1"
+  env:
+    MI_VAR: ${{ inputs.parametro1 }}
+  jobs:
+    test-inputs:
+      runs-on: ubuntu-20.04
+      steps:
+        - id: step1
+          name: print-input-from-env-var
+          runs: echo $MI_VAR
