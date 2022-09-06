@@ -5,12 +5,20 @@ on:
         type: string
         description: "Descripción del parámetro 1"
         default: "Valor Parámetro 1"
+    outputs:
+      saludo:
+        description: "Saludo a persona"
+        value: ${{ jobs.test-inputs.outputs.saludo }}
 jobs:
   test-inputs:
     env: 
       MI_VAR: ${{ inputs.parametro1 }}
     runs-on: ubuntu-20.04
+    outputs:
+          saludo: ${{ steps.step1.outputs.saludo }}
     steps:
       - id: step1
         name: print-input-from-env-var
-        run: echo $MI_VAR
+        run: |
+          echo $MI_VAR
+          echo '::set-output name=saludo::"Hola $MI_VAR"'
