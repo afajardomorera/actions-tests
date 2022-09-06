@@ -1,7 +1,8 @@
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       parametro1:
+        type: string
         description: "Descripción del parámetro 1"
         default: "Valor Parámetro 1"
 jobs:
