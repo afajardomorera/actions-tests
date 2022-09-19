@@ -21,9 +21,6 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     steps:
-      - name: ver-variables-entorno
-        run: env    
-        
       - name: simula_precondicion_label_ready_for_deploy
         if: ${{ success() }}
         uses: actions-ecosystem/action-add-labels@v1
@@ -47,13 +44,13 @@ jobs:
         name: show_comment_elements
         run: |
           echo $PROCESS_STATUS
-          echo "0: " ${{ steps.split.outputs._0 }}
-          echo "1: " ${{ steps.split.outputs._1 }}
-          echo "2: " ${{ steps.split.outputs._2 }}
-          echo "3: " ${{ steps.split.outputs._3 }}
-          echo "4: " ${{ steps.split.outputs._4 }}
-          echo "5: " ${{ steps.split.outputs._5 }}
-          echo "6: " ${{ steps.split.outputs._6 }}
+          echo "Deployment Command: " ${{ steps.split.outputs._0 }}
+          echo "Namespace option: " ${{ steps.split.outputs._1 }}
+          echo "Target Namespace for deployment: " ${{ steps.split.outputs._2 }}
+          echo "Environment option: " ${{ steps.split.outputs._3 }}
+          echo "Target environment for deployment: " ${{ steps.split.outputs._4 }}
+          echo "Image option: " ${{ steps.split.outputs._5 }}
+          echo "Image for deployment: " ${{ steps.split.outputs._6 }}
       
       - id: validate_deployment_command
         name: validate_deployment_command
