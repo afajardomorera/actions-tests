@@ -37,7 +37,7 @@ jobs:
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
     
       - uses: jungwinter/split@v2
-        id: split_deployment_comment
+        id: split
         name: split_deployment_comment
         if: env.PROCESS_STATUS == 'OK'
         with:
