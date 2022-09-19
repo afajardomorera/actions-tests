@@ -42,14 +42,14 @@ jobs:
       
       - id: validate_deployment_command
         name: validate_deployment_command
-        if: $PROCESS_STATUS == 'OK' && steps.split.outputs._0 != '/deploy-EKS'
+        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._0 != '/deploy-EKS'
         run: |
           echo "RESPONSE_MESSAGE='The added comment is not a valid EKS deployment command'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
       
       - id: process_comment_values_with_image
         name: process_comment_values_with_image
-        if: $PROCESS_STATUS == 'OK' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._4 == 'DES' && steps.split.outputs._5 == '--image' && steps.split.outputs._6 != null
+        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._4 == 'DES' && steps.split.outputs._5 == '--image' && steps.split.outputs._6 != null
         run: |
           echo "NAMESPACE=${{ steps.split.outputs._2 }}" >> $GITHUB_ENV
           echo "ENTORNO=${{ steps.split.outputs._4 }}" >> $GITHUB_ENV"
@@ -57,7 +57,7 @@ jobs:
       
       - id: process_comment_values_without_image
         name: process_comment_values_without_image
-        if: $PROCESS_STATUS == 'OK' && steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 != '--image'
+        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 != '--image'
         run: |
           echo "NAMESPACE=${{ steps.split.outputs._2 }}" >> $GITHUB_ENV
           echo "ENTORNO=${{ steps.split.outputs._4 }}" >> $GITHUB_ENV"
@@ -65,21 +65,21 @@ jobs:
       
       - id: validate_deployment_command_namespace
         name: validate_deployment_command_namespace
-        if: $PROCESS_STATUS == 'OK' && $NAMESPACE == 'DEFAULT_NAMESPACE'
+        if: env.PROCESS_STATUS == 'OK' && env.NAMESPACE == 'DEFAULT_NAMESPACE'
         run: |
           echo "RESPONSE_MESSAGE='Namespace not informed'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
       
       - id: validate_deployment_command_environment
         name: validate_deployment_command_environment
-        if: $PROCESS_STATUS == 'OK' && $ENTORNO == 'DEFAULT_ENVIRONMENT'
+        if: env.PROCESS_STATUS == 'OK' && env.ENTORNO == 'DEFAULT_ENVIRONMENT'
         run: |
           echo "RESPONSE_MESSAGE='Environment not informed or its value is not DES'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
       
       - id: validate_deployment_command_image
         name: validate_deployment_command_image
-        if: $PROCESS_STATUS == 'OK' && $IMAGE_TO_DEPLOY == 'DEFAULT_IMAGE'
+        if: env.PROCESS_STATUS == 'OK' && env.IMAGE_TO_DEPLOY == 'DEFAULT_IMAGE'
         run: |
           echo "RESPONSE_MESSAGE='The --image option has been informed but without value'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
