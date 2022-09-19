@@ -43,7 +43,7 @@ jobs:
       - id: show_comment_elements
         name: show_comment_elements
         run: |
-          echo $PROCESS_STATUS
+          echo "Process status: " $PROCESS_STATUS
           echo "Deployment Command: " ${{ steps.split.outputs._0 }}
           echo "Namespace option: " ${{ steps.split.outputs._1 }}
           echo "Target Namespace for deployment: " ${{ steps.split.outputs._2 }}
@@ -69,11 +69,17 @@ jobs:
       
       - id: process_comment_values_without_image
         name: process_comment_values_without_image
-        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 != '--image'
+        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 != '--image'
         run: |
           echo "NAMESPACE=${{ steps.split.outputs._2 }}" >> $GITHUB_ENV
           echo "ENTORNO=${{ steps.split.outputs._4 }}" >> $GITHUB_ENV"
           echo "IMAGE_TO_DEPLOY=LATEST" >> $GITHUB_ENV
+      
+      - id: current_status
+        name: current_status
+        run: |
+          echo "Process status1: " ${{ env.PROCESS_STATUS }}
+          echo "Process status2: " $PROCESS_STATUS
       
       - id: validate_deployment_command_namespace
         name: validate_deployment_command_namespace
