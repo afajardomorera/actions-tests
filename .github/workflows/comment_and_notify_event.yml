@@ -45,7 +45,7 @@ jobs:
       
       - id: validate_deployment_command
         name: validate_deployment_command
-        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._0 != '/deploy-EKS'
+        if: env.PROCESS_STATUS == 'OK'
         run: |
           echo "RESPONSE_MESSAGE='The added comment is not a valid EKS deployment command'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
