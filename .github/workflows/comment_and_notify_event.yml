@@ -7,7 +7,7 @@ on:
 env:
   NAMESPACE: DEFAULT_NAMESPACE
   IMAGE_TO_DEPLOY: DEFAULT_IMAGE
-  ENTORNO: DEFAULT_ENVIRONMENT 
+  ENTORNO: DES 
   RESPONSE_MESSAGE: 'Deployment Process In Progress'
   PROCESS_STATUS: OK
   HELM_INVOCATION_EVENT: 'SECRET - Nombre del evento que dispara el workflow definido en el repo de Helm'
@@ -28,6 +28,7 @@ jobs:
           labels: READY_FOR_DEPLOY
 
       - id: previous_checks_passed
+        name: previous_checks_validation
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
           echo "RESPONSE_MESSAGE='The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
@@ -61,7 +62,7 @@ jobs:
       
       - id: process_comment_values_with_image
         name: process_comment_values_with_image
-        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._4 == 'DES' && steps.split.outputs._5 == '--image' && steps.split.outputs._6 != null
+        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 == '--image' && steps.split.outputs._6 != null
         run: |
           echo "NAMESPACE=${{ steps.split.outputs._2 }}" >> $GITHUB_ENV
           echo "ENTORNO=${{ steps.split.outputs._4 }}" >> $GITHUB_ENV
@@ -90,7 +91,7 @@ jobs:
       
       - id: validate_deployment_command_environment
         name: validate_deployment_command_environment
-        if: env.PROCESS_STATUS == 'OK' && env.ENTORNO == 'DEFAULT_ENVIRONMENT'
+        if: env.PROCESS_STATUS == 'OK' && env.ENTORNO != 'DES'
         run: |
           echo "RESPONSE_MESSAGE=Environment not informed or its value is not DES" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
