@@ -79,21 +79,21 @@ jobs:
         name: validate_deployment_command_namespace
         if: env.PROCESS_STATUS == 'OK' && env.NAMESPACE == 'DEFAULT_NAMESPACE'
         run: |
-          echo "RESPONSE_MESSAGE='Namespace not informed'" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=Namespace not informed" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
       
       - id: validate_deployment_command_environment
         name: validate_deployment_command_environment
         if: env.PROCESS_STATUS == 'OK' && env.ENTORNO == 'DEFAULT_ENVIRONMENT'
         run: |
-          echo "RESPONSE_MESSAGE='Environment not informed or its value is not DES'" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=Environment not informed or its value is not DES" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
       
       - id: validate_deployment_command_image
         name: validate_deployment_command_image
         if: env.PROCESS_STATUS == 'OK' && env.IMAGE_TO_DEPLOY == 'DEFAULT_IMAGE'
         run: |
-          echo "RESPONSE_MESSAGE='The --image option has been informed but without value'" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=The --image option has been informed but without value" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
 
       - id: add_process_message
