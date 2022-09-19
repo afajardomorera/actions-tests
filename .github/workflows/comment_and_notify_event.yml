@@ -43,9 +43,21 @@ jobs:
         with:
           msg: ${{ github.event.comment.body }}
       
+      - id: show_comment_elements
+        name: show_comment_elements
+        run: |
+          echo $PROCESS_STATUS
+          echo "0: " ${{ steps.split.outputs._0 }}
+          echo "1: " ${{ steps.split.outputs._1 }}
+          echo "2: " ${{ steps.split.outputs._2 }}
+          echo "3: " ${{ steps.split.outputs._3 }}
+          echo "4: " ${{ steps.split.outputs._4 }}
+          echo "5: " ${{ steps.split.outputs._5 }}
+          echo "6: " ${{ steps.split.outputs._6 }}
+      
       - id: validate_deployment_command
         name: validate_deployment_command
-        if: env.PROCESS_STATUS == 'OK'
+        if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._0 != '/deploy-EKS'
         run: |
           echo "RESPONSE_MESSAGE='The added comment is not a valid EKS deployment command'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
