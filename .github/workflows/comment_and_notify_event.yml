@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: simula_precondicion_label_ready_for_deploy
-        if: ${{ success()) }}
+        if: ${{ success() }}
         uses: actions-ecosystem/action-add-labels@v1
         with:
           labels: READY_FOR_DEPLOY
