@@ -80,7 +80,6 @@ jobs:
         name: current_status
         run: |
           echo "Process status1: " ${{ env.PROCESS_STATUS }}
-          echo "Process status2: " $PROCESS_STATUS
       
       - id: validate_deployment_command_namespace
         name: validate_deployment_command_namespace
