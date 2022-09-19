@@ -1,136 +1,97 @@
-name: CICD Comment & Notify
+name: Process EKS deployment
 
 on:
   issue_comment:
     types: [created]
-    
+
 env:
-  MY_ACCOUNT: DEFAULT_ACCOUNT
-  MY_ENV: DEFAULT_ENV
-  MY_IMAGE: image:latest
-  FINAL_MESSAGE: DEFAULT_MESSAGE
-  PR_NUMBER: 0
+  NAMESPACE: DEFAULT_NAMESPACE
+  IMAGE_TO_DEPLOY: DEFAULT_IMAGE
+  ENTORNO: DEFAULT_ENVIRONMENT 
+  RESPONSE_MESSAGE: 'Deployment Process In Progress'
+  PROCESS_STATUS: OK
+  HELM_INVOCATION_EVENT: 'SECRET - Nombre del evento que dispara el workflow definido en el repo de Helm'
+  HELM_REPO: 'SECRET - Nombre del repositorio de Helm'
+  HELM_ORG: 'SECRET - Nombre de la organización a la que pertenece el repositorio indicado en HELM_REPO'
+  SERVICE_TOKEN: 'SECRET - Token del usuario de servicio creado en HELM_REPO.'
+  ECR_REPOSITORTY: ECR_REPO
 
 jobs:
-  get-comment-and-notify:
-    env:
-        REPO_TOKEN: ${{ secrets.REPO_TEST }}
-        EVENT: test_result
-        ORG: tutantest
-        REPO: action_event_test
-        MESSAGE: default
-        READY_FOR_DEPLOY: DEFAULT
+  process-deployment-command:
     runs-on: ubuntu-20.04
-    timeout-minutes: 3
+    timeout-minutes: 5
     steps:
-      # - name: check_github_event
-      #   run: |
-      #     echo ${{ toJSON(github.event) }}
-      #     x=${{ toJson(github.event.issue.labels.*.name) }}
-      - name: ver-variables-entorno
-        run: env
-      - name: check_pr_ready_for_deploy
-        if: contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')
-        run: |
-          echo "READY_FOR_DEPLOY=true" >> $GITHUB_ENV
-          echo "MESSAGE=YEAHHH!!!" >> $GITHUB_ENV
-      - name: check_pr_NOT_ready_for_deploy
+      - name: simula_precondicion_label_ready_for_deploy
+        if: ${{ success()) }}
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: READY_FOR_DEPLOY
+
+      - id: previous_checks_passed
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
-          echo "NOT READY_FOR_DEPLOY"
-          echo "READY_FOR_DEPLOY=false" >> $GITHUB_ENV
-          echo "MESSAGE='❌ The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
-      - name: add_checks_not_passed_or_finished_message_first
+          echo "RESPONSE_MESSAGE='The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
+          echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
+    
+      - uses: jungwinter/split@v2
+        id: split_deployment_comment
+        name: split_deployment_comment
+        if: $PROCESS_STATUS == 'OK'
+        with:
+          msg: ${{ github.event.comment.body }}
+      
+      - id: validate_deployment_command
+        name: validate_deployment_command
+        if: $PROCESS_STATUS == 'OK' && steps.split.outputs._0 != '/deploy-EKS'
+        run: |
+          echo "RESPONSE_MESSAGE='The added comment is not a valid EKS deployment command'" >> $GITHUB_ENV
+          echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
+      
+      - id: process_comment_values_with_image
+        name: process_comment_values_with_image
+        if: $PROCESS_STATUS == 'OK' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._4 == 'DES' && steps.split.outputs._5 == '--image' && steps.split.outputs._6 != null
+        run: |
+          echo "NAMESPACE=${{ steps.split.outputs._2 }}" >> $GITHUB_ENV
+          echo "ENTORNO=${{ steps.split.outputs._4 }}" >> $GITHUB_ENV"
+          echo "IMAGE_TO_DEPLOY=${{ steps.split.outputs._6 }}" >> $GITHUB_ENV
+      
+      - id: process_comment_values_without_image
+        name: process_comment_values_without_image
+        if: $PROCESS_STATUS == 'OK' && steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--ns' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 != '--image'
+        run: |
+          echo "NAMESPACE=${{ steps.split.outputs._2 }}" >> $GITHUB_ENV
+          echo "ENTORNO=${{ steps.split.outputs._4 }}" >> $GITHUB_ENV"
+          echo "IMAGE_TO_DEPLOY=LATEST" >> $GITHUB_ENV
+      
+      - id: validate_deployment_command_namespace
+        name: validate_deployment_command_namespace
+        if: $PROCESS_STATUS == 'OK' && $NAMESPACE == 'DEFAULT_NAMESPACE'
+        run: |
+          echo "RESPONSE_MESSAGE='Namespace not informed'" >> $GITHUB_ENV
+          echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
+      
+      - id: validate_deployment_command_environment
+        name: validate_deployment_command_environment
+        if: $PROCESS_STATUS == 'OK' && $ENTORNO == 'DEFAULT_ENVIRONMENT'
+        run: |
+          echo "RESPONSE_MESSAGE='Environment not informed or its value is not DES'" >> $GITHUB_ENV
+          echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
+      
+      - id: validate_deployment_command_image
+        name: validate_deployment_command_image
+        if: $PROCESS_STATUS == 'OK' && $IMAGE_TO_DEPLOY == 'DEFAULT_IMAGE'
+        run: |
+          echo "RESPONSE_MESSAGE='The --image option has been informed but without value'" >> $GITHUB_ENV
+          echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
+
+      - id: add_process_message
+        name: add_process_message
         uses: actions/github-script@v4
         with:
           script: |
-            core.info(process.env.READY_FOR_DEPLOY)
-            core.info(process.env.MESSAGE)
             github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: process.env.MESSAGE
-            });          
-      # - name: add_final_message == 'false'
-      #   if:  "!${{ steps.check_pr_ready_for_deploy.outputs.ready_for_deploy }}"
-      #   uses: actions/github-script@v4
-      #   with:
-      #     script: |
-      #       github.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: '❌ The PR previous checks are still in progress or they have not finished successfully',
-      #       });          
-      - name: exit_workflow_if_failed
-        if: steps.check_pr_ready_for_deploy.outputs.ready_for_deploy == 'true'
-        run: exit 1
-      - uses: jungwinter/split@v2
-        id: split
-        with:
-          msg: ${{ github.event.comment.body }}
-      - id: show_comment_elements
-        name: show_comment_elements
-        run: |
-          echo "0: " ${{ steps.split.outputs._0 }}
-          echo "1: " ${{ steps.split.outputs._1 }}
-          echo "2: " ${{ steps.split.outputs._2 }}
-          echo "3: " ${{ steps.split.outputs._3 }}
-          echo "4: " ${{ steps.split.outputs._4 }}
-          echo "5: " ${{ steps.split.outputs._4 }}
-          echo "6: " ${{ steps.split.outputs._4 }}
-      - id: get_env_and_image
-        name: get_env_and_image
-        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--account' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 == '--image' && steps.split.outputs._4 != null
-        run: |
-          echo "STATUS: " $LATEST_IMAGE
-          export LATEST_IMAGE=false
-          echo "COMMENT: " ${{ github.event.comment.body }}
-          export MY_ACCOUNT=${{ steps.split.outputs._2 }}
-          echo "CUENTA: " $MY_ACCOUNT
-          export MY_ENV=${{ steps.split.outputs._4 }}
-          echo "ENTORNO: " $MY_ENV
-          export MY_IMAGE=${{ steps.split.outputs._6 }}
-          echo "IMAGEN: " $MY_IMAGE
-#           curl -d "{\"event_type\": \"test_result\", \"client_payload\":{\"account\":\"$MY_ACCOUNT\",\"environment\":\"$MY_ENV\",\"image\":\"$MY_IMAGE\"}}" -H "Content-Type:application/json" -H "Authorization:token $REPO_TOKEN" -H "Accept:application/vnd.github.everest-preview+json" "https://api.github.com/repos/$ORG/$REPO/dispatches"
-      - id: get_env_and_latest_image
-        name: get_env_and_latest_image
-        if: steps.split.outputs._0 == '/deploy' && steps.split.outputs._1 == '--account' && steps.split.outputs._3 == '--env' && steps.split.outputs._5 != '--image'
-        run: |
-          echo "STATUS: " $LATEST_IMAGE
-          echo "COMMENT: " ${{ github.event.comment.body }}
-          export MY_ACCOUNT=${{ steps.split.outputs._2 }}
-          echo "CUENTA: " $MY_ACCOUNT
-          export MY_ENV=${{ steps.split.outputs._2 }}
-          echo "ENTORNO: " $MY_ENV
-          echo "IMAGEN: " $MY_IMAGE  
-#           curl -d "{\"event_type\": \"test_result\", \"client_payload\":{\"account\":\"$MY_ACCOUNT\",\"environment\":\"$MY_ENV\",\"image\":\"$MY_IMAGE\"}}" -H "Content-Type:application/json" -H "Authorization:token $REPO_TOKEN" -H "Accept:application/vnd.github.everest-preview+json" "https://api.github.com/repos/$ORG/$REPO/dispatches"
-#       - name: Fail randomly
-#         run: |
-#           ls
-#           exit $((RANDOM % 2))        
-#       - name: Message success
-#         if: ${{ success() }}
-#         uses: actions/github-script@v4
-#         with:
-#           script: |
-#             process.env.FINAL_MESSAGE='Deployment succeeded! ✅';
-#             github.issues.createComment({
-#               issue_number: context.issue.number,
-#               owner: context.repo.owner,
-#               repo: context.repo.repo,
-#               body: process.env.FINAL_MESSAGE,
-#             });          
-#       - name: Message failure
-#         if: ${{ failure() }}
-#         uses: actions/github-script@v4
-#         with:
-#           script: |
-#             process.env.FINAL_MESSAGE='Deployment failed! ❌';
-#             github.issues.createComment({
-#               issue_number: context.issue.number,
-#               owner: context.repo.owner,
-#               repo: context.repo.repo,
-#               body: process.env.FINAL_MESSAGE,
-#               }); 
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: process.env.RESPONSE_MESSAGE,
+            }); 
