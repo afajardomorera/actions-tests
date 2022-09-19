@@ -36,7 +36,7 @@ jobs:
       - uses: jungwinter/split@v2
         id: split_deployment_comment
         name: split_deployment_comment
-        if: "$PROCESS_STATUS == 'OK'"
+        if: env.PROCESS_STATUS == 'OK'
         with:
           msg: ${{ github.event.comment.body }}
       
