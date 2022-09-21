@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - develop
+      - issue_comment_test
 
 jobs:
   deploy:
