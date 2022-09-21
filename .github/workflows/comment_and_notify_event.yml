@@ -8,7 +8,7 @@ env:
   NAMESPACE: DEFAULT_NAMESPACE
   IMAGE_TO_DEPLOY: DEFAULT_IMAGE
   ENTORNO: DES 
-  RESPONSE_MESSAGE: ':heavy_check_mark: Deployment Process In Progress'
+  RESPONSE_MESSAGE: '✔️ Deployment Process In Progress'
   PROCESS_STATUS: OK
   HELM_INVOCATION_EVENT: 'SECRET - Nombre del evento que dispara el workflow definido en el repo de Helm'
   HELM_REPO: 'SECRET - Nombre del repositorio de Helm'
@@ -31,7 +31,7 @@ jobs:
         name: previous_checks_validation
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
-          echo "RESPONSE_MESSAGE=':x: The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE='❌ The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
     
       - uses: jungwinter/split@v2
@@ -57,7 +57,7 @@ jobs:
         name: validate_deployment_command
         if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._0 != '/deploy-EKS'
         run: |
-          echo "RESPONSE_MESSAGE=':x: The added comment is not a valid EKS deployment command'" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE='❌ The added comment is not a valid EKS deployment command'" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
       
       - id: process_comment_values_with_image
@@ -85,7 +85,7 @@ jobs:
         name: validate_deployment_command_namespace
         if: env.PROCESS_STATUS == 'OK' && env.NAMESPACE == 'DEFAULT_NAMESPACE'
         run: |
-          echo "RESPONSE_MESSAGE=:x: Namespace not informed" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=❌ Namespace not informed" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
       
       - id: validate_deployment_command_environment
@@ -99,7 +99,7 @@ jobs:
         name: validate_deployment_command_image
         if: env.PROCESS_STATUS == 'OK' && env.IMAGE_TO_DEPLOY == 'DEFAULT_IMAGE'
         run: |
-          echo "RESPONSE_MESSAGE=:x: The --image option has been informed but without value" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=❌ The --image option has been informed but without value" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
       - id: add_process_message
         name: add_process_message
