@@ -17,6 +17,7 @@ jobs:
       HELM_ORG: 'SECRET - Nombre de la organización a la que pertenece el repositorio indicado en HELM_REPO'
       SERVICE_TOKEN: 'SECRET - Token del usuario de servicio creado en HELM_REPO.'
       ECR_REPOSITORTY: ECR_REPO
+      COMMENT_MESSAGE: ${{ github.event.comment.body }}
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     steps:
@@ -38,7 +39,7 @@ jobs:
         name: split_deployment_comment
         if: env.PROCESS_STATUS == 'OK'
         with:
-          msg: ${{ github.event.comment.body }}
+          msg: env.COMMENT_MESSAGE
       
       - id: show_comment_elements
         name: show_comment_elements
