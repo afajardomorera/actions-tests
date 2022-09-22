@@ -39,7 +39,7 @@ jobs:
         name: split_deployment_comment
         if: env.PROCESS_STATUS == 'OK'
         with:
-          msg: $COMMENT_MESSAGE
+          msg: ${{ github.event.comment.body }}
       
       - id: show_comment_elements
         name: show_comment_elements
