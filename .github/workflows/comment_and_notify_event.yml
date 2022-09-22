@@ -17,7 +17,6 @@ jobs:
       HELM_ORG: 'SECRET - Nombre de la organización a la que pertenece el repositorio indicado en HELM_REPO'
       SERVICE_TOKEN: 'SECRET - Token del usuario de servicio creado en HELM_REPO.'
       ECR_REPOSITORTY: ECR_REPO
-      COMMENT_MESSAGE: ${{ github.event.comment.body }}
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     steps:
@@ -31,7 +30,7 @@ jobs:
         name: previous_checks_validation
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
-          echo "RESPONSE_MESSAGE='❌ The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=❌ The PR previous checks are still in progress or they have not finished successfully" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
     
       - uses: jungwinter/split@v2
@@ -57,7 +56,7 @@ jobs:
         name: validate_deployment_command
         if: env.PROCESS_STATUS == 'OK' && steps.split.outputs._0 != '/deploy-EKS'
         run: |
-          echo "RESPONSE_MESSAGE='❌ The added comment is not a valid EKS deployment command'" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=❌ The added comment is not a valid EKS deployment command" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV          
       
       - id: process_comment_values_with_image
@@ -112,3 +111,8 @@ jobs:
             repo: context.repo.repo,
             body: process.env.RESPONSE_MESSAGE,
             });
+      - id: set_process_status_to_error
+        name: set_process_status_to_error
+        if: env.RESPONSE_MESSAGE != '✔️ Deployment Process In Progress'
+        run: exit 1
+
