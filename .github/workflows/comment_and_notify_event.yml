@@ -1,4 +1,4 @@
-name: "Process EKS deployment"
+name: "[DES-DEPLOY] Process EKS deployment"
 
 on:
   issue_comment:
@@ -20,13 +20,13 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     steps:
-      - name: simula_precondicion_label_ready_for_deploy
+      - name: label_precondition_emulation_ready_for_deploy
         if: ${{ success() }}
         uses: actions-ecosystem/action-add-labels@v1
         with:
           labels: READY_FOR_DEPLOY
 
-      - id: previous_checks_passed
+      - id: validate_previous_checks_are_passed
         name: previous_checks_validation
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
@@ -75,11 +75,6 @@ jobs:
           echo "ENTORNO=${{ steps.split.outputs._4 }}" >> $GITHUB_ENV
           echo "IMAGE_TO_DEPLOY=LATEST" >> $GITHUB_ENV
       
-      - id: current_status
-        name: current_status
-        run: |
-          echo "Process status1: " ${{ env.PROCESS_STATUS }}
-      
       - id: validate_deployment_command_namespace
         name: validate_deployment_command_namespace
         if: env.PROCESS_STATUS == 'OK' && env.NAMESPACE == 'DEFAULT_NAMESPACE'
@@ -100,6 +95,7 @@ jobs:
         run: |
           echo "RESPONSE_MESSAGE=❌ The --image option has been informed but without value" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
+
       - id: add_process_message
         name: add_process_message
         uses: actions/github-script@v4
@@ -111,8 +107,8 @@ jobs:
             repo: context.repo.repo,
             body: process.env.RESPONSE_MESSAGE,
             });
+      
       - id: set_process_status_to_error
         name: set_process_status_to_error
         if: env.RESPONSE_MESSAGE != '✔️ Deployment Process In Progress'
         run: exit 1
-
