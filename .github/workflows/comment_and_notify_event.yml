@@ -1,4 +1,4 @@
-name: "Process EKS deployment"
+name: "Process PATATA deployment"
 
 on:
   issue_comment:
