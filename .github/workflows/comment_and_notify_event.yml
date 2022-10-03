@@ -92,7 +92,7 @@ jobs:
         name: validate_deployment_command_environment
         if: env.PROCESS_STATUS == 'OK' && env.ENTORNO != 'DES'
         run: |
-          echo "RESPONSE_MESSAGE=❌ Environment not informed or its value is not DES" >> $GITHUB_ENV
+          echo "RESPONSE_MESSAGE=❌ Environment not informed or its value is not DES PATATA" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
       
       - id: validate_deployment_command_image
