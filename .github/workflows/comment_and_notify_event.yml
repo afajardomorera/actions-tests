@@ -20,13 +20,13 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     steps:
-      - name: label_precondition_emulation_ready_for_deploy_22222222
+      - name: label_precondition_emulation_ready_for_deploy
         if: ${{ success() }}
         uses: actions-ecosystem/action-add-labels@v1
         with:
           labels: READY_FOR_DEPLOY
 
-      - id: validate_previous_checks_are_passed_22222222
+      - id: validate_previous_checks_are_passed
         name: previous_checks_validation
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
@@ -40,7 +40,7 @@ jobs:
         with:
           msg: ${{ github.event.comment.body }}
       
-      - id: show_comment_elements_22222222
+      - id: show_comment_elements
         name: show_comment_elements
         run: |
           echo "Process status: " $PROCESS_STATUS
