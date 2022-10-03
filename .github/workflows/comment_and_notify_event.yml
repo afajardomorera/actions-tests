@@ -21,14 +21,14 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     steps:
-      - name: simula_precondicion_label_ready_for_deploy
+      - name: simula_precondicion_label_ready_for_deploy_22222222
         if: ${{ success() }}
         uses: actions-ecosystem/action-add-labels@v1
         with:
           labels: READY_FOR_DEPLOY
 
-      - id: previous_checks_passed
-        name: previous_checks_validation
+      - id: previous_checks_passed_22222222
+        name: previous_checks_validation_22222222
         if: "!contains(github.event.issue.labels.*.name, 'READY_FOR_DEPLOY')"
         run: |
           echo "RESPONSE_MESSAGE='❌ The PR previous checks are still in progress or they have not finished successfully'" >> $GITHUB_ENV
@@ -41,8 +41,8 @@ jobs:
         with:
           msg: ${{ github.event.comment.body }}
       
-      - id: show_comment_elements
-        name: show_comment_elements
+      - id: show_comment_elements_22222222
+        name: show_comment_elements_22222222
         run: |
           echo "Process status: " $PROCESS_STATUS
           echo "Deployment Command: " ${{ steps.split.outputs._0 }}
