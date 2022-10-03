@@ -1,4 +1,4 @@
-name: "[DES-DEPLOY] Process EKS deployment"
+name: "[DES-DEPLOY] Process EKS deployment."
 
 on:
   issue_comment:
