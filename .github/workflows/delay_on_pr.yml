@@ -27,16 +27,15 @@ jobs:
       - name: rama
         run: |
           echo "RAMA: " $RAMA
-          echo "Rama empieza mai: " ${{ startsWith('env.RAMA', 'mai') }}
           echo "Rama empieza mai: " ${{ startsWith(env.RAMA, 'mai') }}
-          echo "Rama empieza mai: " ${{ startsWith('${{ env.RAMA }}', 'mai') }}
-          echo "Rama empieza mai: " ${{ startsWith('$RAMA', 'mai') }}
+          echo "Rama NO empieza patata: " ${{ !startsWith(env.RAMA, 'patata') }}
+          
       - name: Check_NO_empieza_por_mai
-        if: ${{ !startsWith(github.event.inputs.from_branch, 'mai') }}
+        if: ${{ !startsWith(env.RAMA, 'mai') }}
         run: |
           echo "NO"
       - name: Check_empieza_por_mai
-        if: ${{ startsWith(github.event.inputs.from_branch, 'mai') }}
+        if: ${{ startsWith(env.RAMA, 'mai') }}
         run: |
           echo "SI"
           
