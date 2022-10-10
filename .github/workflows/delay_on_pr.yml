@@ -16,6 +16,7 @@ jobs:
     needs: deploy
     env: 
       RAMA: rama
+      SHORT_SHA: a0
     steps:
       - name: get-repo-name
         run: |
@@ -23,6 +24,7 @@ jobs:
           echo "Branch name: " $GITHUB_HEAD_REF
           echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_ENV
           echo "NOMBRE RAMA: " ${{ github.event.inputs.from_branch }}
+          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
           
       - name: rama
         run: |
@@ -37,7 +39,7 @@ jobs:
       - name: Check_empieza_por_mai
         if: ${{ startsWith(env.RAMA, 'mai') }}
         run: |
-          echo "SI" $GITHUB_SHA
+          echo "SI" $SHORT_SHA
           
       #- name: print_branch_name
       #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
