@@ -21,7 +21,7 @@ jobs:
           echo "Repo name: " ${{ github.event.repository.name }}
           echo "Branch name: " $GITHUB_HEAD_REF
       - name: check_valid_branch
-        if: ${{ !startsWith('env.GITHUB_HEAD_REF', 'mai') }}
+        if: ${{ !startsWith(github.event.inputs.from_branch, 'main') }}
         run: |
           exit 1
       #- name: Sleep for 30 seconds
