@@ -20,7 +20,7 @@ jobs:
         run: echo echo "VALID_BRANCH=${{ startsWith('$GITHUB_HEAD_REF','feature') }}" >> $GITHUB_ENV
       - name: get-repo-name
         run: |
-          echo "VALID BRANCH: " $VALID_BRANCH
+          echo "VALID BRANCH: " ${{ env.VALID_BRANCH }}
           echo "Repo name: " ${{ github.event.repository.name }}
           echo "Branch name: " $GITHUB_HEAD_REF
       #- name: Sleep for 30 seconds
