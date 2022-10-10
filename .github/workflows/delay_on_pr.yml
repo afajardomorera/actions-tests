@@ -26,12 +26,12 @@ jobs:
       - name: rama
         run: |
           echo "RAMA: " $RAMA
-          echo "Rama empieza main: " ${{ startsWith('env.RAMA', 'main') }}
-          echo "Rama empieza main: " ${{ startsWith('${{ env.RAMA }}', 'main') }}
-          echo "Rama empieza patata: " !${{ startsWith('$RAMA', 'patata') }}
-          echo "Rama empieza patata: " !${{ startsWith('${{ env.RAMA }}', 'patata') }}
-          echo "test empieza por te: " ${{ startsWith('test', 'te') }}
-          echo "test empieza por pa: " ${{ startsWith('test', 'pa') }}
+          echo "Rama empieza mai: " ${{ startsWith('env.RAMA', 'mai') }}
+          echo "Rama empieza mai: " ${{ startsWith(env.RAMA, 'mai') }}
+          echo "Rama empieza mai: " ${{ startsWith('${{ env.RAMA }}', 'mai') }}
+          echo "Rama empieza mai: " ${{ startsWith(${{ env.RAMA }}, 'mai') }}
+          echo "Rama empieza mai: " ${{ startsWith('$RAMA', 'mai') }}
+          echo "Rama empieza mai: " ${{ startsWith($RAMA, 'mai') }}
       #- name: print_branch_name
       #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
       #  run: |
