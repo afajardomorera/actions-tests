@@ -29,7 +29,6 @@ jobs:
           echo "Rama empieza mai: " ${{ startsWith('env.RAMA', 'mai') }}
           echo "Rama empieza mai: " ${{ startsWith(env.RAMA, 'mai') }}
           echo "Rama empieza mai: " ${{ startsWith('${{ env.RAMA }}', 'mai') }}
-          echo "Rama empieza mai: " ${{ startsWith(${{ env.RAMA }}, 'mai') }}
           echo "Rama empieza mai: " ${{ startsWith('$RAMA', 'mai') }}
           echo "Rama empieza mai: " ${{ startsWith($RAMA, 'mai') }}
       #- name: print_branch_name
