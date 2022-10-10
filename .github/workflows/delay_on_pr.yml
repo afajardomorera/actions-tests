@@ -15,7 +15,9 @@ jobs:
     needs: deploy
     steps:
       - name: get-repo-name
-        run: echo ${{ github.event.repository.name }}
+        run: |
+          echo "Repo name: " ${{ github.event.repository.name }}
+          echo "Branch name: " ${GITHUB_REF#refs/heads/}
       #- name: Sleep for 30 seconds
       #  uses: jakejarvis/wait-action@master
       #  with:
