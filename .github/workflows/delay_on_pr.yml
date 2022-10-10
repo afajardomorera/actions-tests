@@ -19,14 +19,17 @@ jobs:
     steps:
       - name: get-repo-name
         run: |
-          echo "RAMA=${{steps.change.outputs.result}}" >> $GITHUB_ENV
           echo "Repo name: " ${{ github.event.repository.name }}
           echo "Branch name: " $GITHUB_HEAD_REF
-          echo "RAMA=${{ env.GITHUB_HEAD_REF }}" >> $GITHUB_ENV
-          echo "RAMA: " ${{ env.GITHUB_HEAD_REF }}
-          echo "RAMA: " ${{ github.event.inputs.from_branch }}
+          echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_ENV
+          
+      - name: rama
+        run: |
+          echo "RAMA: " $RAMA
           echo "Rama empieza main: " ${{ startsWith('env.RAMA', 'main') }}
-          echo "Rama empieza patata: " ${{ startsWith('$RAMA', 'patata') }}
+          echo "Rama empieza main: " ${{ startsWith('${{ env.RAMA }}', 'main') }}
+          echo "Rama empieza patata: " !${{ startsWith('$RAMA', 'patata') }}
+          echo "Rama empieza patata: " !${{ startsWith('${{ env.RAMA }}', 'patata') }}
           echo "test empieza por te: " ${{ startsWith('test', 'te') }}
           echo "test empieza por pa: " ${{ startsWith('test', 'pa') }}
       #- name: print_branch_name
