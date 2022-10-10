@@ -4,7 +4,8 @@ on:
   pull_request:
     branches:
       - develop
-
+env:
+  RAMA: NOMBRE
 jobs:
   deploy:
     uses: afajardomorera/actions-tests/.github/workflows/workflow_dispatch.yml@main
@@ -20,8 +21,13 @@ jobs:
         run: |
           echo "Repo name: " ${{ github.event.repository.name }}
           echo "Branch name: " $GITHUB_HEAD_REF
+          echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_REF
+      - name: print_branch_name
+        if: ${{ !startsWith('{{ env.RAMA }}', 'main') }}
+        run: |
+          echo "Rama: " $RAMA
       - name: check_valid_branch
-        if: ${{ !startsWith(github.event.inputs.from_branch, 'main') }}
+        if: ${{ !startsWith('{{ env.RAMA }}', 'main') }}
         run: |
           exit 1
       #- name: Sleep for 30 seconds
