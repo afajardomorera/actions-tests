@@ -22,9 +22,11 @@ jobs:
           echo "Repo name: " ${{ github.event.repository.name }}
           echo "Branch name: " $GITHUB_HEAD_REF
           echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_ENV
-          echo "RAMA: " ${{ github.event.inputs.from_branch }}
-          echo "empieza: " ${{ startsWith('env.GITHUB_HEAD_REF', 'main') }}
-          echo "NO empieza: " ${{ startsWith(env.GITHUB_HEAD_REF, 'patata') }}
+          echo "RAMA: " ${{ env.RAMA }}
+          echo "RAMA: " $RAMA
+          echo "empieza: " ${{ startsWith('env.RAMA', 'main') }}
+          echo "NO empieza: " ${{ startsWith($RAMA, 'patata') }}
+          echo "test empieza por te: " ${{ startsWith('test', 'te') }}
       #- name: print_branch_name
       #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
       #  run: |
