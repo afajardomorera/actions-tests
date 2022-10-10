@@ -39,7 +39,7 @@ jobs:
       - name: Check_empieza_por_mai
         if: ${{ startsWith(env.RAMA, 'mai') }}
         run: |
-          echo "SI" $SHORT_SHA
+          echo "SI" $GITHUB_SHA
           
       #- name: print_branch_name
       #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
