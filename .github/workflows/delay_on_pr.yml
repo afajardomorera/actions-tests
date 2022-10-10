@@ -22,14 +22,17 @@ jobs:
           echo "Repo name: " ${{ github.event.repository.name }}
           echo "Branch name: " $GITHUB_HEAD_REF
           echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_ENV
-      - name: print_branch_name
-        if: ${{ !startsWith('{{ env.RAMA }}', 'main') }}
-        run: |
-          echo "Rama: " $RAMA
-      - name: check_valid_branch
-        if: ${{ !startsWith('{{ env.RAMA }}', 'main') }}
-        run: |
-          exit 1
+          echo "RAMA: " ${{ github.event.inputs.from_branch }}
+          echo "empieza: " ${{ startsWith(github.event.inputs.from_branch, 'main') }}
+          echo "NO empieza: " ${{ startsWith(github.event.inputs.from_branch, 'main') }}
+      #- name: print_branch_name
+      #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
+      #  run: |
+      #    echo "Rama: " $RAMA
+      #- name: check_valid_branch
+      #  if: ${{ !startsWith('{{ env.RAMA }}', 'main') }}
+      #  run: |
+      #    exit 1
       #- name: Sleep for 30 seconds
       #  uses: jakejarvis/wait-action@master
       #  with:
