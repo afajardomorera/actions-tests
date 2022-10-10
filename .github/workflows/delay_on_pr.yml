@@ -25,7 +25,7 @@ jobs:
           echo "RAMA: " ${{ env.RAMA }}
           echo "RAMA: " $RAMA
           echo "empieza: " ${{ startsWith('env.RAMA', 'main') }}
-          echo "NO empieza: " ${{ startsWith($RAMA, 'patata') }}
+          echo "NO empieza: " ${{ startsWith('$RAMA', 'patata') }}
           echo "test empieza por te: " ${{ startsWith('test', 'te') }}
       #- name: print_branch_name
       #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
