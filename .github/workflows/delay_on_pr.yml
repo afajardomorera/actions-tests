@@ -17,7 +17,7 @@ jobs:
       - name: get-repo-name
         run: |
           echo "Repo name: " ${{ github.event.repository.name }}
-          echo "Branch name: " ${GITHUB_REF#refs/heads/}
+          echo "Branch name: " ${{ github.ref_name }}
       #- name: Sleep for 30 seconds
       #  uses: jakejarvis/wait-action@master
       #  with:
