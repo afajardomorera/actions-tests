@@ -15,10 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     env: 
-      VALID_BRANCH: true
+      RAMA: rama
     steps:
       - name: get-repo-name
         run: |
+          echo "RAMA=${{steps.change.outputs.result}}" >> $GITHUB_ENV
           echo "Repo name: " ${{ github.event.repository.name }}
           echo "Branch name: " $GITHUB_HEAD_REF
           echo "RAMA=${{ env.GITHUB_HEAD_REF }}" >> $GITHUB_ENV
