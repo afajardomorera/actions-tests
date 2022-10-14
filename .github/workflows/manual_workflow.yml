@@ -23,7 +23,7 @@ jobs:
           echo "WORKFLOW ENV RAMA2: " $RAMA
           echo "STEP ENV RAMA2: " $RAMA2
           echo "Rama: " ${{ steps.get_branch_name.outputs.branch }} 
-          #echo "RAMA=${{ steps.get_branch_name.outputs.branch }}" >> $GITHUB_ENV 
+          echo "RAMA=${{ steps.get_branch_name.outputs.branch }}" >> $GITHUB_ENV 
       
       - id: check_valid_branch
         name: check_valid_branch
