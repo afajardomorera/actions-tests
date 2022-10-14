@@ -13,7 +13,7 @@ jobs:
       - id: get_branch_name
         name: get_branch_name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
       
       - id: print_branch_name
         name: print_branch_name
@@ -23,7 +23,7 @@ jobs:
           echo "WORKFLOW ENV RAMA2: " $RAMA
           echo "STEP ENV RAMA2: " $RAMA2
           echo "Rama: " ${{ steps.get_branch_name.outputs.branch }} 
-          echo "RAMA=${{ steps.get_branch_name.outputs.branch }}" >> $GITHUB_ENV 
+          #echo "RAMA=${{ steps.get_branch_name.outputs.branch }}" >> $GITHUB_ENV 
       
       - id: check_valid_branch
         name: check_valid_branch
