@@ -27,7 +27,8 @@ jobs:
       
       - id: check_valid_branch
         name: check_valid_branch
-        if: (${{ !startsWith(env.RAMA, 'main') }} && ${{ !startsWith(env.RAMA, 'develop') }} && ${{ !startsWith(env.RAMA, 'patata') }})
+        if: |
+          ${{ (!startsWith(env.RAMA, 'main') && !startsWith(env.RAMA, 'develop') && ${{ !startsWith(env.RAMA, 'patata') ) }}
         run: |
           echo "RESPONSE_MESSAGE=❌ Incorrect Branch" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
