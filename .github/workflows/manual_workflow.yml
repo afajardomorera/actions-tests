@@ -13,7 +13,7 @@ jobs:
       - id: get_branch_name
         name: get_branch_name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       
       - id: print_branch_name
         name: print_branch_name
@@ -22,8 +22,18 @@ jobs:
         run: |
           echo "WORKFLOW ENV RAMA2: " $RAMA
           echo "STEP ENV RAMA2: " $RAMA2
-          echo "Rama: " ${{ steps.get_branch_name.outputs.branch }}
+          echo "Rama: " ${{ steps.get_branch_name.outputs.branch }} 
+          echo "RAMA=${{ steps.get_branch_name.outputs.branch }}" >> $GITHUB_ENV 
       
+      - id: print_branch_name2
+        name: print_branch_name2
+        run: |
+          echo "WORKFLOW ENV RAMA: " $RAMA
+          echo "WORKFLOW ENV RAMA: " env.RAMA
+          echo "WORKFLOW ENV RAMA: " ${env.RAMA}
+          echo "WORKFLOW ENV RAMA: " ${ env.RAMA }
+          echo "WORKFLOW ENV RAMA: " ${{ env.RAMA }}
+          
       - id: check_valid_branch
         name: check_valid_branch
         if: ${{ !startsWith(env.RAMA, 'main') }} && ${{ !startsWith(env.RAMA, 'develop') }} && ${{ !startsWith(env.RAMA, 'hotfix/') }} && ${{ !startsWith(env.RAMA, 'refactor/') }}
