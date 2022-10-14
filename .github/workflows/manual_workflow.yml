@@ -1,0 +1,20 @@
+name: Manual Workflow Test
+
+on:
+  workflow_dispatch
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - id: get_branch_name
+        name: get_branch_name
+        shell: bash
+        run: echo "##[set-output name=RAMA;]$(echo ${GITHUB_REF#refs/heads/})"
+      - id: print_branch_name
+        name: print_branch_name
+        env:
+          RAMA: ${{ steps.extract_branch.outputs.branch }}
+        run: |
+          echo "ENV RAMA: " $RAMA
+          echo "Rama: " ${{ steps.extract_branch.outputs.branch }}
