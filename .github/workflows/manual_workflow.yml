@@ -14,7 +14,7 @@ jobs:
       - id: print_branch_name
         name: print_branch_name
         env:
-          RAMA: ${{ steps.extract_branch.outputs.branch }}
+          RAMA: ${{ steps.get_branch_name.outputs.branch }}
         run: |
           echo "ENV RAMA: " $RAMA
-          echo "Rama: " ${{ steps.extract_branch.outputs.branch }}
+          echo "Rama: " ${{ steps.get_branch_name.outputs.branch }}
