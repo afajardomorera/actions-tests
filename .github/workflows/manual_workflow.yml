@@ -10,7 +10,7 @@ jobs:
       - id: get_branch_name
         name: get_branch_name
         shell: bash
-        run: echo "##[set-output name=RAMA;]${GITHUB_REF#refs/heads/}"
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       - id: print_branch_name
         name: print_branch_name
         env:
