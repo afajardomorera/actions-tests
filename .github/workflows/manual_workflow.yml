@@ -3,6 +3,9 @@ name: Manual Workflow Test
 on:
   workflow_dispatch
 
+env:
+  RAMA: DEFAULT
+
 jobs:
   tests:
     runs-on: ubuntu-20.04
@@ -11,10 +14,30 @@ jobs:
         name: get_branch_name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      
       - id: print_branch_name
         name: print_branch_name
         env:
-          RAMA: ${{ steps.get_branch_name.outputs.branch }}
+          RAMA2: ${{ steps.get_branch_name.outputs.branch }}
+        run: |
+          echo "ENV RAMA: " $RAMA2
+          echo "Rama: " ${{ steps.get_branch_name.outputs.branch }}
+      
+      - id: get_branch_name2
+        name: get_branch_name2
+        run: |
+          echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_ENV
+          echo "##[set-output name=branch2;]$(echo ${GITHUB_REF#refs/heads/})"
+      
+      - id: print_branch_name2
+        name: print_branch_name2
         run: |
           echo "ENV RAMA: " $RAMA
-          echo "Rama: " ${{ steps.get_branch_name.outputs.branch }}
+          echo "Rama: " ${{ steps.get_branch_name.outputs.branch2 }}
+      
+      - id: check_valid_branch
+        name: check_valid_branch
+        if: ${{ !startsWith(env.RAMA, 'feature/') }} && ${{ !startsWith(env.RAMA, 'develop') }} && ${{ !startsWith(env.RAMA, 'hotfix/') }} && ${{ !startsWith(env.RAMA, 'refactor/') }}
+        run: |
+          echo "RESPONSE_MESSAGE=❌ Incorrect Branch" >> $GITHUB_ENV
+          echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
