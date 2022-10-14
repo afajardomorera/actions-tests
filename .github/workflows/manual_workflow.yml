@@ -25,18 +25,9 @@ jobs:
           echo "Rama: " ${{ steps.get_branch_name.outputs.branch }} 
           echo "RAMA=${{ steps.get_branch_name.outputs.branch }}" >> $GITHUB_ENV 
       
-      - id: print_branch_name2
-        name: print_branch_name2
-        run: |
-          echo "WORKFLOW ENV RAMA: " $RAMA
-          echo "WORKFLOW ENV RAMA: " env.RAMA
-          echo "WORKFLOW ENV RAMA: " ${env.RAMA}
-          echo "WORKFLOW ENV RAMA: " ${ env.RAMA }
-          echo "WORKFLOW ENV RAMA: " ${{ env.RAMA }}
-          
       - id: check_valid_branch
         name: check_valid_branch
-        if: ${{ !startsWith(env.RAMA, 'main') }} && ${{ !startsWith(env.RAMA, 'develop') }} && ${{ !startsWith(env.RAMA, 'hotfix/') }} && ${{ !startsWith(env.RAMA, 'refactor/') }}
+        if: ${{ !startsWith(steps.get_branch_name.outputs.branch, 'main') }} && ${{ !startsWith(steps.get_branch_name.outputs.branch, 'develop') }} && ${{ !startsWith(steps.get_branch_name.outputs.branch, 'hotfix/') }} && ${{ !startsWith(steps.get_branch_name.outputs.branch, 'refactor/') }}
         run: |
           echo "RESPONSE_MESSAGE=❌ Incorrect Branch" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
