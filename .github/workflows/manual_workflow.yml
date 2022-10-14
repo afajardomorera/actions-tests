@@ -13,7 +13,7 @@ jobs:
       - id: get_branch_name
         name: get_branch_name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       
       - id: print_branch_name
         name: print_branch_name
@@ -27,7 +27,7 @@ jobs:
       
       - id: check_valid_branch
         name: check_valid_branch
-        if: ${{ !startsWith(env.RAMA, 'main') }}
+        if: ${{ !startsWith(env.RAMA, 'main') }} && ${{ !startsWith(env.RAMA, 'develop') }} && ${{ !startsWith(env.RAMA, 'patata') }}
         run: |
           echo "RESPONSE_MESSAGE=❌ Incorrect Branch" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
