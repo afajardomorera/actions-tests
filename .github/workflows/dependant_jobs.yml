@@ -1,0 +1,29 @@
+name: Dependant Jobs Test
+
+on:
+  workflow_dispatch
+
+env:
+  VAR1: DEFAULT
+
+jobs:
+  job1:
+    runs-on: ubuntu-20.04
+    outputs:
+      SELECTED_COLOR: ${{ steps.step1.outputs.SELECTED_COLOR }}
+      ANOTHER_SELECTED_COLOR: ${{ steps.step1.outputs.ANOTHER_SELECTED_COLOR }}
+    steps:
+      - id: step1
+        name: step1
+        run: |
+          echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
+          echo "ANOTHER_SELECTED_COLOR=red" >> $GITHUB_OUTPUT
+  job2:
+    runs-on: ubuntu-20.04
+    needs: job1
+    steps:
+      - id: step1
+        name: step1
+        run: |
+          echo "SELECTED_COLOR: " ${{ needs.job1.outputs.SELECTED_COLOR }}
+          echo "ANOTHER_SELECTED_COLOR: " ${{ needs.job1.outputs.ANOTHER_SELECTED_COLOR }}
