@@ -37,8 +37,10 @@ jobs:
       - id: set_outputs
         name: set_outputs
         run: |
-          echo "response1=RESPUESTA 1" >> $GITHUB_OUTPUT
-          echo "response2=RESPUESTA 2" >> $GITHUB_OUTPUT
+          echo "::set-output name=response1::RESPUESTA 1"
+          echo "::set-output name=response2::RESPUESTA 2"
+          #echo "response1=RESPUESTA 1" >> $GITHUB_OUTPUT
+          #echo "response2=RESPUESTA 2" >> $GITHUB_OUTPUT
   test2:
     runs-on: ubuntu-20.04
     needs: tests
