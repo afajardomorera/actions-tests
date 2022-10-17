@@ -9,9 +9,6 @@ env:
 jobs:
   tests:
     runs-on: ubuntu-20.04
-    outputs:
-      response1: ${{ steps.set_outputs.output.response1 }} 
-      response2: ${{ steps.set_outputs.output.response2 }} 
     steps:
       - id: get_branch_name
         name: get_branch_name
@@ -34,19 +31,11 @@ jobs:
         run: |
           echo "RESPONSE_MESSAGE=❌ Incorrect Branch" >> $GITHUB_ENV
           echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
-      - id: set_outputs
-        name: set_outputs
-        run: |
-          echo "::set-output name=response1::RESPUESTA 1"
-          echo "::set-output name=response2::RESPUESTA 2"
-          #echo "response1=RESPUESTA 1" >> $GITHUB_OUTPUT
-          #echo "response2=RESPUESTA 2" >> $GITHUB_OUTPUT
   test2:
     runs-on: ubuntu-20.04
     needs: tests
     steps:
       - id: step1
+        if: ${{ env.RAMA != "" }}
         run: |
-          echo "RESPUESTA 1: " ${{ needs.tests.outputs.response1 }}
-          echo "RESPUESTA 2: " ${{ needs.tests.outputs.response2 }}
-         
+          echo "RAMA: " ${{ env.RAMA }}         
