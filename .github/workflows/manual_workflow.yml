@@ -36,6 +36,6 @@ jobs:
     needs: tests
     steps:
       - id: step1
-        if: ${{ env.RAMA != "" }}
+        if: ${{ env.RAMA != 'patata' }}
         run: |
           echo "RAMA: " ${{ env.RAMA }}         
