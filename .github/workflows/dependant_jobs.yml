@@ -10,14 +10,21 @@ jobs:
   job1:
     runs-on: ubuntu-20.04
     outputs:
-      SELECTED_COLOR: ${{ steps.step1.outputs.SELECTED_COLOR }}
-      ANOTHER_SELECTED_COLOR: ${{ steps.step1.outputs.ANOTHER_SELECTED_COLOR }}
+      SELECTED_COLOR: ${{ steps.step2.outputs.SELECTED_COLOR }}
+      ANOTHER_SELECTED_COLOR: ${{ steps.step2.outputs.ANOTHER_SELECTED_COLOR }}
+      VARIABLE: ${{ steps.step2.outputs.VARIABLE }}
     steps:
       - id: step1
         name: step1
         run: |
+          echo "VAR1=VARIABLE" >> $GITHUB_ENV
+      - id: step2
+        name: step1
+        run: |
+          echo "VARIABLE=${{ env.VAR1 }}"
           echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
           echo "ANOTHER_SELECTED_COLOR=red" >> $GITHUB_OUTPUT
+          echo "VARIABLE=${{ env.VAR1 }}" >> $GITHUB_OUTPUT
   job2:
     runs-on: ubuntu-20.04
     needs: job1
@@ -27,3 +34,4 @@ jobs:
         run: |
           echo "SELECTED_COLOR: " ${{ needs.job1.outputs.SELECTED_COLOR }}
           echo "ANOTHER_SELECTED_COLOR: " ${{ needs.job1.outputs.ANOTHER_SELECTED_COLOR }}
+          echo "VAR: " ${{ needs.job1.outputs.VARIABLE }}
