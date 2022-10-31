@@ -44,7 +44,7 @@ jobs:
       - id: show_comment_elements_22222222
         name: show_comment_elements_22222222
         run: |
-          echo "evento: " ${{ context }}
+          echo "evento: " ${{ github.context }}
           echo "Process status: " $PROCESS_STATUS
           echo "Deployment Command: " ${{ steps.split.outputs._0 }}
           echo "Namespace option: " ${{ steps.split.outputs._1 }}
