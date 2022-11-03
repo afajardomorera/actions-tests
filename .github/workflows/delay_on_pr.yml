@@ -19,9 +19,16 @@ jobs:
       SHORT_SHA: a0
     steps:
       - name: View the github context
-        run: echo "$GITHUB_CONTEXT"
+        run: |
+          echo "$GITHUB_CONTEXT"
+          echo "$ISSUE"
+          echo "$COMMENT"
+          echo "$PR"
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+          ISSUE: ${{ toJson(github.event.issue) }}
+          COMMENT: ${{ toJson(github.event.issue_comment) }}
+          PR: ${{ toJson(github.event.issue.pull_request) }}
       - name: get-repo-name
         run: |
           echo "Repo name: " ${{ github.event.repository.name }}
