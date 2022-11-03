@@ -18,6 +18,10 @@ jobs:
       RAMA: rama
       SHORT_SHA: a0
     steps:
+      - name: View the github context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: get-repo-name
         run: |
           echo "Repo name: " ${{ github.event.repository.name }}
