@@ -24,6 +24,7 @@ jobs:
           echo "Branch name: " $GITHUB_HEAD_REF
           echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_ENV
           echo "NOMBRE RAMA: " ${{ github.event.inputs.from_branch }}
+          echo "INPUTS: " ${{ github.event.inputs }}
           echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
           
       - name: rama
