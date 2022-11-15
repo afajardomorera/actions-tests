@@ -15,7 +15,8 @@ jobs:
           echo "issue_number: "${{ github.event.issue.number }}
           echo "repo_owner: "${{ github.repository_owner }}
           echo "repo_context: "${{ github.event.repository.name }}
-          echo "VALORES=${{ github.repository_owner }}_{{ github.event.repository.name }}_${{ github.event.issue.number }}" >> $GITHUB_ENV
+          echo "VALORES=https:\/\/github.com\/${{ github.repository_owner }}\/{{ github.event.repository.name }}\/${{ github.event.issue.number }}\/actions\/runs\/${{ github.run_id }}" >> $GITHUB_ENV
+      #echo "VALORES=${{ github.repository_owner }}_{{ github.event.repository.name }}_${{ github.event.issue.number }}" >> $GITHUB_ENV
       
       - name: ping
         run: |
