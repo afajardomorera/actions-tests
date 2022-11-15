@@ -8,14 +8,19 @@ jobs:
   ping-desde-pr:
     runs-on: ubuntu-latest
     env:
+     ISSUE: None
+     OWNER: None
+     REPO: None
+     RUN_ID: None
      VALORES: None
     steps:
       - name: ver valores
         run: |
-          echo "issue_number: "${{ github.event.issue.number }}
-          echo "repo_owner: "${{ github.repository_owner }}
-          echo "repo_context: "${{ github.event.repository.name }}
-          echo "VALORES=https:\/\/github.com\/${{ github.repository_owner }}\/{{ github.event.repository.name }}\/${{ github.event.issue.number }}\/actions\/runs\/${{ github.run_id }}" >> $GITHUB_ENV
+          echo "ISSUE=${{ github.event.issue.number }}" >> $GITHUB_ENV
+          echo "OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
+          echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
+          echo "RUN_ID=${{ github.run_id }}" >> $GITHUB_ENV
+          echo "VALORES=https:\/\/github.com\/$OWNER\/$REPO\/$ISSUE\/actions\/runs\/$RUN_ID" >> $GITHUB_ENV
       #echo "VALORES=${{ github.repository_owner }}_{{ github.event.repository.name }}_${{ github.event.issue.number }}" >> $GITHUB_ENV
       
       - name: ping
