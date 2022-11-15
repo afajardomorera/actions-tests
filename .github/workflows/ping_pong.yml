@@ -23,7 +23,7 @@ jobs:
           
       - name: montar url
         run: |
-          echo "VALORES=https:\/\/github.com\/$OWNER\/$REPO\/$ISSUE\/actions\/runs\/$RUN_ID" >> $GITHUB_ENV
+          echo "VALORES=<a href=\"https:\/\/github.com\/$OWNER\/$REPO\/$ISSUE\/actions\/runs\/$RUN_ID\">Despliegue<\/a>" >> $GITHUB_ENV
       #echo "VALORES=${{ github.repository_owner }}_{{ github.event.repository.name }}_${{ github.event.issue.number }}" >> $GITHUB_ENV
       
       - name: ping
