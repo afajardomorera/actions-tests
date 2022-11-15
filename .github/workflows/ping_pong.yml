@@ -20,6 +20,9 @@ jobs:
           echo "OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
           echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "RUN_ID=${{ github.run_id }}" >> $GITHUB_ENV
+          
+      - name: montar url
+        run: |
           echo "VALORES=https:\/\/github.com\/$OWNER\/$REPO\/$ISSUE\/actions\/runs\/$RUN_ID" >> $GITHUB_ENV
       #echo "VALORES=${{ github.repository_owner }}_{{ github.event.repository.name }}_${{ github.event.issue.number }}" >> $GITHUB_ENV
       
