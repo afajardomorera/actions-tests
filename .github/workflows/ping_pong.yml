@@ -1,4 +1,4 @@
-name: "Ping from code"
+name: "Ping from code repo"
 
 on:
   issue_comment:
