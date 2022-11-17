@@ -10,32 +10,7 @@ jobs:
   tests:
     runs-on: ubuntu-20.04
     steps:
-      - id: get_branch_name
-        name: get_branch_name
-        shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-      
-      - id: print_branch_name
-        name: print_branch_name
-        env:
-          RAMA2: ${{ steps.get_branch_name.outputs.branch }}
+      - id: mandar_notificacion
+        name: 'Mandar Notificación'
         run: |
-          echo "WORKFLOW ENV RAMA2: " $RAMA
-          echo "STEP ENV RAMA2: " $RAMA2
-          echo "Rama: " ${{ steps.get_branch_name.outputs.branch }} 
-          echo "RAMA=${{ steps.get_branch_name.outputs.branch }}" >> $GITHUB_ENV 
-      
-      - id: check_valid_branch
-        name: check_valid_branch
-        if: ${{ !startsWith(env.RAMA, 'main') && !startsWith(env.RAMA, 'patata') }}
-        run: |
-          echo "RESPONSE_MESSAGE=❌ Incorrect Branch" >> $GITHUB_ENV
-          echo "PROCESS_STATUS=KO" >> $GITHUB_ENV
-  test2:
-    runs-on: ubuntu-20.04
-    needs: tests
-    steps:
-      - id: step1
-        if: ${{ env.RAMA != 'patata' }}
-        run: |
-          echo "RAMA: " ${{ env.RAMA }}         
+          curl -d "{\"event_type\": \"procesar_despliegue\", \"client_payload\":{\"tipo_despliegue\":\"patata\",\"info\":{\"estado\":\"frita\"}}}" -H "Content-Type:application/json" -H "Authorization:token ${{ secrets.REPO_TOKEN }}" -H "Accept:application/vnd.github.everest-preview+json" "https://api.github.com/repos/tutantest/action_event_test/dispatches"
