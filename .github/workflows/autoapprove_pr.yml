@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     env:
-      FOTO: None
+      RAMA: None
     steps:
       - id: checkout
         name: Check Out y cambio a rama dev
@@ -20,7 +20,8 @@ jobs:
       - name: Timestamp
         id: get_timestamp
         run: |
-          echo "date=$(date +'%Y%m%d%H%M%S')" >> GITHUB_OUTPUT
+          echo $(date +'%Y%m%d%H%M%S')
+          echo "RAMA=$(date +'%Y%m%d%H%M%S')" >> GITHUB_ENV
           
       - id: create_branch_and_commit
         name: "[EKS] Create Brancha and commit EKS Image"
@@ -28,7 +29,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b deploy main
+          git checkout -b deploy$RAMA main
           sed -i 's/IMAGEN.*/IMAGEN:prueba/' ./terraform.tfvars
           git status
           git add terraform.tfvars
@@ -38,11 +39,11 @@ jobs:
       - name: Crear PR
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "deploy"
+          branch: $RAMA
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR"
           body:
-            Prueba de PR automática
+            Prueba de PR automática - $RAMA
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
           
