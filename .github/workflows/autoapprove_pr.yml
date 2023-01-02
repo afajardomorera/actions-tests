@@ -14,16 +14,17 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-      - name: Timestamp
+          
+      - name: get_timestamp
         id: get_timestamp
         run: |
           echo $(date +'%Y%m%d%H%M%S')
-          echo "date=deploy$(date +'%Y%m%d%H%M%S')" >> GITHUB_OUTPUT
+          echo "date=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
       - id: create_branch_and_commit
         name: "[EKS] Create Brancha and commit EKS Image"
         env:
-          RAMA: deploy${{ steps.get_timestamp.outputs.date }}
+          RAMA: ${{ steps.get_timestamp.outputs.date }}
         run: |
           echo RAMA CALCULADA: ${{ env.RAMA }}
           echo RAMA CALCULADA2: $RAMA
