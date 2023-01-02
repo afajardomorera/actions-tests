@@ -15,19 +15,13 @@ jobs:
         with:
           ref: main
       
-      - name: Extraer datos de git commit
-        uses: rlespinasse/git-commit-data-action@v1.x
-        
-      - name: Actualizar información del autor
-        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
-          
       - name: get_timestamp
         id: get_timestamp
         run: |
           echo $(date +'%Y%m%d%H%M%S')
           echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
-      - id: create_branch_and_commit
+      - id: create_branch_and_commit_it
         name: "[EKS] Create Brancha and commit EKS Image"
         run: |
           git config user.name "action-tests[bot]"
@@ -49,7 +43,7 @@ jobs:
           git config user.email "action-tests[bot]@users.noreply.github.com"
           sed -i 's/IMAGEN.*/IMAGEN:prueba666/' ./terraform.tfvars
           git status
-          git add terraform.tfvars
+          git add -A
           git commit -m "Updated file for deploying image: DONE!!"
           git push
       
@@ -60,8 +54,6 @@ jobs:
           branch: ${{ steps.get_timestamp.outputs.rama}}
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR"
-          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
-          author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama}}
           token: ${{ secrets.GITHUB_TOKEN }}
