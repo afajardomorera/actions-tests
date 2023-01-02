@@ -70,6 +70,14 @@ jobs:
       - id: checkout
         name: Check Out y cambio a rama
         uses: actions/checkout@v3
+      
+      - id: extract_commit_data
+        name: Extraer datos de commit
+        uses: rlespinasse/git-commit-data-action@v1.x
+        
+      - id: author
+        name: Registrar autor del commit
+        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
         
       - name: Crear PR
         id: pr_creation
@@ -81,4 +89,4 @@ jobs:
           body:
             Prueba de PR automática - ${{ needs.create-branch.outputs.rama }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: true
+          delete-branch: false
