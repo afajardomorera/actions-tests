@@ -44,6 +44,12 @@ jobs:
       - id: validar
         name: validar
         run: echo "Rama para PR ${{ needs.process-deployment-command.outputs.rama }}"
+        
+      - id: checkout
+        name: Check Out y cambio a rama dev
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.process-deployment-command.outputs.rama }}
       
       - name: Crear PR
         id: pr_creation
