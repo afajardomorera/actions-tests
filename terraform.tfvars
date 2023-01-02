@@ -14,7 +14,7 @@ cluster = {
 # Microservices configuration 
 gestion_horarios = {
   "dev" = {
-    "image"          = "IMAGEN222:prueba222
+    "image"          = "IMAGEN333:prueba333
     "mock_profile"   = false
     "time_expired"   = 30
     "replicas"       = 1
