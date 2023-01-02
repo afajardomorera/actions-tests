@@ -54,11 +54,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: true
           
-      - name: Aprobar Pull Request
-        uses: juliangruber/approve-pull-request-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.pr_creation.outputs.pull-request-number }}
+      #- name: Aprobar Pull Request
+      #  uses: juliangruber/approve-pull-request-action@v1
+      #  with:
+      #    github-token: ${{ secrets.GITHUB_TOKEN }}
+      #    number: ${{ steps.pr_creation.outputs.pull-request-number }}
       
       - name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
