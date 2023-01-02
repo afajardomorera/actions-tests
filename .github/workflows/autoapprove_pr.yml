@@ -20,22 +20,8 @@ jobs:
       - name: Timestamp
         id: get_timestamp
         run: |
-          echo "FOTO=$(date +'%Y%m%d%H%M%S')" >> GITHUB_ENV
+          echo "date=$(date +'%Y%m%d%H%M%S')" >> GITHUB_OUTPUT
           
-
-      - id: create_branch_and_commit
-        name: "[EKS] Create Brancha and commit EKS Image"
-        run: |
-          sudo apt-get install sed
-          git config user.name "action-tests[bot]"
-          git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b deploy${{ env.FOTO }}
-          sed -i 's/IMAGEN.*/IMAGEN:prueba/' ./terraform.tfvars
-          git status
-          git add terraform.tfvars
-          git commit -m "Updated file for deploying image: DONE!!"
-          git push
-      
       - name: Crear PR
         uses: peter-evans/create-pull-request@v3
         with:
@@ -48,3 +34,16 @@ jobs:
             Prueba de PR automática
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
+          
+      - id: create_branch_and_commit
+        name: "[EKS] Create Brancha and commit EKS Image"
+        run: |
+          sudo apt-get install sed
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
+          git checkout -b deploy${{ env.FOTO }}
+          sed -i 's/IMAGEN.*/IMAGEN:prueba/' ./terraform.tfvars
+          git status
+          git add terraform.tfvars
+          git commit -m "Updated file for deploying image: DONE!!"
+          git push
