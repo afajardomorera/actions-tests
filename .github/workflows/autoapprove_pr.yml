@@ -89,7 +89,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN2/IMAGEN111:prueba111/' ./terraform.tfvars
+          sed -i 's/IMAGEN2.*/IMAGEN111:prueba111/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
@@ -99,12 +99,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update-image,create-pr]
     steps:
-      - id: merge_pr
-        name: Merge Pull Request
-        uses: juliangruber/merge-pull-request-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ needs.create-pr.outputs.pull_number }}
+      - id: test
+        name: test
+        run: echo "PR ${{ needs.create-pr.outputs.pull_number }}"
+      
+      #- id: merge_pr
+      #  name: Merge Pull Request
+      #  uses: juliangruber/merge-pull-request-action@v1
+      #  with:
+      #    github-token: ${{ secrets.GITHUB_TOKEN }}
+      #    number: ${{ needs.create-pr.outputs.pull_number }}
           method: squash
         
     
