@@ -29,7 +29,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout ${{ steps.get_timestamp.outputs.rama}}
+          git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
           sed -i 's/IMAGEN/IMAGEN2:prueba666/' ./terraform.tfvars
           git status
           git add -A
@@ -40,8 +40,8 @@ jobs:
         id: pr_creation
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: main
-          base: ${{ steps.get_timestamp.outputs.rama }}
+          branch: ${{ steps.get_timestamp.outputs.rama }}
+          base: main
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
