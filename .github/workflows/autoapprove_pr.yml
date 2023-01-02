@@ -36,17 +36,17 @@ jobs:
           git commit -m "Updated file for deploying image: DONE!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
 
-      - name: Crear PR
-        id: pr_creation
-        uses: peter-evans/create-pull-request@v3
-        with:
-          branch: ${{ steps.get_timestamp.outputs.rama }}
-          base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
-          body:
-            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: false
+      #- name: Crear PR
+      #  id: pr_creation
+      #  uses: peter-evans/create-pull-request@v3
+      #  with:
+      #    branch: ${{ steps.get_timestamp.outputs.rama }}
+      #    base: main
+      #    title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+      #    body:
+      #      Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+      #    token: ${{ secrets.GITHUB_TOKEN }}
+      #    delete-branch: false
       
       #- name: Aprobar Pull Request
       #  uses: juliangruber/approve-pull-request-action@v1
