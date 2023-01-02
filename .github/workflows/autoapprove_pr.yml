@@ -27,6 +27,7 @@ jobs:
         run: |
           echo RAMA CALCULADA: ${{ env.RAMA }}
           echo RAMA CALCULADA2: $RAMA
+          echo RAMA CALCULADA3: ${{ steps.get_timestamp.outputs.date}}
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
