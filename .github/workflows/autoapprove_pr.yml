@@ -54,7 +54,7 @@ jobs:
         
       - id: author
         name: Registrar autor del commit
-        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
+        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR3
         
       - name: Crear PR
         id: pr_creation
