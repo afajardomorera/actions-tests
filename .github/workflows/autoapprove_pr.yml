@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
           
-  update-image:
+  update-image-and-merge-pr:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     needs: [create-branch,create-pr]
@@ -89,20 +89,12 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
           rm LAST_DEPLOY
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
-
-  process-pull-request:
-    runs-on: ubuntu-latest
-    needs: [update-image,create-pr]
-    steps:
-      - id: test
-        name: test
-        run: echo "PR ${{ needs.create-pr.outputs.pull_number }}"
 
       - id: merge_pr
         name: Merge Pull Request
