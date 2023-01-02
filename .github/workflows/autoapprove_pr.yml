@@ -22,6 +22,18 @@ jobs:
         run: |
           echo $(date +'%Y%m%d%H%M%S')
           echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+          
+      - name: Crear PR
+        id: pr_creation
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: ${{ steps.get_timestamp.outputs.rama }}
+          base: main
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+          body:
+            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: false
       
       - id: create_branch_and_commit_it
         name: "[EKS] Create Brancha and commit EKS Image"
@@ -29,39 +41,12 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          git checkout ${{ steps.get_timestamp.outputs.rama}}
           sed -i 's/IMAGEN/IMAGEN2:prueba666/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
-          
-  pull-request-process:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 5
-    needs: process-deployment-command
-    steps:
-      - id: validar
-        name: validar
-        run: echo "Rama para PR ${{ needs.process-deployment-command.outputs.rama }}"
-        
-      - id: checkout
-        name: Check Out y cambio a rama dev
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.process-deployment-command.outputs.rama }}
-      
-      - name: Crear PR
-        id: pr_creation
-        uses: peter-evans/create-pull-request@v3
-        with:
-          branch: ${{ needs.process-deployment-command.outputs.rama }}
-          base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.process-deployment-command.outputs.rama }}"
-          body:
-            Prueba de PR automática - ${{ needs.process-deployment-command.outputs.rama }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: false
           
       #- name: Aprobar Pull Request
       #  uses: juliangruber/approve-pull-request-action@v1
