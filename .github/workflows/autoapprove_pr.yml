@@ -104,12 +104,12 @@ jobs:
         name: test
         run: echo "PR ${{ needs.create-pr.outputs.pull_number }}"
       
-      #- id: merge_pr
-      #  name: Merge Pull Request
-      #  uses: juliangruber/merge-pull-request-action@v1
-      #  with:
-      #    github-token: ${{ secrets.GITHUB_TOKEN }}
-      #    number: ${{ needs.create-pr.outputs.pull_number }}
-      #    method: squash
+      - id: merge_pr
+        name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ needs.create-pr.outputs.pull_number }}
+          method: squash
         
     
