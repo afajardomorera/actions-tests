@@ -33,7 +33,7 @@ jobs:
           git status
           git add terraform.tfvars
           git commit -m "Updated file for deploying image: DONE!!"
-          git push
+          git push -u
       
       - name: Crear PR
         uses: peter-evans/create-pull-request@v3
