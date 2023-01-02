@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
           
-  update-image-and-merge-pr:
+  update-image:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     needs: [create-branch,create-pr]
@@ -96,6 +96,14 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
 
+  process-pull-request:
+    runs-on: ubuntu-latest
+    needs: [update-image,create-pr]
+    steps:
+      - id: test
+        name: test
+        run: echo "PR ${{ needs.create-pr.outputs.pull_number }}"
+
       - id: merge_pr
         name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
@@ -103,3 +111,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ needs.create-pr.outputs.pull_number }}
           method: squash
+
+      
+	  #- id: approve_pr
+      #  name: Merge Pull Request
+      #  uses: juliangruber/approve-pull-request-action@v1
+      #  with:
+      #    github-token: ${{ secrets.APPROVER_TOKEN }}
+      #    number: ${{ needs.create-pr.outputs.pull_number }}
