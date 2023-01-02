@@ -14,39 +14,57 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
+      
+      - name: Extraer datos de git commit
+        uses: rlespinasse/git-commit-data-action@v1.x
+        
+      - name: Actualizar información del autor
+        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
           
       - name: get_timestamp
         id: get_timestamp
         run: |
           echo $(date +'%Y%m%d%H%M%S')
-          echo "date=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+          echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
       - id: create_branch_and_commit
         name: "[EKS] Create Brancha and commit EKS Image"
-        env:
-          RAMA: ${{ steps.get_timestamp.outputs.date }}
         run: |
-          echo RAMA CALCULADA: ${{ env.RAMA }}
-          echo RAMA CALCULADA2: $RAMA
-          echo RAMA CALCULADA3: ${{ steps.get_timestamp.outputs.date}}
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b deployBranch main
-          sed -i 's/IMAGEN.*/IMAGEN:prueba2/' ./terraform.tfvars
+          git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          sed -i 's/IMAGEN.*/IMAGEN:prueba3/' ./terraform.tfvars
           git status
           git add terraform.tfvars
           git commit -m "Updated file for deploying image: DONE!!"
-          git push --set-upstream origin deployBranch
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
       
       - name: Crear PR
+        id: pr_creation
         uses: peter-evans/create-pull-request@v3
         with:
           branch: $RAMA
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR"
+          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
+          author: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
           body:
             Prueba de PR automática - $RAMA
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: true
+          
+      - name: Aprobar Pull Request
+        uses: juliangruber/approve-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.pr_creation.outputs.pull-request-number }}
+      
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.pr_creation.outputs.pull-request-number }}
+          method: squash
+      
           
