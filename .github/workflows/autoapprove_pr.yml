@@ -27,8 +27,8 @@ jobs:
         id: pr_creation
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: ${{ steps.get_timestamp.outputs.rama }}
-          base: main
+          branch: main
+          base: ${{ steps.get_timestamp.outputs.rama }}
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
