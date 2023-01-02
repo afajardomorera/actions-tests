@@ -77,4 +77,4 @@ jobs:
           body:
             Prueba de PR automática - ${{ needs.create-branch.outputs.rama }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: false
+          delete-branch: true
