@@ -8,6 +8,8 @@ jobs:
   process-deployment-command:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
+    outputs:
+      rama: ${{ steps.get_timestamp.outputs.rama }}
     steps:
       - id: checkout
         name: Check Out y cambio a rama dev
@@ -33,18 +35,29 @@ jobs:
           git add -A
           git commit -m "Updated file for deploying image: DONE!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+          
+  pull-request-process:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    needs: process-deployment-command
+    steps:
+      - id: checkout
+        name: Check Out y cambio a rama ${{ needs.process-deployment-command.outputs.rama }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.process-deployment-command.outputs.rama }}
       
-      #- name: Crear PR
-      #  id: pr_creation
-      #  uses: peter-evans/create-pull-request@v3
-      #  with:
-      #    branch: ${{ steps.get_timestamp.outputs.rama}}
-      #    base: main
-      #    title: "[DEPLOY BY COMMENT] Automatic PR"
-      #    body:
-      #      Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama}}
-      #    token: ${{ secrets.GITHUB_TOKEN }}
-      #    delete-branch: true
+      - name: Crear PR
+        id: pr_creation
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: ${{ needs.process-deployment-command.outputs.rama }}
+          base: main
+          title: "[DEPLOY BY COMMENT] Automatic PR"
+          body:
+            Prueba de PR automática - ${{ needs.process-deployment-command.outputs.rama }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: true
           
       #- name: Aprobar Pull Request
       #  uses: juliangruber/approve-pull-request-action@v1
