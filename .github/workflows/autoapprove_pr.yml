@@ -43,23 +43,23 @@ jobs:
     steps:
       - id: test
         name: test
-        run: echo "RAMA ${{ needs.process-deployment-command.output.rama }}"
+        run: echo "RAMA ${{ needs.process-deployment-command.outputs.rama }}"
   
       - id: checkout
         name: Check Out y cambio a rama dev
         uses: actions/checkout@v3
         with:
-          ref: ${{ needs.process-deployment-command.output.rama }}
+          ref: ${{ needs.process-deployment-command.outputs.rama }}
 
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: ${{ needs.process-deployment-command.output.rama }}
+          branch: ${{ needs.process-deployment-command.outputs.rama }}
           base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.process-deployment-command.output.rama }}"
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.process-deployment-command.outputs.rama }}"
           body:
-            Prueba de PR automática - ${{ needs.process-deployment-command.output.rama }}
+            Prueba de PR automática - ${{ needs.process-deployment-command.outputs.rama }}
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
       
