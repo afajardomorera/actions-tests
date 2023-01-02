@@ -110,9 +110,9 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ needs.create-pr.outputs.pull_number }}
-          method: squash
+          merge-method: squash
       
-	  #- id: approve_pr
+      #- id: approve_pr
       #  name: Merge Pull Request
       #  uses: juliangruber/approve-pull-request-action@v1
       #  with:
