@@ -25,7 +25,7 @@ jobs:
       - name: Crear PR
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "deploy${{ steps.get_timestamp.outputs.date }}"
+          branch: "deploy"
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR"
           committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}
