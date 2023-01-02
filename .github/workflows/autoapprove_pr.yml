@@ -8,6 +8,8 @@ jobs:
   process-deployment-command:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
+    env:
+      FOTO: None
     steps:
       - id: checkout
         name: Check Out y cambio a rama dev
@@ -17,7 +19,9 @@ jobs:
       
       - name: Timestamp
         id: get_timestamp
-        run: echo "date=$(date +'%Y%m%d%H%M%S')" >> GITHUB_OUTPUT
+        run: |
+          echo "FOTO=$(date +'%Y%m%d%H%M%S')" >> GITHUB_ENV
+          
 
       - id: create_branch_and_commit
         name: "[EKS] Create Brancha and commit EKS Image"
@@ -25,7 +29,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b deploy${{ steps.get_timestamp.outputs.date }}
+          git checkout -b deploy${{ env.FOTO }}
           sed -i 's/IMAGEN.*/IMAGEN:prueba/' ./terraform.tfvars
           git status
           git add terraform.tfvars
