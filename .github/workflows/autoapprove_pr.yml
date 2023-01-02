@@ -22,12 +22,20 @@ jobs:
         run: |
           echo $(date +'%Y%m%d%H%M%S')
           echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+      
+      - id: create_branch
+        name: "[EKS] Create Branch"
+        run: |
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
+          git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
 
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: mi_rama
+          branch: ${{ steps.get_timestamp.outputs.rama}}
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
