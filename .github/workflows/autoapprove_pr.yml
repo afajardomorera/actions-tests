@@ -28,7 +28,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b deploy${{ env.FOTO }}
+          git checkout -b deploy main
           sed -i 's/IMAGEN.*/IMAGEN:prueba/' ./terraform.tfvars
           git status
           git add terraform.tfvars
