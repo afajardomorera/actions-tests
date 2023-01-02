@@ -22,19 +22,6 @@ jobs:
         run: |
           echo "date=$(date +'%Y%m%d%H%M%S')" >> GITHUB_OUTPUT
           
-      - name: Crear PR
-        uses: peter-evans/create-pull-request@v3
-        with:
-          branch: "deploy"
-          base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR"
-          committer: ${{ env.GIT_COMMIT_AUTHOR_NAME }}
-          author: ${{ env.GIT_COMMIT_AUTHOR_NAME }}
-          body:
-            Prueba de PR automática
-          token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: false
-          
       - id: create_branch_and_commit
         name: "[EKS] Create Brancha and commit EKS Image"
         run: |
@@ -46,4 +33,15 @@ jobs:
           git status
           git add terraform.tfvars
           git commit -m "Updated file for deploying image: DONE!!"
-          git push
+      
+      - name: Crear PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: "deploy"
+          base: main
+          title: "[DEPLOY BY COMMENT] Automatic PR"
+          body:
+            Prueba de PR automática
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: false
+          
