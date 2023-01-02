@@ -41,6 +41,10 @@ jobs:
     timeout-minutes: 5
     needs: process-deployment-command
     steps:
+      - id: test
+        name: test
+        run: echo "RAMA ${{ needs.process-deployment-command.output.rama }}"
+  
       - id: checkout
         name: Check Out y cambio a rama dev
         uses: actions/checkout@v3
