@@ -53,11 +53,11 @@ jobs:
         with:
           branch: ${{ needs.process-deployment-command.outputs.rama }}
           base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR"
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.process-deployment-command.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ needs.process-deployment-command.outputs.rama }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: true
+          delete-branch: false
           
       #- name: Aprobar Pull Request
       #  uses: juliangruber/approve-pull-request-action@v1
