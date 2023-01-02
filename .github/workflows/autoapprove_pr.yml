@@ -48,10 +48,6 @@ jobs:
         with:
           ref: ${{ needs.create-branch.outputs.rama }}
       
-      - id: extract_commit_data
-        name: Extraer datos de commit
-        uses: rlespinasse/git-commit-data-action@v1.x
-        
       - id: author
         name: Registrar autor del commit
         run: echo ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
@@ -89,7 +85,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
+          sed -i 's/IMAGEN444.*/IMAGEN555:prueba555/' ./terraform.tfvars
           rm LAST_DEPLOY
           git status
           git add -A
