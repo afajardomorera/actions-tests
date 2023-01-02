@@ -58,7 +58,7 @@ jobs:
         
       - name: Crear PR
         id: pr_creation
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           branch: ${{ needs.create-branch.outputs.rama }}
           base: main
@@ -104,7 +104,7 @@ jobs:
         uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ needs.create_pr.outputs.pull_number }}
+          number: ${{ needs.create-pr.outputs.pull_number }}
           method: squash
         
     
