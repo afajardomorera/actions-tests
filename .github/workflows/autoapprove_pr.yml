@@ -21,12 +21,12 @@ jobs:
         id: get_timestamp
         run: |
           echo $(date +'%Y%m%d%H%M%S')
-          echo "RAMA=deploy$(date +'%Y%m%d%H%M%S')" >> GITHUB_OUTPUT
+          echo "RAMA=deploy$(date +'%Y%m%d%H%M%S')" >> GITHUB_ENV
           
       - id: create_branch_and_commit
         name: "[EKS] Create Brancha and commit EKS Image"
         run: |
-          echo ${{ steps.get_timestamp.outputs.RAMA }}
+          echo RAMA: ${{ env.RAMA }}
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
@@ -46,5 +46,5 @@ jobs:
           body:
             Prueba de PR automática - $RAMA
           token: ${{ secrets.GITHUB_TOKEN }}
-          delete-branch: false
+          delete-branch: true
           
