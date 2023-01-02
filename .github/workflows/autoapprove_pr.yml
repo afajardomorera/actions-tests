@@ -109,6 +109,6 @@ jobs:
       #  with:
       #    github-token: ${{ secrets.GITHUB_TOKEN }}
       #    number: ${{ needs.create-pr.outputs.pull_number }}
-          method: squash
+      #    method: squash
         
     
