@@ -54,7 +54,7 @@ jobs:
         
       - id: author
         name: Registrar autor del commit
-        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR3
+        run: echo ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
         
       - name: Crear PR
         id: pr_creation
@@ -90,6 +90,7 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           sed -i 's/IMAGEN2.*/IMAGEN111:prueba111/' ./terraform.tfvars
+          rm LAST_DEPLOY
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
