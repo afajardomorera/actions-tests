@@ -34,7 +34,7 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          sed -i 's/IMAGEN.*/IMAGEN:prueba4/' ./terraform.tfvars
+          sed -i 's/IMAGEN.*/IMAGEN:prueba666/' ./terraform.tfvars
           git status
           git add terraform.tfvars
           git commit -m "Updated file for deploying image: DONE!!"
