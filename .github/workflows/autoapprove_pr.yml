@@ -26,20 +26,38 @@ jobs:
       - id: create_branch_and_commit_it
         name: "[EKS] Create Brancha and commit EKS Image"
         run: |
-          sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          sed -i 's/IMAGEN/IMAGEN2:prueba666/' ./terraform.tfvars
-          git status
-          git add -A
-          git commit -m "Updated file for deploying image: DONE!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+  
+  eks-image:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    needs: process-deployment-command    
+    steps: 
+    - id: checkout
+      name: Check Out y cambio a rama dev
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ needs.process-deployment-command.outputs.rama }}
+          
+    - id: update_eks_image
+      name: "[EKS] Create Branch and commit EKS Image"
+      run: |
+        sudo apt-get install sed
+        git config user.name "action-tests[bot]"
+        git config user.email "action-tests[bot]@users.noreply.github.com"
+        sed -i 's/IMAGEN/IMAGEN2:prueba666/' ./terraform.tfvars
+        git status
+        git add -A
+        git commit -m "Updated file for deploying image: DONE!!"
+        git push
   
   tratar-pull-request:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
-    needs: process-deployment-command
+    needs: [process-deployment-command, eks-image]
     steps:
       - id: test
         name: test
