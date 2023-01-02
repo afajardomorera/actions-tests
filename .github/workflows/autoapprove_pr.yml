@@ -41,11 +41,9 @@ jobs:
     timeout-minutes: 5
     needs: process-deployment-command
     steps:
-      - id: checkout
-        name: Check Out y cambio a rama ${{ needs.process-deployment-command.outputs.rama }}
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.process-deployment-command.outputs.rama }}
+      - id: validar
+        name: validar
+        run: echo "Rama para PR ${{ needs.process-deployment-command.outputs.rama }}"
       
       - name: Crear PR
         id: pr_creation
