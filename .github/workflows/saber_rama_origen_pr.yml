@@ -1,7 +1,9 @@
 name: Saber Rama Origen PR
 
 on:
-  workflow_dispatch
+  pull_request:
+  push:
+    branches: main
 
 env:
   RAMA: DEFAULT
