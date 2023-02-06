@@ -17,5 +17,5 @@ jobs:
         run: |
           echo "rama HEAD: " $(echo ${GITHUB_REF#refs/heads/})
           echo "rama BASE: " $(echo ${GITHUB_REF#refs/base/})
-          echo "1" ${github.base_ref}
-          echo "2" ${github.head_ref}
+          echo "rama BASE:" ${github.base_ref}
+          echo "rama HEAD:" ${github.head_ref}
