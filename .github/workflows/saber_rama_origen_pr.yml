@@ -12,8 +12,17 @@ jobs:
   saber_rama:
     runs-on: ubuntu-20.04
     steps:
-      - id: hotfix
-        name: 'Rama Hotfix'
-        if: contains($GITHUB_HEAD_REF,"hotfix/")
+      - id: origen
+        name: 'Rama Origen'
         run: |
-          echo  "$GITHUB_HEAD_REF"
+          echo  "origen=$GITHUB_HEAD_REF" >> GITHUB_OUTPUT
+      - id: es_hotfix
+        name: "Rama Hotfix"
+        if: ${{ contains(steps.origen.outputs.origen,"hotfix/") }}
+        run: |
+          echo ${{ steps.origen.outputs.origen }}
+      - id: no_es_hotfix
+        name: "NO Rama Hotfix"
+        if: ${{ !contains(steps.origen.outputs.origen,"hotfix/") }}
+        run: |
+          echo "NO ES HOTFIX"
