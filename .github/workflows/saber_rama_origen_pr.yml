@@ -15,5 +15,5 @@ jobs:
       - id: print_rama
         name: 'Ver Rama'
         run: |
-          echo "HEAD: " ${ GITHUB_HEAD_REF }
-          echo "BASE: " ${ GITHUB_BASE_REF }
+          echo "HEAD: " $(echo ${GITHUB_REF#refs/heads/})
+          echo "BASE: " $(echo ${GITHUB_REF#refs/base/})
