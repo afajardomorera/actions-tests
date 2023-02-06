@@ -13,4 +13,4 @@ jobs:
       - id: print_rama
         name: 'Ver Rama'
         run: |
-          echo ${{ github.event }}
+          echo ${{ toJson(github.event) }}
