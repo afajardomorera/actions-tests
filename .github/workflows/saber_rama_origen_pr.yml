@@ -1,0 +1,16 @@
+name: Saber Rama Origen PR
+
+on:
+  workflow_dispatch
+
+env:
+  RAMA: DEFAULT
+
+jobs:
+  saber_rama:
+    runs-on: ubuntu-20.04
+    steps:
+      - id: print_rama
+        name: 'Ver Rama'
+        run: |
+          echo ${{ github.event }}
