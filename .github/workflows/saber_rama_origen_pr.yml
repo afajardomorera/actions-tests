@@ -14,11 +14,11 @@ jobs:
     steps:
       - id: hotfix
         name: 'Rama Hotfix'
-        if: ${{ contains($GITHUB_HEAD_REF,"hotfix/") }}
+        if: ${{ contains(GITHUB_HEAD_REF,"hotfix/") }}
         run: |
           echo  "$GITHUB_HEAD_REF"
       - id: no_hotfix
         name: 'Rama NO hotfix'
-        if: ${{ !contains($GITHUB_HEAD_REF,"hotfix/")" }}
+        if: ${{ !contains(GITHUB_HEAD_REF,"hotfix/")" }}
         run: |
           echo  "$GITHUB_BASE_REF"
