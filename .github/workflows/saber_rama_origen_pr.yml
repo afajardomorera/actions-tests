@@ -15,7 +15,8 @@ jobs:
       - id: origen
         name: 'Rama Origen'
         run: |
-          echo  "origen=$GITHUB_HEAD_REF" >> GITHUB_OUTPUT
+          echo "$GITHUB_HEAD_REF"
+          echo  "origen=$GITHUB_HEAD_REF" >> $GITHUB_OUTPUT
       - id: es_hotfix
         name: "Rama Hotfix"
         if: ${{ contains(steps.origen.outputs.origen,'hotfix/') }}
