@@ -17,5 +17,5 @@ jobs:
         run: |
           echo "rama HEAD: " $(echo ${GITHUB_REF#refs/heads/})
           echo "rama BASE: " $(echo ${GITHUB_REF#refs/base/})
-          echo "1" ${GITHUB_REF##*/}
-          echo "2" ${toJson(github)}
+          echo "1" ${github.base_ref}
+          echo "2" ${github.head_ref}
