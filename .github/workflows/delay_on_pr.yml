@@ -6,22 +6,19 @@ on:
       - main
   
 jobs:
-  deploy:
-    uses: afajardomorera/actions-tests/.github/workflows/workflow_dispatch.yml@main
-    with:
-      parametro1: FEDERICO
   simulation:
     runs-on: ubuntu-latest
-    needs: deploy
-    env: 
-      RAMA: rama
-      SHORT_SHA: a0
     steps:
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
         with:
           time: '1m'
-          
+  
+  #deploy:
+  #  uses: afajardomorera/actions-tests/.github/workflows/workflow_dispatch.yml@main
+  #  with:
+  #    parametro1: FEDERICO
+  
       #- name: print_branch_name
       #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
       #  run: |
