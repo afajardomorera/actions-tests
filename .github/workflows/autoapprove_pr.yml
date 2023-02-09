@@ -50,7 +50,9 @@ jobs:
       
       - id: register_last_deploy
         name: Registrar autor del commit
-        run: echo ${{ github.event.issue.actor }} " -> " ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
+        run: |
+          echo ${{ github.event.issue.actor }} " -> " ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
+          cho ${{ toJson(github.event) }}
       
       - name: Crear PR
         id: pr_creation
