@@ -34,7 +34,7 @@ jobs:
   create-pr:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [create-branch,update-image]
+    needs: [create-branch]
     outputs:
       pull_number: ${{ steps.pr_creation.outputs.pull-request-number }}
     steps:
