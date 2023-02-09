@@ -50,7 +50,7 @@ jobs:
       
       - id: last_deploy
         name: Registrar autor del commit
-        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME + " -> " + needs.create-branch.outputs.rama }} > LAST_DEPLOY
+        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} " -> " ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
       
       - id: push_image_to_branch
         name: "[EKS] Push image to branch"
