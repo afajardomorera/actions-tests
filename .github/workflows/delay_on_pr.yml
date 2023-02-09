@@ -12,7 +12,7 @@ jobs:
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '2m'
+          time: '1m'
   
   #deploy:
   #  uses: afajardomorera/actions-tests/.github/workflows/workflow_dispatch.yml@main
