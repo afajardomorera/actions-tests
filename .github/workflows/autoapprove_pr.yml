@@ -29,6 +29,11 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          sudo apt-get install sed
+          sed -i 's/IMAGEN111.*/IMAGEN222:prueba222/' ./terraform.tfvars
+          git status
+          git add -A
+          git commit -m "Updated file for deploying image: DONE 2!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
   
   create-pr:
@@ -64,37 +69,9 @@ jobs:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
   
-  update-image:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 5
-    needs: [create-branch,create-pr]
-    steps:
-      - id: test
-        name: test
-        run: echo "RAMA ${{ needs.create-branch.outputs.rama }}"
-        
-      - id: checkout
-        name: Check Out y cambio a rama dev
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.create-branch.outputs.rama }}
-      
-      - id: push_image_to_branch
-        name: "[EKS] Push image to branch"
-        run: |
-          sudo apt-get install sed
-          git config user.name "action-tests[bot]"
-          git config user.email "action-tests[bot]@users.noreply.github.com"
-          git pull
-          sed -i 's/IMAGEN111.*/IMAGEN222:prueba222/' ./terraform.tfvars
-          git status
-          git add -A
-          git commit -m "Updated file for deploying image: DONE 2!!"
-          git push
-  
   process-pull-request:
     runs-on: ubuntu-latest
-    needs: [create-pr,update-image]
+    needs: [create-pr]
     steps:
       - id: test
         name: test
@@ -107,11 +84,3 @@ jobs:
           github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
           number: ${{ needs.create-pr.outputs.pull_number }}
           method: squash
-
-     
-      #- id: approve_pr
-      #  name: Merge Pull Request
-      #  uses: juliangruber/approve-pull-request-action@v1
-      #  with:
-      #    github-token: ${{ secrets.APPROVER_TOKEN }}
-      #    number: ${{ needs.create-pr.outputs.pull_number }}
