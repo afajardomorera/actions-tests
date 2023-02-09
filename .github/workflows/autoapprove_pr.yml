@@ -53,6 +53,10 @@ jobs:
         with:
           ref: ${{ needs.create-branch.outputs.rama }}
       
+      - id: register_last_deploy
+        name: Registrar autor del commit
+        run: echo ${{ github.actor }} " -> " ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
+      
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
@@ -80,8 +84,3 @@ jobs:
           github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
           number: ${{ needs.create-pr.outputs.pull_number }}
           method: squash
-
-
-#- id: register_last_deploy
-      #  name: Registrar autor del commit
-      #  run: echo ${{ github.actor }} " -> " ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
