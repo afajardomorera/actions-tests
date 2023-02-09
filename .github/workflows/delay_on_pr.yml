@@ -2,6 +2,9 @@ name: Wait time
 
 on:
   workflow_call:
+    inputs:
+      time: 
+        type: string
   
 jobs:
   simulation:
@@ -10,7 +13,7 @@ jobs:
       - name: Sleep for 30 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '1m'
+          time: ${{ inputs.time }}
   
   #deploy:
   #  uses: afajardomorera/actions-tests/.github/workflows/workflow_dispatch.yml@main
