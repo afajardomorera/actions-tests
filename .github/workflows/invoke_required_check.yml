@@ -7,4 +7,4 @@ on:
 
 jobs:
   main-pull-request:
-    uses: uses: ./.github/workflows/deploy-eks.yml/delay_on_pr.yaml
+    uses: ./.github/workflows/deploy-eks.yml/delay_on_pr.yml
