@@ -52,6 +52,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
+          git pull
           sed -i 's/IMAGEN555.*/IMAGEN666:prueba666/' ./terraform.tfvars
           git status
           git add -A
