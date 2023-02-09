@@ -100,7 +100,7 @@ jobs:
   
   process-pull-request:
     runs-on: ubuntu-latest
-    needs: [create-pr,update-image]
+    needs: [pr-checks]
     steps:
       - id: test
         name: test
