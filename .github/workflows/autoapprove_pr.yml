@@ -86,7 +86,7 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git pull
-          sed -i 's/IMAGEN555.*/IMAGEN666:prueba666/' ./terraform.tfvars
+          sed -i 's/IMAGEN666.*/IMAGEN777:prueba666/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
