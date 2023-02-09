@@ -92,7 +92,8 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
   
-  main-pull-request:
+  pr-checks:
+    needs: [update-image]
     uses: ./.github/workflows/delay_on_pr.yml
     with:
       time: 1m
