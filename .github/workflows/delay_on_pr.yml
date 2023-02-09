@@ -1,12 +1,10 @@
 name: Wait time
 
 on:
-  pull_request:
+  push:
     branches:
-      - develop
       - main
-env:
-  RAMA: NOMBRE
+  
 jobs:
   deploy:
     uses: afajardomorera/actions-tests/.github/workflows/workflow_dispatch.yml@main
@@ -19,42 +17,10 @@ jobs:
       RAMA: rama
       SHORT_SHA: a0
     steps:
-      - name: View the github context
-        run: |
-          echo "$EVENT"
-          echo "$GITHUB_CONTEXT"
-          echo "$ISSUE"
-          echo "$COMMENT"
-          echo "$PR"
-        env:
-          EVENT: ${{ toJson(github.event) }}
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-          ISSUE: ${{ toJson(github.event.issue) }}
-          COMMENT: ${{ toJson(github.event.issue_comment) }}
-          PR: ${{ toJson(github.event.issue.pull_request) }}
-      - name: get-repo-name
-        run: |
-          echo "Repo name: " ${{ github.event.repository.name }}
-          echo "Branch name: " $GITHUB_HEAD_REF
-          echo "RAMA=$GITHUB_HEAD_REF" >> $GITHUB_ENV
-          echo "NOMBRE RAMA: " ${{ github.event.inputs.from_branch }}
-          echo "INPUTS: " ${{ github.event.issue.pull_request }}
-          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-          
-      - name: rama
-        run: |
-          echo "RAMA: " $RAMA
-          echo "Rama empieza mai: " ${{ startsWith(env.RAMA, 'mai') }}
-          echo "Rama NO empieza patata: " ${{ !startsWith(env.RAMA, 'patata') }}
-          
-      - name: Check_NO_empieza_por_mai
-        if: ${{ !startsWith(env.RAMA, 'mai') }}
-        run: |
-          echo "NO"
-      - name: Check_empieza_por_mai
-        if: ${{ startsWith(env.RAMA, 'mai') }}
-        run: |
-          echo "SI" $GITHUB_SHA
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '1m'
           
       #- name: print_branch_name
       #  if: ${{ startsWith('{{ env.RAMA }}', 'main') }}
