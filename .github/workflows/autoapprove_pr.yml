@@ -48,9 +48,9 @@ jobs:
         with:
           ref: ${{ needs.create-branch.outputs.rama }}
       
-      - id: last_deploy
+      - id: register_last_deploy
         name: Registrar autor del commit
-        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} " -> " ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
+        run: echo ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
       
       - name: Crear PR
         id: pr_creation
@@ -82,6 +82,7 @@ jobs:
       - id: push_image_to_branch
         name: "[EKS] Push image to branch"
         run: |
+          echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} " -> " ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
