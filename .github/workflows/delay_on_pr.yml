@@ -10,7 +10,7 @@ jobs:
   simulation:
     runs-on: ubuntu-latest
     steps:
-      - name: Sleep for ${{ inputs.time }} seconds
+      - name: Sleep for ${{ inputs.time }}
         uses: jakejarvis/wait-action@master
         with:
           time: ${{ inputs.time }}
