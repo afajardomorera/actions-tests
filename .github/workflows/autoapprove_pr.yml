@@ -30,7 +30,7 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          sed -i 's/IMAGEN222.*/IMAGEN222:prueba333/' ./terraform.tfvars
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
@@ -81,6 +81,6 @@ jobs:
         name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
         with:
-          github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ needs.create-pr.outputs.pull_number }}
           method: squash
