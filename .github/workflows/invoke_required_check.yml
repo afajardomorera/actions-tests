@@ -1,0 +1,10 @@
+name: '[PR main] Call required checks'
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  main-pull-request:
+    uses: uses: ./.github/workflows/deploy-eks.yml/delay_on_pr.yaml
