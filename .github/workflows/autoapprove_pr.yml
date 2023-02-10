@@ -57,5 +57,5 @@ jobs:
         uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.pr_creation.outputs.pull_number }}
+          number: ${{ steps.pr_creation.outputs.pull-request-number }}
           method: squash
