@@ -33,7 +33,7 @@ jobs:
         name: Check Out y cambio a rama dev
         uses: actions/checkout@v3
         with:
-          ref: ${{ needs.create-branch.outputs.rama }}
+          ref: ${{ steps.get_timestamp.outputs.rama}}
       
       - id: push_image_to_branch
         name: "[EKS] Push image to branch"
