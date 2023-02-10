@@ -35,6 +35,16 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
       
+      - id: checkout_new_branch
+        name: Check Out y cambio a rama
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_timestamp.outputs.rama}}
+      
+      - id: register_last_deploy
+        name: Registrar autor del commit
+        run: echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama}} > LAST_DEPLOY_BY_COMMENT
+        
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
