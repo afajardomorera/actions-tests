@@ -91,9 +91,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update-image]
     steps:
-      - id: test
-        name: test
-        run: echo "PR ${{ needs.create-pr.outputs.pull_number }}"
+      - name: Sleep for ${{ inputs.time }}
+        uses: jakejarvis/wait-action@master
+        with:
+          time: 2m
       
       - uses: reitermarkus/automerge@v2
         with:
