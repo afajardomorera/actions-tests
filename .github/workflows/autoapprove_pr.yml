@@ -78,11 +78,10 @@ jobs:
       - id: push_image_to_branch
         name: "[EKS] Push image to branch"
         run: |
-          sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git pull
-          sed -i 's/IMAGEN555.*/IMAGEN777:prueba777/' ./terraform.tfvars
+          sudo apt-get install sed
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
