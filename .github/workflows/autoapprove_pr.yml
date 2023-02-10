@@ -29,27 +29,8 @@ jobs:
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
       
-      - id: checkout_new_branch
-        name: Check Out y cambio a rama ${{ steps.get_timestamp.outputs.rama }}
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.get_timestamp.outputs.rama}}
-      
-      - id: push_image_to_branch
-        name: "[EKS] Push image to branch"
-        run: |
-          sudo apt-get install sed
-          git config user.name "action-tests[bot]"
-          git config user.email "action-tests[bot]@users.noreply.github.com"
-          echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama}} > LAST_DEPLOY_BY_COMMENT
-          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
-          git status
-          git add -A
-          git commit -m "Updated file for deploying image: DONE 2!!"
-          git push
-      
       - id: checkout_new_branch_for_pr
-        name: Check Out y cambio a rama dev
+        name: Check Out y cambio a rama ${{ steps.get_timestamp.outputs.rama }}
         uses: actions/checkout@v3
         with:
           ref: ${{ steps.get_timestamp.outputs.rama}}
@@ -69,7 +50,20 @@ jobs:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
-        
+      
+      - id: push_image_to_branch
+        name: "[EKS] Push image to branch"
+        run: |
+          sudo apt-get install sed
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
+          echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama}} > LAST_DEPLOY_BY_COMMENT
+          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
+          git status
+          git add -A
+          git commit -m "Updated file for deploying image: DONE 2!!"
+          git push
+      
       - uses: reitermarkus/automerge@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
