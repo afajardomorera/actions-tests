@@ -46,7 +46,7 @@ jobs:
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
      
       - id: merge_pr
