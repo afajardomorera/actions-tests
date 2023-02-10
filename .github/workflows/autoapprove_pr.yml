@@ -47,12 +47,6 @@ jobs:
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
-      
-      - id: checkout_new_branch_for_pr
-        name: Check Out y cambio a rama
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.get_timestamp.outputs.rama}}
         
       - name: Crear PR
         id: pr_creation
