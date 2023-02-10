@@ -56,4 +56,4 @@ jobs:
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           merge-method: squash
-          pull-request: ${{ ${{ steps.pr_creation.outputs.pull_number }}
+          pull-request: ${{ steps.pr_creation.outputs.pull_number }}
