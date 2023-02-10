@@ -10,4 +10,4 @@ jobs:
   main-pull-request:
     uses: ./.github/workflows/delay_on_pr.yml
     with:
-      time: 5m
+      time: 3m
