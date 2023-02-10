@@ -92,7 +92,7 @@ jobs:
     needs: [update-image]
     steps:
      
-      - uses: reitermarkus/automerge@v2
+      - uses: reitermarkus/automerge@v2.2.0
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           merge-method: squash
