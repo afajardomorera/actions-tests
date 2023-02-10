@@ -98,7 +98,7 @@ jobs:
       
       - uses: reitermarkus/automerge@v2
         with:
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           merge-method: squash
           pull-request: ${{ needs.create-pr.outputs.pull_number }}
           
