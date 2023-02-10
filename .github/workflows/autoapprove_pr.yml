@@ -30,7 +30,7 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
+          sed -i 's/IMAGEN222.*/IMAGEN444:prueba444/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
