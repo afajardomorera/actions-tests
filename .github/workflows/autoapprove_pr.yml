@@ -91,6 +91,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update-image]
     steps:
+      
+      - name: Wait for build to succeed
+        uses: fountainhead/action-wait-for-check@v1.1.0
+        id: wait-for-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: main-pull-request
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
      
       - uses: reitermarkus/automerge@v2.2.0
         with:
