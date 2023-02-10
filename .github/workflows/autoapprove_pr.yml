@@ -58,7 +58,7 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama}} > LAST_DEPLOY_BY_COMMENT
-          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
