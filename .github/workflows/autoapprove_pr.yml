@@ -26,17 +26,15 @@ jobs:
       - id: create_branch
         name: "[EKS] Create Branch"
         run: |
+          sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
-          git pull
-          sudo apt-get install sed
           sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
-          git push
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
       
       - id: register_last_deploy
         name: Registrar autor del commit
@@ -54,8 +52,10 @@ jobs:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
      
-      - uses: reitermarkus/automerge@v2.2.0
+      - id: merge_pr
+        name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          merge-method: squash
-          pull-request: ${{ steps.pr_creation.outputs.pull_number }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.pr_creation.outputs.pull_number }}
+          method: squash
