@@ -12,7 +12,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-          
       
       - name: get_timestamp
         id: get_timestamp
@@ -46,7 +45,7 @@ jobs:
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: ${{ steps.get_timestamp.outputs.rama }}
+          branch: origin/${{ steps.get_timestamp.outputs.rama }}
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
