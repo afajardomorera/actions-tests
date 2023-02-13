@@ -34,10 +34,8 @@ jobs:
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
           
-      - name: Create PR Action
-        uses: technote-space/create-pr-action@v2.0.4
+      - name: Create PR
+        uses: emiliopedrollo/create-pull-request@v1.1.0
         with:
-          EXECUTE_COMMANDS: echo "created pull request"
-          COMMIT_MESSAGE: "Automated Pull Request"
-          PR_BRANCH_NAME: ${{ steps.get_timestamp.outputs.rama}}
-          PR_DEFAULT_BRANCH_NAME: main
+          head: ${{ steps.get_timestamp.outputs.rama}}
+          base: main
