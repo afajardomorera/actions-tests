@@ -19,11 +19,6 @@ jobs:
           echo $(date +'%Y%m%d%H%M%S')
           echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
-      - name: Ejecutar checks
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-            
       - id: create_branch
         name: "[EKS] Create Branch"
         run: |
@@ -70,7 +65,7 @@ jobs:
       - uses: Sibz/github-status-action@v1
         with: 
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: 'Test run'
+          context: 'simulation'
           description: 'Passed'
           state: 'success'
           sha: ${{github.event.pull_request.head.sha || github.sha}}
