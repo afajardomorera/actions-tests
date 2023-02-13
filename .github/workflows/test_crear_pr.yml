@@ -17,15 +17,21 @@ jobs:
       - name: Update author information
         run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
       
+      - name: get_timestamp
+        id: get_timestamp
+        run: |
+          echo $(date +'%Y%m%d%H%M%S')
+          echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+      
       - id: last_deploy
         name: Registrar autor del commit
-        run: echo "auto-pr-branch" > LAST_DEPLOY
+        run: echo ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY
         
       - name: Raise PR
         id: demo-1
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "auto-pr-branch"
+          branch: ${{ steps.get_timestamp.outputs.rama }}
           base: main
           title: "demo for auto pr"
           commiter: ${{ env.GIT_COMMIT_AUTHOR_NAME }} <${{ env.GIT_COMMIT_AUTHOR_EMAIL }}">
