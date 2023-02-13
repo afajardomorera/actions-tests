@@ -60,35 +60,35 @@ jobs:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
       
-      - id: checkout_new_branch
-        name: Check Out y cambio a rama dev
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.create-branch.outputs.rama }}
+      #- id: checkout_new_branch
+      #  name: Check Out y cambio a rama dev
+      #  uses: actions/checkout@v3
+      #  with:
+      #    ref: ${{ needs.create-branch.outputs.rama }}
 
-      - id: push_image_to_branch
-        name: "[EKS] Push image to branch"
-        run: |
-          sudo apt-get install sed
-          git config user.name "action-tests[bot]"
-          git config user.email "action-tests[bot]@users.noreply.github.com"
-          git pull
-          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
-          git status
-          git add -A
-          git commit -m "Updated file for deploying image: DONE 2!!"
-          git push
+      #- id: push_image_to_branch
+      #  name: "[EKS] Push image to branch"
+      #  run: |
+      #    sudo apt-get install sed
+      #    git config user.name "action-tests[bot]"
+      #    git config user.email "action-tests[bot]@users.noreply.github.com"
+      #    git pull
+      #    sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+      #    git status
+      #    git add -A
+      #    git commit -m "Updated file for deploying image: DONE 2!!"
+      #    git push
       
-      - name: Wait For Github Status Check
-        uses: autotelic/action-wait-for-status-check@v1.0.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          statusName: 'main-pull-request / simulation'
-          
-      - id: merge_pr
-        name: Merge Pull Request
-        uses: juliangruber/merge-pull-request-action@v1.1.1
-        with:
+     # - name: Wait For Github Status Check
+     #   uses: autotelic/action-wait-for-status-check@v1.0.1
+     #   with:
+     #     token: ${{ secrets.GITHUB_TOKEN }}
+     #     statusName: 'main-pull-request / simulation'
+     #     
+     # - id: merge_pr
+     #   name: Merge Pull Request
+     #   uses: juliangruber/merge-pull-request-action@v1.1.1
+     #   with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ env.PULL_REQUEST_NUMBER }}
           method: squash
