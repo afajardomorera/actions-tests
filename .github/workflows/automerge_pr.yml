@@ -83,7 +83,7 @@ jobs:
         uses: autotelic/action-wait-for-status-check@v1.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          statusName: 'main-pull-request'
+          statusName: '[PR main] Call required checks'
           
       - id: merge_pr
         name: Merge Pull Request
