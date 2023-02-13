@@ -1,0 +1,61 @@
+name: Autoapprove PR
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  create-branch-pr-merge:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - id: checkout
+        name: Check Out y cambio a rama dev
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      
+      - name: get_timestamp
+        id: get_timestamp
+        run: |
+          echo $(date +'%Y%m%d%H%M%S')
+          echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+      
+      - name: Ejecutar checks
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+            
+      - id: create_branch
+        name: "[EKS] Create Branch"
+        run: |
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
+          git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+      
+      - name: Crear PR
+        id: pr_creation
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          commit-message: Automated Pull Request
+          branch: ${{ steps.get_timestamp.outputs.rama }}
+          base: main
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+          body:
+            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+          delete-branch: false
+      
+      - name: Esperar por ejecución de checks
+        uses: actions/wait-for-status@v1
+        with:
+          contexts:
+            - ci/travis-ci
+            - ci/circleci
+            - ci/appveyor
+            - ci/github
+      
+      - name: Mergear Pull Request
+        uses: peter-evans/merge-pull-request@v3
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          merge-method: squash
