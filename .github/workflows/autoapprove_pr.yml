@@ -29,68 +29,41 @@ jobs:
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
   
-  create-pr:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: [create-branch]
-    steps:
-      - id: test
-        name: test
-        run: echo "RAMA ${{ needs.create-branch.outputs.rama }}"
-        
-      - id: checkout
-        name: Check Out y cambio a rama
+      - id: checkout_pr
+        name: Check Out y cambio a rama dev
         uses: actions/checkout@v3
         with:
-          ref: ${{ needs.create-branch.outputs.rama }}
-
-      - id: last_deploy
-        name: Registrar autor del commit
-        run: echo ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
+          ref: ${{ steps.get_timestamp.outputs.rama}}
+          
+      - id: update_image
+        name: "[EKS] Create Branch and update eks micro image"
+        run: |
+          sudo apt-get install sed
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
+          echo ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          git status
+          git add -A
+          git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
 
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: ${{ needs.create-branch.outputs.rama }}
+          branch: ${{ steps.get_timestamp.outputs.rama }}
           base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.create-branch.outputs.rama }}"
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
-            Prueba de PR automática - ${{ needs.create-branch.outputs.rama }}
+            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
       
-      - id: checkout_new_branch
-        name: Check Out y cambio a rama dev
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.create-branch.outputs.rama }}
-
-      - id: push_image_to_branch
-        name: "[EKS] Push image to branch"
-        run: |
-          sudo apt-get install sed
-          git config user.name "action-tests[bot]"
-          git config user.email "action-tests[bot]@users.noreply.github.com"
-          git pull
-          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
-          git status
-          git add -A
-          git commit -m "Updated file for deploying image: DONE 2!!"
-          git push
-      
-      - name: Wait for build to succeed
-        uses: fountainhead/action-wait-for-check@v1.1.0
-        id: wait-for-build
-        with:
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          checkName: "main-pull-request / simulation"
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           
-      - id: merge_pr
-        name: Merge Pull Request
-        uses: juliangruber/merge-pull-request-action@v1.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ env.PULL_REQUEST_NUMBER }}
-          method: squash
+    #  - id: merge_pr
+    #    name: Merge Pull Request
+    #    uses: juliangruber/merge-pull-request-action@v1.1.1
+    #    with:
+    #      github-token: ${{ secrets.GITHUB_TOKEN }}
+    #      number: ${{ env.PULL_REQUEST_NUMBER }}
+    #      method: squash
