@@ -40,6 +40,15 @@ jobs:
         with:
           github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
           number: ${{ steps.demo-1.outputs.pull-request-number }}
+      
+      - name: Wait for status checks
+        id: waitforstatuschecks
+        uses: WyriHaximus/github-action-wait-for-status@v1.7.1
+        with:
+          ignoreActions: "Automerge PRs"
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
         
       - name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
