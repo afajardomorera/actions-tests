@@ -67,13 +67,10 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
       
-      - name: 'Wait for status checks'
-        id: waitforstatuschecks
-        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
+      - uses: UseFedora/wait-for-github-status@v0.0.3
         with:
-          waitForCheck: true
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          context: 'github'
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Mergear Pull Request
         uses: reitermarkus/automerge@v2
