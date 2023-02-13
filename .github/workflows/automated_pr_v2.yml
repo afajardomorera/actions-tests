@@ -42,4 +42,4 @@ jobs:
       - uses: peter-evans/enable-pull-request-automerge@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: 1
+          pull-request-number: ${{ steps.pr_creation.outputs.pull-request-number }}
