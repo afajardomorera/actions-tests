@@ -33,8 +33,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [create-branch]
-    outputs:
-      pull_number: ${{ steps.pr_creation.outputs.pull-request-number }}
     steps:
       - id: test
         name: test
@@ -46,7 +44,6 @@ jobs:
         with:
           ref: ${{ needs.create-branch.outputs.rama }}
 
-      - id: author
       - id: last_deploy
         name: Registrar autor del commit
         run: echo ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
@@ -87,5 +84,5 @@ jobs:
         uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ needs.create-pr.outputs.pull_number }}
+          number: ${{ steps.create-pr.outputs.pull-request-number }}
           method: squash
