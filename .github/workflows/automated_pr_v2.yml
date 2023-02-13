@@ -32,18 +32,40 @@ jobs:
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
       
+      - id: checkout_new_branch_for_pr
+        name: Check Out y cambio a rama ${{ steps.get_timestamp.outputs.rama }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_timestamp.outputs.rama}}
+      
+      - id: register_last_deploy
+        name: Registrar autor del commit
+        run: echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
+          
       - name: Crear PR
         id: pr_creation
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          commit-message: Automated Pull Request
           branch: ${{ steps.get_timestamp.outputs.rama }}
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
+      
+      - id: push_image_to_branch
+        name: "[EKS] Push image to branch"
+        run: |
+          sudo apt-get install sed
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
+          echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama}} > LAST_DEPLOY_BY_COMMENT
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          git status
+          git add -A
+          git commit -m "Updated file for deploying image: DONE 2!!"
+          git push
       
       - name: 'Wait for status checks'
         id: waitforstatuschecks
