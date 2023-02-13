@@ -48,11 +48,7 @@ jobs:
       - name: Esperar por ejecución de checks
         uses: actions/wait-for-status@v1
         with:
-          contexts:
-            - ci/travis-ci
-            - ci/circleci
-            - ci/appveyor
-            - ci/github
+          contexts: ci/github
       
       - name: Mergear Pull Request
         uses: peter-evans/merge-pull-request@v3
