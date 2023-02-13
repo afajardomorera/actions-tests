@@ -10,11 +10,17 @@ jobs:
       - id: checkout
         name: Check Out y cambio a rama dev
         uses: actions/checkout@v3
+        
+      - name: get_timestamp
+        id: get_timestamp
+        run: |
+          echo $(date +'%Y%m%d%H%M%S')
+          echo "nombre=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
       - name: create new branch
         id: create_branch
         run: |
-          BRANCH_NAME=auto-${{ env.GITHUAB_SHA }}
+          BRANCH_NAME=${{ steps.get_timestamp.outputs.nombre }}
           echo rama=$BRANCH_NAME >> $GITHUB_OUTPUT
           git checkout -b $BRANCH_NAME
           git push -u origin $BRANCH_NAME
