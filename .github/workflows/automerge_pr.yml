@@ -78,6 +78,12 @@ jobs:
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
+      
+      - name: Wait For Github Status Check
+        uses: autotelic/action-wait-for-status-check@v1.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          statusName: 'main-pull-request'
           
       - id: merge_pr
         name: Merge Pull Request
