@@ -15,7 +15,7 @@ jobs:
         run: |
           BRANCH_NAME=auto-${{ env.GITHUAB_SHA }}
           git checkout -b $BRANCH_NAME
-          git push -u origien $BRANCH_NAME
+          git push -u origin $BRANCH_NAME
       
       - name: Crear PR
         id: pr_creation
