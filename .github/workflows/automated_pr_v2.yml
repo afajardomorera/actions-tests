@@ -38,28 +38,6 @@ jobs:
           branch: auto-${{ env.GITHUB_SHA }}
           title: Automated Pull Request
           body: Pull Request created automatically
-      
-      - name: Wait for checks
-        uses: actions/github-script@0.5.0
-        with:
-          script: |
-            const pr = context.payload.pull_request;
-            const octokit = new GitHub(process.env.GITHUB_TOKEN);
-            while (true) {
-              const statuses = octokit.repos.listStatusesForRef({
-                owner: pr.base.repo.owner.login,
-                repo: pr.base.repo.name,
-                ref: pr.head.sha
-              });
-              cons success = statuses.data.some(status => status.state === "success");
-              if(success){
-                break;
-              }
-              console.log("Waiting for checks to complete...");
-              run("actions/sleep@v1", {
-                "seconds": 10
-              });
-            }
             
       - uses: peter-evans/enable-pull-request-automerge@v2
         with:
