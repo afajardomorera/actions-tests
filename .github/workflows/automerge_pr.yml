@@ -8,7 +8,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - id: checkout
-        name: Check Out y cambio a rama main
+        name: Check Out y cambio a rama dev
         uses: actions/checkout@v3
         with:
           ref: main
@@ -25,34 +25,42 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama }}
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+          git pull
           
-        #git pull
-        #  sudo apt-get install sed
-        #  sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
-        #  git status
-        #  git add -A
-        #  git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
-        #  git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama }}
+      - id: checkout_new_branch
+        name: Check Out y cambio a rama dev
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_timestamp.outputs.rama}}
 
-     # - id: checkout_for_pr
-     #   name: Check Out y cambio a rama main
-     #   uses: actions/checkout@v3
-     #   with:
-     #     ref: ${{ steps.get_timestamp.outputs.rama }}
-
-     # - id: last_deploy
-     #   name: Registrar autor del commit
-     #   run: echo ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY
+      - id: push_image_to_branch
+        name: "[EKS] Push image to branch"
+        run: |
+          sudo apt-get install sed
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
+          git pull
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          git status
+          git add -A
+          git commit -m "Updated file for deploying image: DONE!!"
+          git push
+  
+      - id: checkout_for_pr
+        name: Check Out y cambio a rama
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_timestamp.outputs.rama}}
 
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: ${{ steps.get_timestamp.outputs.rama }}
+          branch: ${{ steps.get_timestamp.outputs.rama}}
           base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.create-branch.outputs.rama }}"
           body:
-            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+            Prueba de PR automática - ${{ needs.create-branch.outputs.rama }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
