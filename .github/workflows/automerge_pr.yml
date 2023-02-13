@@ -32,7 +32,7 @@ jobs:
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama}}!!"
-          git push
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
 
       - id: create_pr
         name: Create Sync PR
