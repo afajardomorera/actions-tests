@@ -61,7 +61,7 @@ jobs:
       
       - name: 'Wait for status checks'
         id: waitforstatuschecks
-        uses: "WyriHaximus/github-action-wait-for-status@v2"
+        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
         with:
           checkInterval: 13
         env:
