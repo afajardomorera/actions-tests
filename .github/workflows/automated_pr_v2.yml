@@ -47,7 +47,8 @@ jobs:
               await new Promise(resolve => setTimeout(resolve,10000));
             }
             
-      - name: Merge Pull Request
-        uses: peter-evans/merge-pull-request@v3
+      - uses: reitermarkus/automerge@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: squash
+          pull-request: ${{ steps.pr_creation.outputs.pull-request-number }}
