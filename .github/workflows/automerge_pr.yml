@@ -8,7 +8,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - id: checkout
-        name: Check Out y cambio a rama dev
+        name: Check Out y cambio a rama main
         uses: actions/checkout@v3
         with:
           ref: main
@@ -22,18 +22,31 @@ jobs:
       - id: create_branch
         name: "[EKS] Create Branch"
         run: |
-          sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+      
+      - id: checkout_new_branch
+        name: Check Out y cambio a rama main
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_timestamp.outputs.rama}}
+          
+      - id: update-image
+        name: "[EKS] Update image"
+        run: |
+          sudo apt-get install sed
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
           sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama}}!!"
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+          git push
      
       - id: checkout_for_pr
-        name: Check Out y cambio a rama
+        name: Check Out y cambio a rama ${{ steps.get_timestamp.outputs.rama}}
         uses: actions/checkout@v3
         with:
           ref: ${{ steps.get_timestamp.outputs.rama}}
@@ -47,7 +60,7 @@ jobs:
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama}}"
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama}}
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
       
       #- id: checkout_new_branch
