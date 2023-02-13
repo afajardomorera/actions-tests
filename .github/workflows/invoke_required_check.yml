@@ -5,9 +5,14 @@ on:
     branches:
       - main
   workflow_call:
+    inputs:
+      manual:
+        type: string
+        default: None
 
 jobs:
   main-pull-request:
     uses: ./.github/workflows/delay_on_pr.yml
+    if: inputs.manual == None
     with:
       time: 30s
