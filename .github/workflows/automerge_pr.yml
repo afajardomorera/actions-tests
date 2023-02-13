@@ -25,8 +25,12 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          sudo apt-get install sed
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          git status
+          git add -A
+          git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
-          git pull
           
       - name: Crear PR
         id: pr_creation
