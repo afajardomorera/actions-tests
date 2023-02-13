@@ -79,11 +79,9 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
       
-      - uses: jitterbit/await-check-suites@v1
-        with: 
-          token: ${{ secrets.GITHUB_TOKEN }}
-          timeoutSeconds: 3600
-          appSlugFilter: 'github-actions'
+      - uses: ./.github/workflows/invoke_required_check.yml
+        with:
+          manual: manual
           
       - id: merge_pr
         name: Merge Pull Request
