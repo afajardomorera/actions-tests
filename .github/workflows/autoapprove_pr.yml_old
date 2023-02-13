@@ -89,7 +89,7 @@ jobs:
           
       - id: merge_pr
         name: Merge Pull Request
-        uses: juliangruber/merge-pull-request-action@v1
+        uses: juliangruber/merge-pull-request-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ env.PULL_REQUEST_NUMBER }}
