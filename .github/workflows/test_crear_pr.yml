@@ -1,7 +1,8 @@
-on:
- issue_comment:
-   types: [created]
+name: 'AUTO PR AND MERGE'
 
+on:
+  issue_comment:
+    types: [created]
 
 jobs:
   updateAuthor:
