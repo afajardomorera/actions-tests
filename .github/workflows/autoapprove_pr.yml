@@ -56,16 +56,8 @@ jobs:
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
-      
-      - name: 'Wait for status checks'
-        id: waitforstatuschecks
-        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
-        with:
-          checkInterval: 13
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       
       - id: merge_pr
         name: Merge Pull Request
