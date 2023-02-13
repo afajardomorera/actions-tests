@@ -3,7 +3,7 @@ on:
   issue_comment:
     types: [created]
 jobs:
-  create-branch-pr-merge:
+  create-branch:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     outputs:
@@ -28,52 +28,64 @@ jobs:
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
-      
-      - id: checkout_new_branch_for_pr
-        name: Check Out y cambio a rama ${{ steps.get_timestamp.outputs.rama }}
+  
+  create-pr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [create-branch]
+    outputs:
+      pull_number: ${{ steps.pr_creation.outputs.pull-request-number }}
+    steps:
+      - id: test
+        name: test
+        run: echo "RAMA ${{ needs.create-branch.outputs.rama }}"
+        
+      - id: checkout
+        name: Check Out y cambio a rama
         uses: actions/checkout@v3
         with:
-          ref: ${{ steps.get_timestamp.outputs.rama}}
-      
-      - id: register_last_deploy
+          ref: ${{ needs.create-branch.outputs.rama }}
+
+      - id: author
+      - id: last_deploy
         name: Registrar autor del commit
-        run: echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
-          
+        run: echo ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
+
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: ${{ steps.get_timestamp.outputs.rama }}
+          branch: ${{ needs.create-branch.outputs.rama }}
           base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.create-branch.outputs.rama }}"
           body:
-            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+            Prueba de PR automática - ${{ needs.create-branch.outputs.rama }}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
       
+      - id: checkout_new_branch
+        name: Check Out y cambio a rama dev
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.create-branch.outputs.rama }}
+
       - id: push_image_to_branch
         name: "[EKS] Push image to branch"
         run: |
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama}} > LAST_DEPLOY_BY_COMMENT
+          git pull
           sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
       
-      - uses: reitermarkus/automerge@v2
+      - id: merge_pr
+        name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
         with:
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          merge-method: squash
-          pull-request: ${{ steps.pr_creation.outputs.pull-request-number }}
-      
-      #- id: merge_pr
-      #  name: Merge Pull Request
-      #  uses: juliangruber/merge-pull-request-action@v1
-      #  with:
-      #    github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
-      #    number: ${{ steps.pr_creation.outputs.pull-request-number }}
-      #    method: squash
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ needs.create-pr.outputs.pull_number }}
+          method: squash
