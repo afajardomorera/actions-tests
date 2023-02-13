@@ -38,6 +38,15 @@ jobs:
           branch: auto-${{ env.GITHUB_SHA }}
           title: Automated Pull Request
           body: Pull Request created automatically
+      
+      - name: 'Wait for status checks'
+        id: waitforstatuschecks
+        uses: WyriHaximus/github-action-wait-for-status@v1.7.1
+        with:
+          ignoreActions: "Automerge PRs" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_SCOPED_TOKEN }}
             
       - uses: peter-evans/enable-pull-request-automerge@v2
         with:
