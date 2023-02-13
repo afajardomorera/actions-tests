@@ -34,20 +34,8 @@ jobs:
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
           
-      - id: checkout_for_pr
-        name: Check Out
-        uses: actions/checkout@v3
+      - name: Create PR Action
+        uses: technote-space/create-pr-action@v2.0.4
         with:
-          ref: main
-      
-      - name: Crear PR
-        id: pr_creation
-        uses: peter-evans/create-pull-request@v4
-        with:
-          branch: ${{ steps.get_timestamp.outputs.rama}}
-          base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama}}"
-          body:
-            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama}}
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          delete-branch: false
+          EXECUTE_COMMANDS: echo "created pull request"
+          COMMIT_MESSAGE: "Automated Pull Request"
