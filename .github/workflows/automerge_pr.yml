@@ -3,11 +3,9 @@ on:
   issue_comment:
     types: [created]
 jobs:
-  create-branch:
-    runs-on: ubuntu-20.04
+  automated-pull-request:
+    runs-on: ubuntu-latest
     timeout-minutes: 5
-    outputs:
-      rama: ${{ steps.get_timestamp.outputs.rama }}
     steps:
       - id: checkout
         name: Check Out y cambio a rama dev
@@ -28,31 +26,19 @@ jobs:
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+          git pull
+          sudo apt-get install sed
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          git status
+          git add -A
+          git commit -m "Updated file for deploying image: DONE!!"
+          git push
   
-  create-pr:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: [create-branch]
-    steps:
-      - id: test
-        name: test
-        run: echo "RAMA ${{ needs.create-branch.outputs.rama }}"
-        
-      - id: checkout
-        name: Check Out y cambio a rama
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ needs.create-branch.outputs.rama }}
-
-      - id: last_deploy
-        name: Registrar autor del commit
-        run: echo ${{ needs.create-branch.outputs.rama }} > LAST_DEPLOY
-
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: ${{ needs.create-branch.outputs.rama }}
+          branch: ${{ steps.get_timestamp.outputs.rama}}
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ needs.create-branch.outputs.rama }}"
           body:
@@ -66,18 +52,7 @@ jobs:
       #  with:
       #    ref: ${{ needs.create-branch.outputs.rama }}
 
-      #- id: push_image_to_branch
-      #  name: "[EKS] Push image to branch"
-      #  run: |
-      #    sudo apt-get install sed
-      #    git config user.name "action-tests[bot]"
-      #    git config user.email "action-tests[bot]@users.noreply.github.com"
-      #    git pull
-      #    sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
-      #    git status
-      #    git add -A
-      #    git commit -m "Updated file for deploying image: DONE 2!!"
-      #    git push
+      
       
      # - name: Wait For Github Status Check
      #   uses: autotelic/action-wait-for-status-check@v1.0.1
