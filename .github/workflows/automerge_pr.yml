@@ -22,10 +22,23 @@ jobs:
       - id: create_branch
         name: "[EKS] Create Branch and update eks micro image"
         run: |
-          sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama }}
+          
+      - id: checkout_pr
+        name: Check Out y cambio a rama dev
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_timestamp.outputs.rama}}
+          
+      - id: update_image
+        name: "[EKS] Create Branch and update eks micro image"
+        run: |
+          sudo apt-get install sed
+          git config user.name "action-tests[bot]"
+          git config user.email "action-tests[bot]@users.noreply.github.com"
           sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
