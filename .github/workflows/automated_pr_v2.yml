@@ -10,71 +10,29 @@ jobs:
       - id: checkout
         name: Check Out y cambio a rama dev
         uses: actions/checkout@v3
-        with:
-          ref: main
       
-      - name: get_timestamp
-        id: get_timestamp
+      - name: create new branch
         run: |
-          echo $(date +'%Y%m%d%H%M%S')
-          echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+          BRANCH_NAME=auto-${{ env.GITHUAB_SHA }}
+          git checkout -b $BRANCH_NAME
+          git push -u origien $BRANCH_NAME
       
-      - id: create_branch
-        name: "[EKS] Create Branch"
-        run: |
-          git config user.name "action-tests[bot]"
-          git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
-      
-      - id: checkout_new_branch_for_pr
-        name: Check Out y cambio a rama ${{ steps.get_timestamp.outputs.rama }}
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ steps.get_timestamp.outputs.rama}}
-      
-      - id: register_last_deploy
-        name: Registrar autor del commit
-        run: echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
-          
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: ${{ steps.get_timestamp.outputs.rama }}
-          base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
-          body:
-            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          delete-branch: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Automated Pull Request
+          branch: auto-${{ env.GITHUB_SHA }}
+          title: Automated Pull Request
+          body: Pull Request created automatically
       
-      - id: push_image_to_branch
-        name: "[EKS] Push image to branch"
-        run: |
-          sudo apt-get install sed
-          git config user.name "action-tests[bot]"
-          git config user.email "action-tests[bot]@users.noreply.github.com"
-          echo ${{ github.actor }} " -> " ${{ steps.get_timestamp.outputs.rama}} > LAST_DEPLOY_BY_COMMENT
-          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
-          git status
-          git add -A
-          git commit -m "Updated file for deploying image: DONE 2!!"
-          git push
-      
-      - name: 'Wait for status checks'
-        id: waitforstatuschecks
-        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
+      - name: Wait for checks
+        uses: actions/wait-for-status@v1
         with:
-          ignoreActions: "Automerge PRs" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
-          checkInterval: 13
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          contexts: ci/github
       
-      - name: Mergear Pull Request
-        uses: reitermarkus/automerge@v2
-        if: steps.waitforstatuschecks.outputs.status == 'success'
+      - name: Merge Pull Request
+        uses: peter-evans/merge-pull-request@v3
         with:
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          merge-method: squash
-          pull-request: ${{ steps.pr_creation.outputs.pull-request-number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
