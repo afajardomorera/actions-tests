@@ -83,7 +83,7 @@ jobs:
         uses: fountainhead/action-wait-for-check@v1.1.0
         id: wait-for-build
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
           checkName: "main-pull-request / simulation"
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           
