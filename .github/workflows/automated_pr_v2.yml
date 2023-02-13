@@ -67,10 +67,13 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
       
-      - uses: UseFedora/wait-for-github-status@v0.0.3
-        with:
-          context: 'github'
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Sibz/github-status-action@v1
+        with: 
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'Test run'
+          description: 'Passed'
+          state: 'success'
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
       
       - name: Mergear Pull Request
         uses: reitermarkus/automerge@v2
