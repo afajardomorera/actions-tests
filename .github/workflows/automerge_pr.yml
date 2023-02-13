@@ -34,14 +34,14 @@ jobs:
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
           
-      #- name: Crear PR
-      #  id: pr_creation
-      #  uses: peter-evans/create-pull-request@v4
-      #  with:
-      #    branch: ${{ steps.get_timestamp.outputs.rama}}
-      #    base: main
-      #    title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama}}"
-      #    body:
-      #      Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama}}
-      #    token: ${{ secrets.REPO_SCOPED_TOKEN }}
-      #    delete-branch: false
+      - name: Crear PR
+        id: pr_creation
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: ${{ steps.get_timestamp.outputs.rama}}
+          base: main
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama}}"
+          body:
+            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama}}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          delete-branch: false
