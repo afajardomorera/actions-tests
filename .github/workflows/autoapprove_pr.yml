@@ -41,8 +41,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          echo ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY
-          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
@@ -66,8 +65,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           checkName: "main-pull-request / simulation"
           ref: ${{ steps.pr_creation.outputs.pull-request-head-sha }}   
-      
-      #ref: ${{ github.event.pull_request.head.sha || github.sha }}
       
       - id: merge_pr
         name: Merge Pull Request
