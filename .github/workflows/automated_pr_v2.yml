@@ -56,7 +56,9 @@ jobs:
                 break;
               }
               console.log("Waiting for checks to complete...");
-              await new Promise(resolve => setTimeout(resolve,10000));
+              run("actions/sleep@v1", {
+                "seconds": 10
+              });
             }
             
       - uses: reitermarkus/automerge@v2
