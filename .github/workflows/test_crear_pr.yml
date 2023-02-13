@@ -38,7 +38,7 @@ jobs:
           number: ${{ steps.demo-1.outputs.pull-request-number }}
         
       - name: Merge Pull Request
-        uses: juliangruber/merge-pull-request@v1
+        uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.demo-1.outputs.pull-request-number }}
