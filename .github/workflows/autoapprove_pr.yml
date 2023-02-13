@@ -59,6 +59,14 @@ jobs:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
       
+      - name: 'Wait for status checks'
+        id: waitforstatuschecks
+        uses: "WyriHaximus/github-action-wait-for-status@v2"
+        with:
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      
       - id: merge_pr
         name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1.1.1
