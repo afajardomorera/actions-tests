@@ -28,10 +28,25 @@ jobs:
           body: Pull Request created automatically
       
       - name: Wait for checks
-        uses: actions/wait-for-status@v1
+        uses: actions/github-script@0.5.0
         with:
-          contexts: ci/github
-      
+          script: |
+            const pr = context.payload.pull_request;
+            const octokit = new GitHub(process.env.GITHUB_TOKEN);
+            while (true) {
+              const statuses = octokit.repos.listStatusesForRef({
+                owner: pr.base.repo.owner.login,
+                repo: pr.base.repo.name,
+                ref: pr.head.sha
+              });
+              cons success = statuses.data.some(status => status.state === "success");
+              if(success){
+                break;
+              }
+              console.log("Waiting for checks to complete...");
+              await new Promise(resolve => setTimeout(resolve,10000));
+            }
+            
       - name: Merge Pull Request
         uses: peter-evans/merge-pull-request@v3
         with:
