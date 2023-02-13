@@ -3,71 +3,69 @@ on:
   issue_comment:
     types: [created]
 jobs:
-  create-branch:
-    runs-on: ubuntu-20.04
+  create-pr-update-image-and-merge:
+    runs-on: ubuntu-latest
     timeout-minutes: 5
-    outputs:
-      rama: ${{ steps.get_timestamp.outputs.rama }}
     steps:
       - id: checkout
-        name: Check Out y cambio a rama dev
+        name: "Check Out del Código"
         uses: actions/checkout@v3
         with:
           ref: main
       
-      - name: get_timestamp
-        id: get_timestamp
+      - name: "Definir Nombre Único de Rama"
+        id: definir_nombre_rama
         run: |
           echo $(date +'%Y%m%d%H%M%S')
           echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       
-      - id: create_branch
-        name: "[EKS] Create Branch"
+      - id: crear_rama_para_despliegue_auto
+        name: "Crear Rama para despliegue automático"
         run: |
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+          git checkout -b ${{ steps.definir_nombre_rama.outputs.rama}} main
+          git push --set-upstream origin ${{ steps.definir_nombre_rama.outputs.rama}}
   
       - id: checkout_pr
-        name: Check Out y cambio a rama dev
+        name: Check Out y cambio a rama ${{ steps.definir_nombre_rama.outputs.rama}}
         uses: actions/checkout@v3
         with:
-          ref: ${{ steps.get_timestamp.outputs.rama}}
+          ref: ${{ steps.definir_nombre_rama.outputs.rama}}
           
-      - id: update_image
-        name: "[EKS] Create Branch and update eks micro image"
+      - id: actualizar_image_micro
+        name: "[EKS] Actualizar imagen de microservicio"
         run: |
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
+          sed -i 's/IMAGEN444.*/IMAGEN555:prueba555/' ./terraform.tfvars
           git status
           git add -A
-          git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
+          git commit -m "Updated file for deploying image: ${{ steps.definir_nombre_rama.outputs.rama }}!!"
 
-      - name: Crear PR
-        id: pr_creation
+      - name: Crear Pull Request
+        id: crear_pull_request
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: ${{ steps.get_timestamp.outputs.rama }}
+          branch: ${{ steps.definir_nombre_rama.outputs.rama }}
           base: main
-          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.definir_nombre_rama.outputs.rama }}"
           body:
-            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+            Prueba de PR automática - ${{ steps.definir_nombre_rama.outputs.rama }}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
       
-      - name: Wait for build to succeed
+      - name: Esperar hasta que se ejecuten los checks de estado
         uses: fountainhead/action-wait-for-check@v1.1.0
-        id: wait-for-build
+        id: esperar_por_checks_de_estado
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           checkName: "main-pull-request / simulation"
-          ref: ${{ steps.pr_creation.outputs.pull-request-head-sha }}   
+          ref: ${{ steps.crear_pull_request.outputs.pull-request-head-sha }}   
       
-      - id: merge_pr
-        name: Merge Pull Request
+      - id: mergear_pull_request
+        name: Mergear Pull Request
         uses: juliangruber/merge-pull-request-action@v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
