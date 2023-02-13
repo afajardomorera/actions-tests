@@ -64,8 +64,8 @@ jobs:
       
       - uses: Sibz/github-status-action@v1
         with: 
-          authToken: ${{secrets.GITHUB_TOKEN}}
-          context: 'simulation'
+          authToken: ${{secrets.REPO_SCOPED_TOKEN}}
+          context: 'merge-pull-request'
           description: 'Passed'
           state: 'success'
           sha: ${{github.event.pull_request.head.sha || github.sha}}
@@ -74,6 +74,6 @@ jobs:
         uses: reitermarkus/automerge@v2
         if: steps.waitforstatuschecks.outputs.status == 'success'
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
           merge-method: squash
           pull-request: ${{ steps.pr_creation.outputs.pull-request-number }}
