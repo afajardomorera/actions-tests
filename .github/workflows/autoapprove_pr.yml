@@ -79,6 +79,14 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
       
+      - name: Wait for build to succeed
+        uses: fountainhead/action-wait-for-check@v1.1.0
+        id: wait-for-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: "main-pull-request / simulation"
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          
       - id: merge_pr
         name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
