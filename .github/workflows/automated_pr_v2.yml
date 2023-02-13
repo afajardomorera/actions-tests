@@ -12,10 +12,16 @@ jobs:
         uses: actions/checkout@v3
       
       - name: create new branch
+        id: create_branch
         run: |
           BRANCH_NAME=auto-${{ env.GITHUAB_SHA }}
+          echo rama=$BRANCH_NAME >> $GITHUB_OUTPUT
           git checkout -b $BRANCH_NAME
           git push -u origin $BRANCH_NAME
+      
+      - id: register_last_deploy
+        name: Registrar autor del commit
+        run: echo ${{ github.actor }} " -> " ${{ steps.create_branch.outputs.rama }} > LAST_DEPLOY_BY_COMMENT
       
       - name: Crear PR
         id: pr_creation
