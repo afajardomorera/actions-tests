@@ -49,12 +49,14 @@ jobs:
         id: waitforstatuschecks
         uses: "WyriHaximus/github-action-wait-for-status@v2"
         with:
-          checkInterval: 13
+          waitForCheck: true
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       
       - name: Mergear Pull Request
         uses: peter-evans/merge-pull-request@v3
+        if: steps.waitforstatuschecks.outputs.status == 'success'
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           merge-method: squash
+          pull-request: ${{ steps.pr_creation.outputs.pull-request-number }}
