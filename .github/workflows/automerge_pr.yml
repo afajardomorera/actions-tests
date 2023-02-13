@@ -39,3 +39,5 @@ jobs:
         with:
           EXECUTE_COMMANDS: echo "created pull request"
           COMMIT_MESSAGE: "Automated Pull Request"
+          PR_BRANCH_NAME: ${{ steps.get_timestamp.outputs.rama}}
+          PR_DEFAULT_BRANCH_NAME: main
