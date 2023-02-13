@@ -41,12 +41,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: true
         
-      - name: Approve PUll Request
-        uses: juliangruber/approve-pull-request-action@v1
-        with:
-          github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          number: ${{ steps.demo-1.outputs.pull-request-number }}
-      
       - name: Wait for status checks
         id: waitforstatuschecks
         uses: WyriHaximus/github-action-wait-for-status@v1.7.1
@@ -62,3 +56,9 @@ jobs:
           github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
           number: ${{ steps.demo-1.outputs.pull-request-number }}
           method: squash
+
+#- name: Approve PUll Request
+     # uses: juliangruber/approve-pull-request-action@v1
+     #   with:
+     #     github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
+     #     number: ${{ steps.demo-1.outputs.pull-request-number }}
