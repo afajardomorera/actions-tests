@@ -26,16 +26,25 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
-          git pull
           sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
-          
-      - name: Create PR
-        uses: emiliopedrollo/create-pull-request@v1.1.0
+      
+      - name: Crear PR
+        id: pr_creation
+        uses: peter-evans/create-pull-request@v4
         with:
-          head: ${{ steps.get_timestamp.outputs.rama}}
+          branch: ${{ steps.get_timestamp.outputs.rama }}
           base: main
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+          body:
+            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: false
+          
+      #- name: Create PR
+      #  uses: emiliopedrollo/create-pull-request@v1.1.0
+      #  with:
+      #    head: ${{ steps.get_timestamp.outputs.rama}}
+      #    base: main
