@@ -45,10 +45,13 @@ jobs:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
           delete-branch: false
       
-      - name: Esperar por ejecución de checks
-        uses: actions/wait-for-status@v1
+      - name: 'Wait for status checks'
+        id: waitforstatuschecks
+        uses: "WyriHaximus/github-action-wait-for-status@v2"
         with:
-          contexts: ci/github
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       
       - name: Mergear Pull Request
         uses: peter-evans/merge-pull-request@v3
