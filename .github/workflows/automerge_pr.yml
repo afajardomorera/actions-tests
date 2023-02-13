@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
+          
       
       - name: get_timestamp
         id: get_timestamp
@@ -25,19 +26,30 @@ jobs:
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
           git checkout -b ${{ steps.get_timestamp.outputs.rama}} main
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama }}
           git pull
           sudo apt-get install sed
           sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
-          git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama}}!!"
-          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
+          git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
+          git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama }}
 
-      - id: create_pr
-        name: Create Sync PR
-        uses: sudoStatus200/create-sync-pr@0.3.1
+      - id: checkout_for_pr
+        name: Check Out y cambio a rama main
+        uses: actions/checkout@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SOURCE_BRANCH: ${{ steps.get_timestamp.outputs.rama}}
-          TARGET_BRANCH: main
+          ref: ${{ steps.get_timestamp.outputs.rama }}
+          fetch-depth: 0
+
+      - name: Crear PR
+        id: pr_creation
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: ${{ needs.create-branch.outputs.rama }}
+          base: main
+          title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
+          body:
+            Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: false
