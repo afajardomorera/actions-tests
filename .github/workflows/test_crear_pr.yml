@@ -16,6 +16,10 @@ jobs:
         
       - name: Update author information
         run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
+      
+      - id: last_deploy
+        name: Registrar autor del commit
+        run: echo "auto-pr-branch" > LAST_DEPLOY
         
       - name: Raise PR
         id: demo-1
