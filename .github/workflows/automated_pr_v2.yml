@@ -62,13 +62,14 @@ jobs:
           git commit -m "Updated file for deploying image: DONE 2!!"
           git push
       
-      - uses: Sibz/github-status-action@v1
-        with: 
-          authToken: ${{secrets.REPO_SCOPED_TOKEN}}
-          context: 'merge-pull-request'
-          description: 'Passed'
-          state: 'success'
-          sha: ${{github.event.pull_request.head.sha || github.sha}}
+      - name: 'Wait for status checks'
+        id: waitforstatuschecks
+        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
+        with:
+          ignoreActions: "Automerge PRs" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       
       - name: Mergear Pull Request
         uses: reitermarkus/automerge@v2
