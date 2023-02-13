@@ -47,14 +47,14 @@ jobs:
       
       - name: 'Wait for status checks'
         id: waitforstatuschecks
-        uses: "WyriHaximus/github-action-wait-for-status@v2"
+        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
         with:
           waitForCheck: true
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       
       - name: Mergear Pull Request
-        uses: peter-evans/merge-pull-request@v3
+        uses: reitermarkus/automerge@v2
         if: steps.waitforstatuschecks.outputs.status == 'success'
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
