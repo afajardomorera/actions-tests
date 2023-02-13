@@ -34,6 +34,12 @@ jobs:
           git commit -m "Updated file for deploying image: ${{ steps.get_timestamp.outputs.rama }}!!"
           git push --set-upstream origin ${{ steps.get_timestamp.outputs.rama}}
           
+      - id: checkout_for_pr
+        name: Check Out y cambio a rama ${{ steps.get_timestamp.outputs.rama}}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.get_timestamp.outputs.rama}}
+      
       - name: Crear PR
         id: pr_creation
         uses: peter-evans/create-pull-request@v4
