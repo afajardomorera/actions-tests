@@ -31,15 +31,15 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: true
         
-        - name: Approve PUll Request
-          uses: juliangruber/approve-pull-request-action@v1
-          with:
-            github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
-            number: ${{ steps.demo-1.outputs.pull-request-number }}
+      - name: Approve PUll Request
+        uses: juliangruber/approve-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          number: ${{ steps.demo-1.outputs.pull-request-number }}
         
-        - name: Merge Pull Request
-          uses: juliangruber/merge-pull-request@v1
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            number: ${{ steps.demo-1.outputs.pull-request-number }}
-            method: squash
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.demo-1.outputs.pull-request-number }}
+          method: squash
