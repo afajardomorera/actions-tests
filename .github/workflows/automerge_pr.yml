@@ -41,9 +41,9 @@ jobs:
      #   with:
      #     ref: ${{ steps.get_timestamp.outputs.rama }}
 
-      - id: last_deploy
-        name: Registrar autor del commit
-        run: echo ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY
+     # - id: last_deploy
+     #   name: Registrar autor del commit
+     #   run: echo ${{ steps.get_timestamp.outputs.rama }} > LAST_DEPLOY
 
       - name: Crear PR
         id: pr_creation
