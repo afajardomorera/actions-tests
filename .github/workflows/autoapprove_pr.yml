@@ -56,8 +56,18 @@ jobs:
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.get_timestamp.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.get_timestamp.outputs.rama }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
+      
+      - name: Wait for build to succeed
+        uses: fountainhead/action-wait-for-check@v1.1.0
+        id: wait-for-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: "main-pull-request / simulation"
+          ref: ${{ steps.pr_creation.outputs.pull-request-head-sha }}   
+      
+      #ref: ${{ github.event.pull_request.head.sha || github.sha }}
       
       - id: merge_pr
         name: Merge Pull Request
