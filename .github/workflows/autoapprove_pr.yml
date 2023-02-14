@@ -75,11 +75,9 @@ jobs:
       - id: values_for_message
         name: Establecer valores para el mensaje
         run: |
-          echo ${{ context.issue.number }}
-          echo ${{ context.repo.owner }}
-          echo ${{ context.repo.repo }}
           echo ${{ github.event.repository.name }}
           echo ${{ github.event.repository.owner }}
+          echo ${{ env.PULL_REQUEST_NUMBER }}
       
       - id: add_process_message
         name: add_process_message
