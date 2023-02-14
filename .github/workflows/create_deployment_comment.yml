@@ -1,7 +1,7 @@
 name: Crear comentario de despliegue
 
 on:
-  workflow_call:
+  workflow_dispatch:
 
 env:
   MICRO: nombre_micro
