@@ -72,10 +72,6 @@ jobs:
           number: ${{ env.PULL_REQUEST_NUMBER }}
           method: squash
       
-      - name: Montar mensaje
-        run: |
-          echo "MENSAJE=Puede consultar el estado del despliegue <a href=\"https://github.com/${{ context.repo.owner }}/${{ context.repo.repo }}/pull/${{ context.issue.number }}\">aquí</a>" >> $GITHUB_ENV
-      
       - id: add_process_message
         name: add_process_message
         uses: actions/github-script@v4
