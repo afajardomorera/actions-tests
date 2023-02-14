@@ -8,6 +8,7 @@ jobs:
     env:
       REPO: None
       OWNER: None
+      MENSAJE: None
     steps:
       - id: checkout
         name: "Check Out del Código"
@@ -91,7 +92,7 @@ jobs:
             console.log(process.env.MENSAJE);
             console.log(context.issue.number);
             github.issues.createComment({
-              issue_number: 43,
+              issue_number: context.issue.number,
               owner: process.env.OWNER,
               repo: process.env.REPO,
               body: process.env.MENSAJE,
