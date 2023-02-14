@@ -39,7 +39,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN777.*/IMAGEN888:prueba888/' ./terraform.tfvars
+          sed -i 's/IMAGEN888.*/IMAGEN999:prueba999/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.definir_nombre_rama.outputs.rama }}!!"
@@ -74,11 +74,13 @@ jobs:
       
       - id: values_for_message
         name: Establecer valores para el mensaje
+        env:
+          REPO: None
+          OWNER: None
         run: |
-          echo "Owner y repo" ${{ env.GITHUB_REPOSITORY }}
+          echo "contexto" ${{ toJson(github.event.repository) }}
+          echo "OWNER=${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
-          echo "OWNER=${{ github.event.repository }}" >> $GITHUB_ENV
-          echo ${{ env.PULL_REQUEST_NUMBER }}
           echo "MENSAJE=Puede consultar el estado del despliegue <a href=\"https://github.com/$OWNER/$REPO/pull/$PULL_REQUEST_NUMBER\">aquí</a>"
       
       - id: add_process_message
