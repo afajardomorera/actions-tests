@@ -75,7 +75,7 @@ jobs:
       - id: values_for_message
         name: Establecer valores para el mensaje
         run: |
-          echo "Owner y repo" ${{ GITHUB_REPOSITORY }}
+          echo "Owner y repo" ${{ env.GITHUB_REPOSITORY }}
           echo "REPO=${{ github.event.repository.name }}" >> $GITHUB_ENV
           echo "OWNER=${{ github.event.repository }}" >> $GITHUB_ENV
           echo ${{ env.PULL_REQUEST_NUMBER }}
