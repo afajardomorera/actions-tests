@@ -82,12 +82,12 @@ jobs:
       
       - id: add_process_message
         name: add_process_message
-        uses: actions/github-script@v6
+        uses: actions/github-script@v4
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: process.env.MENSAJE
-            })
+            github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: process.env.MENSAJE,
+            });
