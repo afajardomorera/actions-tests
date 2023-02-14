@@ -85,5 +85,5 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: process.env.MENSAJE,
+            body: "Puede consultar el estado del despliegue <a href=\"https://github.com/context.repo.owner/context.repo.repo/pull/context.issue.number\">aquí</a>",
             });
