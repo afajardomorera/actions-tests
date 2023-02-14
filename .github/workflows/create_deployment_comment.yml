@@ -1,0 +1,20 @@
+name: Crear comentario de despliegue
+
+on:
+  workflow_call:
+
+env:
+  MICRO: nombre_micro
+  ENTORNO: dev
+  RAMA: develop
+  PARAMETRO_DESPLIEGUE: /deploy-eks
+
+jobs:
+  montar_texto_comentario:
+    runs-on: ubuntu-latest
+    steps:
+      - id: montar_comentario
+        name: Montar comentario despliegue
+        run: |
+          echo "$PARAMETRO_DESPLIEGUE --micro $MICRO --ns $ENTORNO --rama $RAMA"
+      
