@@ -39,7 +39,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN444.*/IMAGEN555:prueba555/' ./terraform.tfvars
+          sed -i 's/IMAGEN555.*/IMAGEN666:prueba666/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.definir_nombre_rama.outputs.rama }}!!"
