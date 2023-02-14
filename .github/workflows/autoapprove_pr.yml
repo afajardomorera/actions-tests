@@ -71,3 +71,19 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ env.PULL_REQUEST_NUMBER }}
           method: squash
+      
+      - name: Montar mensaje
+        run: |
+          echo "MENSAJE=Puede consultar el estado del despliegue <a href=\"https://github.com/${{ context.repo.owner }}/${{ context.repo.repo }}/pull/${{ context.issue.number }}\">aquí</a>" >> $GITHUB_ENV
+      
+      - id: add_process_message
+        name: add_process_message
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: process.env.MENSAJE,
+            });
