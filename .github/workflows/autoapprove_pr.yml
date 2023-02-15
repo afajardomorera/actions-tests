@@ -22,7 +22,7 @@ jobs:
         id: definir_nombre_rama
         run: |
           echo $(date +'%Y%m%d%H%M%S')
-          echo "rama='deploy\/${{ env.IMAGEID }}'" >> $GITHUB_OUTPUT
+          echo "rama=deploy\/${{ env.IMAGEID }}" >> $GITHUB_OUTPUT
       
       - id: crear_rama_para_despliegue_auto
         name: "Crear Rama para despliegue automático"
