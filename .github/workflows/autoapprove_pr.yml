@@ -16,7 +16,7 @@ jobs:
         name: "Check Out del Código"
         uses: actions/checkout@v3
         with:
-          ref: $RAMA_ENTORNO
+          ref: ${{ env.RAMA_ENTORNO }}
       
       - name: "Definir Nombre Único de Rama"
         id: definir_nombre_rama
