@@ -72,7 +72,7 @@ jobs:
         id: esperar_por_checks_de_estado
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: "main-pull-request / simulation"
+          checkName: "main-pull-request / Simulación"
           ref: ${{ steps.crear_pull_request.outputs.pull-request-head-sha }}   
       
       - id: mergear_pull_request
