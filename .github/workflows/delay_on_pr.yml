@@ -8,6 +8,7 @@ on:
   
 jobs:
   simulation:
+    name: "Simulación"
     runs-on: ubuntu-latest
     steps:
       - name: Sleep for ${{ inputs.time }}
