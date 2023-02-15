@@ -10,7 +10,7 @@ jobs:
       OWNER: None
       MENSAJE: None
       RAMA_ENTORNO: main
-      IMAGEID: 'v1.0.23_bc567d'
+      IMAGEID: 'v1.0.23_fffc567d'
     steps:
       - id: checkout
         name: "Check Out del Código"
