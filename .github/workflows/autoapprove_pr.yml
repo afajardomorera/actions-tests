@@ -24,7 +24,7 @@ jobs:
         id: definir_nombre_rama
         run: |
           echo $(date +'%Y%m%d%H%M%S')
-          echo "rama=deploy$(date +'%Y%m%d%H%M%S')_${{ env.IMAGEID }}" >> $GITHUB_OUTPUT
+          echo "rama=deploy$(date +'%Y%m%d%H%M%S')-${{ env.IMAGEID }}" >> $GITHUB_OUTPUT
       
       - id: crear_rama_para_despliegue_auto
         name: "Crear Rama para despliegue automático"
@@ -46,7 +46,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
+          sed -i 's/IMAGEN333.*/IMAGEN444:prueba444/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.definir_nombre_rama.outputs.rama }}!!"
