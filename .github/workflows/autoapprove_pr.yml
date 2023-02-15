@@ -58,7 +58,7 @@ jobs:
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.definir_nombre_rama.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.definir_nombre_rama.outputs.rama }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
       
       - name: Esperar hasta que se ejecuten los checks de estado
