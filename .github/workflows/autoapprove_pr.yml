@@ -9,18 +9,20 @@ jobs:
       REPO: None
       OWNER: None
       MENSAJE: None
+      RAMA_ENTORNO: main
+      IMAGEID: 'v1.0.23_bc567d'
     steps:
       - id: checkout
         name: "Check Out del Código"
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: $RAMA_ENTORNO
       
       - name: "Definir Nombre Único de Rama"
         id: definir_nombre_rama
         run: |
           echo $(date +'%Y%m%d%H%M%S')
-          echo "rama=deploy$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+          echo "rama=deploy/${{ env.IMAGEID }}" >> $GITHUB_OUTPUT
       
       - id: crear_rama_para_despliegue_auto
         name: "Crear Rama para despliegue automático"
@@ -42,7 +44,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN999.*/IMAGEN000:prueba000/' ./terraform.tfvars
+          sed -i 's/IMAGEN000.*/IMAGEN111:prueba111/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.definir_nombre_rama.outputs.rama }}!!"
@@ -56,7 +58,7 @@ jobs:
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.definir_nombre_rama.outputs.rama }}"
           body:
             Prueba de PR automática - ${{ steps.definir_nombre_rama.outputs.rama }}
-          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
       
       - name: Esperar hasta que se ejecuten los checks de estado
