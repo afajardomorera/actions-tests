@@ -11,6 +11,8 @@ jobs:
       MENSAJE: None
       RAMA_ENTORNO: main
       IMAGEID: 'v1.0.23_fffc567d'
+      SOFTWARE_RAMA: feature/rama_de_prueba
+      MICRO: micro_de_prueba
     steps:
       - id: checkout
         name: "Check Out del Código"
@@ -44,7 +46,7 @@ jobs:
           sudo apt-get install sed
           git config user.name "action-tests[bot]"
           git config user.email "action-tests[bot]@users.noreply.github.com"
-          sed -i 's/IMAGEN111.*/IMAGEN222:prueba222/' ./terraform.tfvars
+          sed -i 's/IMAGEN222.*/IMAGEN333:prueba333/' ./terraform.tfvars
           git status
           git add -A
           git commit -m "Updated file for deploying image: ${{ steps.definir_nombre_rama.outputs.rama }}!!"
@@ -56,8 +58,12 @@ jobs:
           branch: ${{ steps.definir_nombre_rama.outputs.rama }}
           base: main
           title: "[DEPLOY BY COMMENT] Automatic PR ${{ steps.definir_nombre_rama.outputs.rama }}"
-          body:
-            Prueba de PR automática - ${{ steps.definir_nombre_rama.outputs.rama }}
+          body: |
+            Datos del despliegue de la rama ${{ steps.definir_nombre_rama.outputs.rama }}
+            <pr>
+            <b>Imagen desplegada: </b>${{ env.IMAGEID}}
+            <b>Microservicio asociado: </b>${{ env.MICRO}}
+            <b>Rama de software desde la que se ha generado la imagen: </b>${{ env.SOFTWARE_RAMA}}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           delete-branch: false
       
