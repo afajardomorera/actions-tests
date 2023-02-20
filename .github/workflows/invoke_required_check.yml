@@ -1,6 +1,7 @@
 name: '[PR main] Call required checks'
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
@@ -8,6 +9,6 @@ on:
 
 jobs:
   main-pull-request:
-    uses: ./.github/workflows/delay_on_pr.yml
+    uses: afajardomorera/actions-tests/.github/workflows/delay_on_pr.yml@main
     with:
       time: 30s
