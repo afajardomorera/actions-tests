@@ -1,0 +1,10 @@
+name: Lanzar Error
+on:
+  workflow_call
+jobs:
+  lanzar-error:
+    runs-on: ubuntu-latest
+    steps:
+      - id: lanzar_error
+        name: Lanzar Error
+        run: exit 1
