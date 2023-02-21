@@ -1,0 +1,29 @@
+name: Test control Errores entre workflows
+
+on:
+  workflow_dispatch
+  
+jobs:
+  job1:
+    uses: afajardomorera/actions-tests/.github/workflows/delay_on_pr.yml@main
+    with:
+      time: 1s
+  job2:
+    needs: job1
+    uses: afajardomorera/actions-tests/.github/workflows/lanzar_error.yml@main
+  job3:
+    needs: job2
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    steps:
+      - id: error_1
+        name: Error 1
+        run: echo "ERROR 1"
+  job4:
+    needs: job2
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+      - id: no_error
+        name: No Error
+        run: echo "NO ERROR"
