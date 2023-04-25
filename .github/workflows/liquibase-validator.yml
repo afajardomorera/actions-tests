@@ -7,6 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
+      - id: checkout
+        name: "Check Out del Código"
+        uses: actions/checkout@v3
+        with:
+          ref: main
       - name: Hello world action step
         id: hello
         uses: afajardomorera/liquibase-file-validator@v.1.1
