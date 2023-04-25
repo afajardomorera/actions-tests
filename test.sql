@@ -1,4 +1,4 @@
--- liquibase-formatter
+
 
 -- changeset: 9
 
