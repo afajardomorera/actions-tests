@@ -12,11 +12,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: main
-      - name: Hello world action step
-        id: hello
-        uses: afajardomorera/liquibase-file-validator@v.1.4
+      - name: Liquibase File Validator
+        id: liquibase_validator
+        uses: afajardomorera/liquibase-file-validator@v.1.5
         with:
-          who-to-greet: 'Mona the Octocat'
+          file: 'test.sql'
       # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+      - name: Get result
+        run: |
+          echo "VALID FILES: ${{ steps.liquibase_validator.outputs.validFiles }}"
+          echo "INVALID FILES: ${{ steps.liquibase_validator.outputs.invalidFiles }}"
