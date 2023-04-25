@@ -14,7 +14,7 @@ jobs:
           ref: main
       - name: Liquibase File Validator
         id: liquibase_validator
-        uses: afajardomorera/liquibase-file-validator@v.1.5.4
+        uses: afajardomorera/liquibase-file-validator@v.1.5.5
         with:
           file: 'test.sql'
       # Use the output from the `hello` step
