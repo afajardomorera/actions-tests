@@ -25,9 +25,10 @@ jobs:
           echo "item_0: " ${{ steps.split_text.outputs.item_0 }}
           echo "item_1: " ${{ steps.split_text.outputs.item_1 }}
           echo "item_2: " ${{ steps.split_text.outputs.item_2 }}
-          cont = 0
-          while [ cont < ${{ steps.split_text.outputs.number_of_items }}];
+          counter=0
+          while [ $counter -lt ${{ steps.split_text.outputs.number_of_items }}];
           do
-            key = "steps.split_text.outputs.item_"$cont
-            echo "Item_"$cont": " $key
+            key = "steps.split_text.outputs.item_"$counter
+            echo "Item_"$counter": " $key
+            counter++
           done
