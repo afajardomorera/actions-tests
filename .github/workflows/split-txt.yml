@@ -20,7 +20,11 @@ jobs:
       - id: result
         name: Test Result
         run: |
+          #!/usr/bin/bash 
           echo "Number of items: " ${{ steps.split_text.outputs.number_of_items }}
+          echo "item_0: " ${{ steps.split_text.outputs.item_0 }}
+          echo "item_1: " ${{ steps.split_text.outputs.item_1 }}
+          echo "item_2: " ${{ steps.split_text.outputs.item_2 }}
           cont = 0
           while [ cont < ${{ steps.split_text.outputs.number_of_items }}];
           do
