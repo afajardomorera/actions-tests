@@ -1,0 +1,29 @@
+name: SPLIT TEXT TEST
+
+on:
+ workflow_dispatch:
+   inputs:
+     text: 
+       type: string
+
+jobs:
+  split-text:
+    name: Split Text Test
+    runs-on: ubuntu-latest
+    steps:
+      - id: split_text
+        name: Split Text
+        uses: afajardomorera/split-text@develop
+        with:
+          text: ${{ inputs.text }}
+
+      - id: result
+        name: Test Result
+        run: |
+          echo "Number of items: " ${{ steps.split_text.outputs.number_of_items }}
+          cont = 0
+          while [ cont < ${{ steps.split_text.outputs.number_of_items }}];
+          do
+            key = steps.split_text.outputs.item_$cont
+            echo "Item_"$cont": "${{ $key }}
+          done
