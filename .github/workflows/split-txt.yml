@@ -24,6 +24,6 @@ jobs:
           cont = 0
           while [ cont < ${{ steps.split_text.outputs.number_of_items }}];
           do
-            key = steps.split_text.outputs.item_$cont
-            echo "Item_"$cont": "${{ $key }}
+            key = "${{ steps.split_text.outputs.item_$cont }}"
+            echo "Item_"$cont": " $key
           done
