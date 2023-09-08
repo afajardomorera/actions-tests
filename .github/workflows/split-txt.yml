@@ -28,6 +28,7 @@ jobs:
           counter=0
           while [ $counter -lt ${{ steps.split_text.outputs.number_of_items }} ];
           do
-            key = "steps.split_text.outputs.item_"$counter
+            key="steps.split_text.outputs.item_"$counter
             echo "Item_"$counter": " $key
+            ((counter++))
           done
